@@ -1,0 +1,349 @@
+{
+  "summary": {
+    "date": "2026-10-26",
+    "baseline": "068ad226f53e1ca62d857f78bdc32f58f3c5fce7",
+    "candidateSHA256": "f451d111157c7588933cf80b8d56ab2e870df00805fd5df9db5e8f9372c2ec7a",
+    "comparisons": 208,
+    "pixelIdentical": 208,
+    "maxChannelDifference": 0,
+    "runtimes": [
+      {
+        "engine": "blink",
+        "runtime": "Chrome 156.0.8078.48",
+        "comparisons": 90,
+        "pixelIdentical": 90,
+        "configurations": [
+          {
+            "width": 1280,
+            "height": 800,
+            "dpr": 1
+          },
+          {
+            "width": 1280,
+            "height": 800,
+            "dpr": 2
+          },
+          {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          {
+            "width": 390,
+            "height": 844,
+            "dpr": 2
+          },
+          {
+            "width": 390,
+            "height": 844,
+            "dpr": 1.25
+          },
+          {
+            "width": 390,
+            "height": 844,
+            "dpr": 2,
+            "reducedMotion": "reduce"
+          }
+        ],
+        "idle": {
+          "original": {
+            "idChanges": 3,
+            "attributes": 182,
+            "mapWrites": 2,
+            "retryTimers": 2,
+            "retriesFired": 2,
+            "pendingRetries": 0
+          },
+          "candidate": {
+            "idChanges": 1,
+            "attributes": 62,
+            "mapWrites": 2,
+            "retryTimers": 0,
+            "retriesFired": 0,
+            "pendingRetries": 0
+          }
+        },
+        "flush100": {
+          "originalIdChanges": 100,
+          "candidateIdChanges": 0,
+          "elapsedMs": [
+            {
+              "config": {
+                "width": 1280,
+                "height": 800,
+                "dpr": 1
+              },
+              "original": 1.6000000089406967,
+              "candidate": 5.100000008940697
+            },
+            {
+              "config": {
+                "width": 1280,
+                "height": 800,
+                "dpr": 2
+              },
+              "original": 1.7000000029802322,
+              "candidate": 1.3999999910593033
+            },
+            {
+              "config": {
+                "width": 390,
+                "height": 844,
+                "dpr": 1
+              },
+              "original": 1.9000000059604645,
+              "candidate": 1.3999999910593033
+            },
+            {
+              "config": {
+                "width": 390,
+                "height": 844,
+                "dpr": 2
+              },
+              "original": 1.6000000089406967,
+              "candidate": 1.5
+            },
+            {
+              "config": {
+                "width": 390,
+                "height": 844,
+                "dpr": 1.25
+              },
+              "original": 1.9000000059604645,
+              "candidate": 1.4000000059604645
+            },
+            {
+              "config": {
+                "width": 390,
+                "height": 844,
+                "dpr": 2,
+                "reducedMotion": "reduce"
+              },
+              "original": 1.5999999940395355,
+              "candidate": 1.5
+            }
+          ]
+        }
+      },
+      {
+        "engine": "gecko",
+        "runtime": "Firefox 157.0",
+        "comparisons": 90,
+        "pixelIdentical": 90,
+        "configurations": [
+          {
+            "width": 1280,
+            "height": 800,
+            "dpr": 1
+          },
+          {
+            "width": 1280,
+            "height": 800,
+            "dpr": 2
+          },
+          {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          {
+            "width": 390,
+            "height": 844,
+            "dpr": 2
+          },
+          {
+            "width": 390,
+            "height": 844,
+            "dpr": 1.25
+          },
+          {
+            "width": 390,
+            "height": 844,
+            "dpr": 2,
+            "reducedMotion": "reduce"
+          }
+        ],
+        "idle": {
+          "original": {
+            "idChanges": 3,
+            "attributes": 182,
+            "mapWrites": 2,
+            "retryTimers": 2,
+            "retriesFired": 2,
+            "pendingRetries": 0
+          },
+          "candidate": {
+            "idChanges": 1,
+            "attributes": 62,
+            "mapWrites": 2,
+            "retryTimers": 0,
+            "retriesFired": 0,
+            "pendingRetries": 0
+          }
+        },
+        "flush100": {
+          "originalIdChanges": 100,
+          "candidateIdChanges": 0,
+          "elapsedMs": [
+            {
+              "config": {
+                "width": 1280,
+                "height": 800,
+                "dpr": 1
+              },
+              "original": 4,
+              "candidate": 4
+            },
+            {
+              "config": {
+                "width": 1280,
+                "height": 800,
+                "dpr": 2
+              },
+              "original": 4,
+              "candidate": 3
+            },
+            {
+              "config": {
+                "width": 390,
+                "height": 844,
+                "dpr": 1
+              },
+              "original": 4,
+              "candidate": 4
+            },
+            {
+              "config": {
+                "width": 390,
+                "height": 844,
+                "dpr": 2
+              },
+              "original": 6,
+              "candidate": 4
+            },
+            {
+              "config": {
+                "width": 390,
+                "height": 844,
+                "dpr": 1.25
+              },
+              "original": 6,
+              "candidate": 5
+            },
+            {
+              "config": {
+                "width": 390,
+                "height": 844,
+                "dpr": 2,
+                "reducedMotion": "reduce"
+              },
+              "original": 7,
+              "candidate": 5
+            }
+          ]
+        }
+      },
+      {
+        "engine": "webkit",
+        "runtime": "System WKWebView · macOS 27.0.1 (Safari app 27.0.1)",
+        "comparisons": 28,
+        "pixelIdentical": 28,
+        "configurations": [
+          {
+            "width": 1280,
+            "height": 800,
+            "dpr": 2,
+            "reducedMotion": false
+          },
+          {
+            "width": 390,
+            "height": 844,
+            "dpr": 2,
+            "reducedMotion": false
+          }
+        ],
+        "idle": {
+          "original": {
+            "idChanges": 3,
+            "attributes": 197,
+            "mapWrites": 2,
+            "retryTimers": 2,
+            "retriesFired": 2,
+            "pendingRetries": 0
+          },
+          "candidate": {
+            "idChanges": 3,
+            "attributes": 197,
+            "mapWrites": 2,
+            "retryTimers": 2,
+            "retriesFired": 2,
+            "pendingRetries": 0
+          }
+        },
+        "flush100": {
+          "originalIdChanges": 100,
+          "candidateIdChanges": 100,
+          "elapsedMs": [
+            {
+              "config": {
+                "width": 1280,
+                "height": 800,
+                "dpr": 2,
+                "reducedMotion": false
+              },
+              "original": 3,
+              "candidate": 3
+            },
+            {
+              "config": {
+                "width": 390,
+                "height": 844,
+                "dpr": 2,
+                "reducedMotion": false
+              },
+              "original": 4,
+              "candidate": 6
+            }
+          ]
+        }
+      }
+    ],
+    "nativeFitControl": [
+      {
+        "comparison": "original-a vs original-b",
+        "differentPixels": 0,
+        "totalPixels": 4096000
+      },
+      {
+        "comparison": "original-a vs candidate",
+        "differentPixels": 0,
+        "totalPixels": 4096000
+      }
+    ]
+  },
+  "method": "Actual original and candidate ES modules in separate srcdoc frames; identical embedded fixture, viewport/DPR and numbered actions. Final geometry, PNG dimensions, SVG region attributes, pending decode/timers and two animation frames gate completion. Pixel comparisons include RGBA. Native driver polls completion before snapshot.",
+  "limitations": [
+    "Operation counts are DOM mutations and armed/fired timers, not CPU percentages. Elapsed flush times are single noisy samples collected during concurrent validation; no statistical speedup claim.",
+    "Firefox uses the temporary LiquidglassValidation app branding and stock Firefox/157.0 UA to select the actual Gecko path. No rendering engine changes.",
+    "No physical iPhone; no native WebKit DPR1/fractional/reduced-motion or offscreen-iframe run. Hidden target and reconnect were covered natively.",
+    "Fixed moving poses and settled numbered replay endpoints were captured; not every animation frame or every background-tab policy."
+  ],
+  "rawEvidence": [
+    "/tmp/liquidglass-filter-evidence/final/comparison-blink-gecko.json",
+    "/tmp/liquidglass-filter-evidence/final/comparison-webkit.json",
+    "/tmp/liquidglass-filter-evidence/final/offscreen/comparison-blink-gecko.json"
+  ],
+  "initialReadinessRace": {
+    "evidence": "/tmp/liquidglass-filter-evidence/fit-native-live-original.txt",
+    "finding": "A fixed-delay fixture stored stale fit params before ResizeObserver completed in the original too. Live params later matched. Readiness was corrected and all final comparisons repeated."
+  },
+  "postCleanupVerification": {
+    "scenarios": [
+      "decode-race",
+      "destroy"
+    ],
+    "comparisons": 24,
+    "pixelIdentical": 24,
+    "rawEvidence": "/tmp/liquidglass-filter-evidence/final/post-cleanup/comparison-blink-gecko.json"
+  }
+}
