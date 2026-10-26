@@ -17,6 +17,8 @@ const NS = 'http://www.w3.org/2000/svg';
 const XLINK = 'http://www.w3.org/1999/xlink';
 const NEUTRAL = 128;
 const MAP_CACHE_SIZE = 48;
+const MAP_CACHE_BYTES = 8 * 1024 * 1024;
+const MAP_CACHE_KEYS = 4;
 
 export const DEFAULTS = Object.freeze({
   // Lens rectangle in CSS px, relative to the filtered element's border box.
@@ -44,6 +46,7 @@ export const DEFAULTS = Object.freeze({
 const MAP_KEYS = ['width', 'height', 'radius', 'bezel', 'curvature', 'ior', 'invert', 'specular', 'specularWidth', 'lightAngle'];
 
 export const engine = detectEngine();
+const needsFilterRefresh = engine !== 'blink' && engine !== 'gecko';
 
 function detectEngine() {
   if (typeof navigator === 'undefined') return 'unknown';
@@ -94,14 +97,13 @@ function profileTable(curvature, ior) {
  * (as a texture), so both renderers share one optical model.
  */
 export function renderLensMap(options = {}, scale = 1) {
-  const p = { ...DEFAULTS, ...options };
+  return mapCanvas(lensPixels({ ...DEFAULTS, ...options }, scale), scale);
+}
+
+function lensPixels(p, scale) {
   const w = Math.max(2, Math.round(p.width * scale));
   const h = Math.max(2, Math.round(p.height * scale));
-  const canvas = document.createElement('canvas');
-  canvas.width = w;
-  canvas.height = h;
-  const ctx = canvas.getContext('2d');
-  const image = ctx.createImageData(w, h);
+  const image = new ImageData(w, h);
   const px = image.data;
 
   const sx = p.width / w; // CSS px per map pixel (x); equals 1 / scale up to rounding
@@ -175,8 +177,15 @@ export function renderLensMap(options = {}, scale = 1) {
       if (i2 !== i && j2 !== j) write(px, (j2 * w + i2) * 4, NEUTRAL - bx, NEUTRAL - by, rimLight(rim, nx * lx + ny * ly), a);
     }
   }
-  ctx.putImageData(image, 0, 0);
-  return { canvas, width: w, height: h, scale };
+  return image;
+}
+
+function mapCanvas(image, scale) {
+  const canvas = document.createElement('canvas');
+  canvas.width = image.width;
+  canvas.height = image.height;
+  canvas.getContext('2d').putImageData(image, 0, 0);
+  return { canvas, width: image.width, height: image.height, scale };
 }
 
 // Blue channel for a rim pixel: `facing` is n·L for its outward normal.
@@ -193,9 +202,27 @@ function write(px, o, r, g, b, a) {
 }
 
 const mapCache = new Map();
+let mapCacheBytes = 0;
 
 function mapKeyOf(p, scale) {
   return MAP_KEYS.map((k) => p[k]).join('|') + '|' + scale;
+}
+
+function samePixels(a, b) {
+  if (!b || a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false;
+  return true;
+}
+
+function rememberMap(entry, key) {
+  mapCache.delete(entry.key);
+  // Remember a few exact shapes so replaying a spring can skip the pixel calculation too
+  if (!entry.keys.includes(key)) {
+    if (entry.keys.length === MAP_CACHE_KEYS) entry.keys.shift();
+    entry.keys.push(key);
+  }
+  mapCache.set(entry.key, entry);
+  return entry;
 }
 
 // Returns { key, url, decoded, ready }. The PNG is decoded through an <img> before the filter uses
@@ -203,11 +230,29 @@ function mapKeyOf(p, scale) {
 // the image was still missing (an empty result) until the filter id changes.
 function lensMap(p, scale, key) {
   let entry = mapCache.get(key);
+  if (!entry) {
+    for (const cached of mapCache.values()) {
+      if (cached.keys.includes(key)) {
+        entry = cached;
+        break;
+      }
+    }
+  }
   if (entry) {
-    mapCache.delete(key); // refresh LRU position
+    return rememberMap(entry, key);
   } else {
-    const url = renderLensMap(p, scale).canvas.toDataURL('image/png');
-    entry = { key, url, decoded: false, ready: null };
+    const image = lensPixels(p, scale);
+    const pixels = new Uint32Array(image.data.buffer);
+    // Small spring steps can produce the same 8-bit map even when their geometry keys differ
+    for (const cached of mapCache.values()) {
+      if (cached.width === image.width && cached.height === image.height && samePixels(pixels, cached.pixels)) {
+        return rememberMap(cached, key);
+      }
+    }
+    const url = mapCanvas(image, scale).canvas.toDataURL('image/png');
+    // Large panels still cache their PNG without keeping another large copy of its pixels
+    const retained = pixels.byteLength <= MAP_CACHE_BYTES ? pixels : null;
+    entry = { key, keys: [key], url, pixels: retained, width: image.width, height: image.height, decoded: false, ready: null };
     const img = new Image();
     img.src = url;
     entry.ready = img
@@ -216,7 +261,20 @@ function lensMap(p, scale, key) {
       .then(() => {
         entry.decoded = true;
       });
-    if (mapCache.size >= MAP_CACHE_SIZE) mapCache.delete(mapCache.keys().next().value);
+    const bytes = retained?.byteLength ?? 0;
+    if (mapCache.size >= MAP_CACHE_SIZE) {
+      const oldest = mapCache.keys().next().value;
+      const evicted = mapCache.get(oldest);
+      mapCacheBytes -= evicted.pixels?.byteLength ?? 0;
+      evicted.pixels = null;
+      mapCache.delete(oldest);
+    }
+    for (const cached of mapCache.values()) {
+      if (mapCacheBytes + bytes <= MAP_CACHE_BYTES) break;
+      mapCacheBytes -= cached.pixels?.byteLength ?? 0;
+      cached.pixels = null;
+    }
+    mapCacheBytes += bytes;
   }
   mapCache.set(key, entry);
   return entry;
@@ -408,6 +466,7 @@ export function createGlass(target, options = {}) {
   // Re-issue the filter id shortly after a map swap: WebKit loads its own copy of the data URL and
   // does not repaint the filter when that load lands.
   function settle() {
+    if (!needsFilterRefresh) return;
     settleTimers.forEach(clearTimeout);
     settleTimers = [60, 250].map((ms) => setTimeout(schedule, ms));
   }
@@ -489,7 +548,7 @@ export function createGlass(target, options = {}) {
 
     // WebKit caches filter output per filter id and keeps serving it after the graph changes;
     // a fresh id on every update forces it to re-read.
-    filter.id = `${base}-v${++version}`;
+    if (needsFilterRefresh || !filter.id) filter.id = `${base}-v${++version}`;
     const ref = `url(#${filter.id})`;
     if (useBackdropURL) target.style.backdropFilter = ref;
     else target.style.filter = ref;
@@ -507,7 +566,6 @@ export function createGlass(target, options = {}) {
     update(next = {}) {
       const changes = pick(next);
       const hidden = next.hidden === undefined ? flags.hidden : !!next.hidden;
-      // Skip no-op updates: every flush re-issues the filter id, which repaints the glass.
       if (hidden === flags.hidden && Object.keys(changes).every((k) => changes[k] === p[k])) return;
       Object.assign(p, changes);
       flags.hidden = hidden;

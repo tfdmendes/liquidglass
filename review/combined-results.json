@@ -1,0 +1,1202 @@
+{
+  "date": "2026-10-26T15:29:13.110Z",
+  "base": "068ad226f53e1ca62d857f78bdc32f58f3c5fce7",
+  "head": "21f0845f8a4894b11b7d8e40ed37b796f95bddda",
+  "sha256": {
+    "original": {
+      "liquid-glass.js": "92a62e5b80cfa7e03912b13bdc53aff1c0ae367a5f296de1327e0f62f0579210",
+      "components.js": "968d5372ad45bf4b2e70afe42144c23ed60f97d4d365f8df14be3ec86ab195ff",
+      "glass-webgl.js": "0cdc8def96c2c67facafe029ca1a564da0df270fb089d7f30c6defe4606b0fce"
+    },
+    "candidate": {
+      "liquid-glass.js": "18061e61f24102bf8b1c336689ec78bc8eccc2bbd8621da305eeb48e1e61e40f",
+      "components.js": "56ccca6f02d5f57a1129e9c977ac06699cbdb30b7cd1f92f632fd95406117545",
+      "glass-webgl.js": "17c5d8123aee314ebc87de1fee2c469b7177d0603f7f5e2d89185e6cee09eb6b"
+    }
+  },
+  "reviewPageSha256": "c5ef0c7023abfe96184c6d7b33e3893348b88ee7129a7663af102450f3871f47",
+  "coreComponents": [
+    {
+      "engine": "chromium",
+      "browser": "156.0.8078.48",
+      "assertions": 1486,
+      "cases": [
+        {
+          "width": 1280,
+          "height": 800,
+          "dpr": 1,
+          "motion": "no-preference",
+          "checks": {
+            "loaded": {
+              "variant": "candidate",
+              "reducedMotion": false
+            },
+            "mapBytes": {
+              "maps": 4,
+              "changedBytes": 0,
+              "sha256": [
+                "d15b6133a89f7351426282af289bd6721a637bce7726452f463dddf6240be999",
+                "c8ad1081c131471339138d670e793614f710a4971091ea7230df8f7ee94ada16",
+                "b29b6a9df874f8ae2a0f2be78f9eeea683bfec61cd42ae4dff9bcce7ce4780b5",
+                "4606e69820bc7f37c2936e8b48c0e5f31602a6cb0ffba86436003511783ff66e"
+              ]
+            },
+            "cacheAndFilter": {
+              "reuse": {
+                "encodes": 1,
+                "decodes": 1,
+                "retryTimers": 0
+              },
+              "hidden": true,
+              "stableId": true,
+              "filterApplied": true,
+              "retryTimers": 0
+            },
+            "decodeOrdering": {
+              "firstUnfiltered": true,
+              "sharedPending": true,
+              "preserved": true,
+              "destroyed": true,
+              "gates": 3
+            },
+            "pointerMotion": [
+              {
+                "samples": 44,
+                "intermediate": true,
+                "stableId": false,
+                "encodes": 42,
+                "decodes": 42,
+                "retryTimers": 86
+              },
+              {
+                "samples": 45,
+                "intermediate": true,
+                "stableId": true,
+                "encodes": 39,
+                "decodes": 39,
+                "retryTimers": 0
+              }
+            ],
+            "scroll": [
+              {
+                "counts": {
+                  "enabled": false,
+                  "updates": 196,
+                  "aligns": 191,
+                  "offsets": 392,
+                  "rects": 838,
+                  "reads": 1230
+                },
+                "unrelated": {
+                  "enabled": false,
+                  "updates": 39,
+                  "aligns": 38,
+                  "offsets": 78,
+                  "rects": 76,
+                  "reads": 154
+                },
+                "imageShift": 110,
+                "stableIds": false
+              },
+              {
+                "counts": {
+                  "enabled": false,
+                  "updates": 1,
+                  "aligns": 191,
+                  "offsets": 2,
+                  "rects": 677,
+                  "reads": 679
+                },
+                "unrelated": {
+                  "enabled": false,
+                  "updates": 0,
+                  "aligns": 0,
+                  "offsets": 0,
+                  "rects": 0,
+                  "reads": 0
+                },
+                "imageShift": 110,
+                "stableIds": true
+              }
+            ],
+            "rapidAndTeardown": {
+              "released": true,
+              "idle": {
+                "enabled": false,
+                "updates": 0,
+                "aligns": 0,
+                "offsets": 0,
+                "rects": 0,
+                "reads": 0
+              },
+              "remainingFilters": 0
+            }
+          },
+          "shots": [
+            {
+              "state": 0,
+              "originalCandidate": {
+                "pixels": 0,
+                "maxChannelDelta": 0,
+                "totalPixels": 1024000
+              }
+            },
+            {
+              "state": 0.5,
+              "originalCandidate": {
+                "pixels": 0,
+                "maxChannelDelta": 0,
+                "totalPixels": 1024000
+              }
+            },
+            {
+              "state": 1,
+              "originalCandidate": {
+                "pixels": 0,
+                "maxChannelDelta": 0,
+                "totalPixels": 1024000
+              }
+            }
+          ],
+          "pageErrors": [],
+          "passed": true,
+          "assertions": 487
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "dpr": 2,
+          "motion": "no-preference",
+          "checks": {
+            "loaded": {
+              "variant": "candidate",
+              "reducedMotion": false
+            },
+            "mapBytes": {
+              "maps": 4,
+              "changedBytes": 0,
+              "sha256": [
+                "d15b6133a89f7351426282af289bd6721a637bce7726452f463dddf6240be999",
+                "c8ad1081c131471339138d670e793614f710a4971091ea7230df8f7ee94ada16",
+                "b29b6a9df874f8ae2a0f2be78f9eeea683bfec61cd42ae4dff9bcce7ce4780b5",
+                "4606e69820bc7f37c2936e8b48c0e5f31602a6cb0ffba86436003511783ff66e"
+              ]
+            },
+            "cacheAndFilter": {
+              "reuse": {
+                "encodes": 1,
+                "decodes": 1,
+                "retryTimers": 0
+              },
+              "hidden": true,
+              "stableId": true,
+              "filterApplied": true,
+              "retryTimers": 0
+            },
+            "decodeOrdering": {
+              "firstUnfiltered": true,
+              "sharedPending": true,
+              "preserved": true,
+              "destroyed": true,
+              "gates": 3
+            },
+            "pointerMotion": [
+              {
+                "samples": 43,
+                "intermediate": true,
+                "stableId": false,
+                "encodes": 41,
+                "decodes": 41,
+                "retryTimers": 84
+              },
+              {
+                "samples": 45,
+                "intermediate": true,
+                "stableId": true,
+                "encodes": 43,
+                "decodes": 43,
+                "retryTimers": 0
+              }
+            ],
+            "scroll": [
+              {
+                "counts": {
+                  "enabled": false,
+                  "updates": 196,
+                  "aligns": 191,
+                  "offsets": 392,
+                  "rects": 838,
+                  "reads": 1230
+                },
+                "unrelated": {
+                  "enabled": false,
+                  "updates": 39,
+                  "aligns": 38,
+                  "offsets": 78,
+                  "rects": 76,
+                  "reads": 154
+                },
+                "imageShift": 110,
+                "stableIds": false
+              },
+              {
+                "counts": {
+                  "enabled": false,
+                  "updates": 1,
+                  "aligns": 191,
+                  "offsets": 2,
+                  "rects": 678,
+                  "reads": 680
+                },
+                "unrelated": {
+                  "enabled": false,
+                  "updates": 0,
+                  "aligns": 0,
+                  "offsets": 0,
+                  "rects": 0,
+                  "reads": 0
+                },
+                "imageShift": 110,
+                "stableIds": true
+              }
+            ],
+            "rapidAndTeardown": {
+              "released": true,
+              "idle": {
+                "enabled": false,
+                "updates": 0,
+                "aligns": 0,
+                "offsets": 0,
+                "rects": 0,
+                "reads": 0
+              },
+              "remainingFilters": 0
+            }
+          },
+          "shots": [
+            {
+              "state": 0,
+              "originalCandidate": {
+                "pixels": 179,
+                "maxChannelDelta": 165,
+                "totalPixels": 1316640
+              },
+              "originalRepeat": {
+                "pixels": 179,
+                "maxChannelDelta": 165,
+                "totalPixels": 1316640
+              },
+              "candidateRepeat": {
+                "pixels": 203,
+                "maxChannelDelta": 165,
+                "totalPixels": 1316640
+              }
+            },
+            {
+              "state": 0.5,
+              "originalCandidate": {
+                "pixels": 317,
+                "maxChannelDelta": 165,
+                "totalPixels": 1316640
+              },
+              "originalRepeat": {
+                "pixels": 353,
+                "maxChannelDelta": 1,
+                "totalPixels": 1316640
+              },
+              "candidateRepeat": {
+                "pixels": 568,
+                "maxChannelDelta": 165,
+                "totalPixels": 1316640
+              }
+            },
+            {
+              "state": 1,
+              "originalCandidate": {
+                "pixels": 96,
+                "maxChannelDelta": 165,
+                "totalPixels": 1316640
+              },
+              "originalRepeat": {
+                "pixels": 383,
+                "maxChannelDelta": 1,
+                "totalPixels": 1316640
+              },
+              "candidateRepeat": {
+                "pixels": 302,
+                "maxChannelDelta": 165,
+                "totalPixels": 1316640
+              }
+            }
+          ],
+          "pageErrors": [],
+          "passed": true,
+          "assertions": 503
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "dpr": 2,
+          "motion": "reduce",
+          "checks": {
+            "loaded": {
+              "variant": "candidate",
+              "reducedMotion": true
+            },
+            "mapBytes": {
+              "maps": 4,
+              "changedBytes": 0,
+              "sha256": [
+                "d15b6133a89f7351426282af289bd6721a637bce7726452f463dddf6240be999",
+                "c8ad1081c131471339138d670e793614f710a4971091ea7230df8f7ee94ada16",
+                "b29b6a9df874f8ae2a0f2be78f9eeea683bfec61cd42ae4dff9bcce7ce4780b5",
+                "4606e69820bc7f37c2936e8b48c0e5f31602a6cb0ffba86436003511783ff66e"
+              ]
+            },
+            "cacheAndFilter": {
+              "reuse": {
+                "encodes": 1,
+                "decodes": 1,
+                "retryTimers": 0
+              },
+              "hidden": true,
+              "stableId": true,
+              "filterApplied": true,
+              "retryTimers": 0
+            },
+            "decodeOrdering": {
+              "firstUnfiltered": true,
+              "sharedPending": true,
+              "preserved": true,
+              "destroyed": true,
+              "gates": 3
+            },
+            "pointerMotion": [
+              {
+                "samples": 2,
+                "intermediate": false,
+                "stableId": false,
+                "encodes": 0,
+                "decodes": 0,
+                "retryTimers": 0
+              },
+              {
+                "samples": 2,
+                "intermediate": false,
+                "stableId": true,
+                "encodes": 1,
+                "decodes": 1,
+                "retryTimers": 0
+              }
+            ],
+            "scroll": [
+              {
+                "counts": {
+                  "enabled": false,
+                  "updates": 196,
+                  "aligns": 191,
+                  "offsets": 392,
+                  "rects": 838,
+                  "reads": 1230
+                },
+                "unrelated": {
+                  "enabled": false,
+                  "updates": 39,
+                  "aligns": 38,
+                  "offsets": 78,
+                  "rects": 76,
+                  "reads": 154
+                },
+                "imageShift": 110,
+                "stableIds": false
+              },
+              {
+                "counts": {
+                  "enabled": false,
+                  "updates": 1,
+                  "aligns": 191,
+                  "offsets": 2,
+                  "rects": 678,
+                  "reads": 680
+                },
+                "unrelated": {
+                  "enabled": false,
+                  "updates": 0,
+                  "aligns": 0,
+                  "offsets": 0,
+                  "rects": 0,
+                  "reads": 0
+                },
+                "imageShift": 110,
+                "stableIds": true
+              }
+            ],
+            "rapidAndTeardown": {
+              "released": true,
+              "idle": {
+                "enabled": false,
+                "updates": 0,
+                "aligns": 0,
+                "offsets": 0,
+                "rects": 0,
+                "reads": 0
+              },
+              "remainingFilters": 0
+            }
+          },
+          "shots": [
+            {
+              "state": 0,
+              "originalCandidate": {
+                "pixels": 203,
+                "maxChannelDelta": 165,
+                "totalPixels": 1316640
+              }
+            },
+            {
+              "state": 0.5,
+              "originalCandidate": {
+                "pixels": 447,
+                "maxChannelDelta": 1,
+                "totalPixels": 1316640
+              }
+            },
+            {
+              "state": 1,
+              "originalCandidate": {
+                "pixels": 302,
+                "maxChannelDelta": 165,
+                "totalPixels": 1316640
+              }
+            }
+          ],
+          "pageErrors": [],
+          "passed": true,
+          "assertions": 495
+        }
+      ]
+    },
+    {
+      "engine": "firefox",
+      "browser": "157.0",
+      "assertions": 1495,
+      "cases": [
+        {
+          "width": 1280,
+          "height": 800,
+          "dpr": 1,
+          "motion": "no-preference",
+          "checks": {
+            "loaded": {
+              "variant": "candidate",
+              "reducedMotion": false
+            },
+            "mapBytes": {
+              "maps": 4,
+              "changedBytes": 0,
+              "sha256": [
+                "7121b150d9ce877307dba41a6f7db2487e6e2eb4b413f71020565ebc2f7aad8f",
+                "6bbfa7c8aa997ec654f4a9fe2b33b2229d74b54a5e4beb9a89a4645deeb4ba4e",
+                "f0d63425d1a3dec8b5456a6ae8ae0a950e5b7874ecebbb53addae746c3aa939a",
+                "7baf7d9003a2366c2175e51e408aec72727ff92276fc73dda2c3c1588f2666b4"
+              ]
+            },
+            "cacheAndFilter": {
+              "reuse": {
+                "encodes": 1,
+                "decodes": 1,
+                "retryTimers": 0
+              },
+              "hidden": true,
+              "stableId": true,
+              "filterApplied": true,
+              "retryTimers": 0
+            },
+            "decodeOrdering": {
+              "firstUnfiltered": true,
+              "sharedPending": true,
+              "preserved": true,
+              "destroyed": true,
+              "gates": 3
+            },
+            "pointerMotion": [
+              {
+                "samples": 45,
+                "intermediate": true,
+                "stableId": false,
+                "encodes": 44,
+                "decodes": 44,
+                "retryTimers": 90
+              },
+              {
+                "samples": 44,
+                "intermediate": true,
+                "stableId": true,
+                "encodes": 42,
+                "decodes": 42,
+                "retryTimers": 0
+              }
+            ],
+            "scroll": [
+              {
+                "counts": {
+                  "enabled": false,
+                  "updates": 195,
+                  "aligns": 190,
+                  "offsets": 390,
+                  "rects": 836,
+                  "reads": 1226
+                },
+                "unrelated": {
+                  "enabled": false,
+                  "updates": 39,
+                  "aligns": 38,
+                  "offsets": 78,
+                  "rects": 76,
+                  "reads": 154
+                },
+                "imageShift": 110,
+                "stableIds": false
+              },
+              {
+                "counts": {
+                  "enabled": false,
+                  "updates": 1,
+                  "aligns": 191,
+                  "offsets": 2,
+                  "rects": 677,
+                  "reads": 679
+                },
+                "unrelated": {
+                  "enabled": false,
+                  "updates": 0,
+                  "aligns": 0,
+                  "offsets": 0,
+                  "rects": 0,
+                  "reads": 0
+                },
+                "imageShift": 110,
+                "stableIds": true
+              }
+            ],
+            "rapidAndTeardown": {
+              "released": true,
+              "idle": {
+                "enabled": false,
+                "updates": 0,
+                "aligns": 0,
+                "offsets": 0,
+                "rects": 0,
+                "reads": 0
+              },
+              "remainingFilters": 0
+            }
+          },
+          "shots": [
+            {
+              "state": 0,
+              "originalCandidate": {
+                "pixels": 0,
+                "maxChannelDelta": 0,
+                "totalPixels": 1024000
+              }
+            },
+            {
+              "state": 0.5,
+              "originalCandidate": {
+                "pixels": 0,
+                "maxChannelDelta": 0,
+                "totalPixels": 1024000
+              }
+            },
+            {
+              "state": 1,
+              "originalCandidate": {
+                "pixels": 0,
+                "maxChannelDelta": 0,
+                "totalPixels": 1024000
+              }
+            }
+          ],
+          "pageErrors": [],
+          "passed": true,
+          "assertions": 490
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "dpr": 2,
+          "motion": "no-preference",
+          "checks": {
+            "loaded": {
+              "variant": "candidate",
+              "reducedMotion": false
+            },
+            "mapBytes": {
+              "maps": 4,
+              "changedBytes": 0,
+              "sha256": [
+                "7121b150d9ce877307dba41a6f7db2487e6e2eb4b413f71020565ebc2f7aad8f",
+                "6bbfa7c8aa997ec654f4a9fe2b33b2229d74b54a5e4beb9a89a4645deeb4ba4e",
+                "f0d63425d1a3dec8b5456a6ae8ae0a950e5b7874ecebbb53addae746c3aa939a",
+                "7baf7d9003a2366c2175e51e408aec72727ff92276fc73dda2c3c1588f2666b4"
+              ]
+            },
+            "cacheAndFilter": {
+              "reuse": {
+                "encodes": 1,
+                "decodes": 1,
+                "retryTimers": 0
+              },
+              "hidden": true,
+              "stableId": true,
+              "filterApplied": true,
+              "retryTimers": 0
+            },
+            "decodeOrdering": {
+              "firstUnfiltered": true,
+              "sharedPending": true,
+              "preserved": true,
+              "destroyed": true,
+              "gates": 3
+            },
+            "pointerMotion": [
+              {
+                "samples": 44,
+                "intermediate": true,
+                "stableId": false,
+                "encodes": 44,
+                "decodes": 44,
+                "retryTimers": 88
+              },
+              {
+                "samples": 44,
+                "intermediate": true,
+                "stableId": true,
+                "encodes": 42,
+                "decodes": 42,
+                "retryTimers": 0
+              }
+            ],
+            "scroll": [
+              {
+                "counts": {
+                  "enabled": false,
+                  "updates": 195,
+                  "aligns": 190,
+                  "offsets": 390,
+                  "rects": 836,
+                  "reads": 1226
+                },
+                "unrelated": {
+                  "enabled": false,
+                  "updates": 39,
+                  "aligns": 38,
+                  "offsets": 78,
+                  "rects": 76,
+                  "reads": 154
+                },
+                "imageShift": 110,
+                "stableIds": false
+              },
+              {
+                "counts": {
+                  "enabled": false,
+                  "updates": 0,
+                  "aligns": 190,
+                  "offsets": 0,
+                  "rects": 676,
+                  "reads": 676
+                },
+                "unrelated": {
+                  "enabled": false,
+                  "updates": 0,
+                  "aligns": 0,
+                  "offsets": 0,
+                  "rects": 0,
+                  "reads": 0
+                },
+                "imageShift": 110,
+                "stableIds": true
+              }
+            ],
+            "rapidAndTeardown": {
+              "released": true,
+              "idle": {
+                "enabled": false,
+                "updates": 0,
+                "aligns": 0,
+                "offsets": 0,
+                "rects": 0,
+                "reads": 0
+              },
+              "remainingFilters": 0
+            }
+          },
+          "shots": [
+            {
+              "state": 0,
+              "originalCandidate": {
+                "pixels": 0,
+                "maxChannelDelta": 0,
+                "totalPixels": 1316640
+              },
+              "originalRepeat": {
+                "pixels": 0,
+                "maxChannelDelta": 0,
+                "totalPixels": 1316640
+              },
+              "candidateRepeat": {
+                "pixels": 0,
+                "maxChannelDelta": 0,
+                "totalPixels": 1316640
+              }
+            },
+            {
+              "state": 0.5,
+              "originalCandidate": {
+                "pixels": 0,
+                "maxChannelDelta": 0,
+                "totalPixels": 1316640
+              },
+              "originalRepeat": {
+                "pixels": 0,
+                "maxChannelDelta": 0,
+                "totalPixels": 1316640
+              },
+              "candidateRepeat": {
+                "pixels": 0,
+                "maxChannelDelta": 0,
+                "totalPixels": 1316640
+              }
+            },
+            {
+              "state": 1,
+              "originalCandidate": {
+                "pixels": 0,
+                "maxChannelDelta": 0,
+                "totalPixels": 1316640
+              },
+              "originalRepeat": {
+                "pixels": 0,
+                "maxChannelDelta": 0,
+                "totalPixels": 1316640
+              },
+              "candidateRepeat": {
+                "pixels": 0,
+                "maxChannelDelta": 0,
+                "totalPixels": 1316640
+              }
+            }
+          ],
+          "pageErrors": [],
+          "passed": true,
+          "assertions": 506
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "dpr": 2,
+          "motion": "reduce",
+          "checks": {
+            "loaded": {
+              "variant": "candidate",
+              "reducedMotion": true
+            },
+            "mapBytes": {
+              "maps": 4,
+              "changedBytes": 0,
+              "sha256": [
+                "7121b150d9ce877307dba41a6f7db2487e6e2eb4b413f71020565ebc2f7aad8f",
+                "6bbfa7c8aa997ec654f4a9fe2b33b2229d74b54a5e4beb9a89a4645deeb4ba4e",
+                "f0d63425d1a3dec8b5456a6ae8ae0a950e5b7874ecebbb53addae746c3aa939a",
+                "7baf7d9003a2366c2175e51e408aec72727ff92276fc73dda2c3c1588f2666b4"
+              ]
+            },
+            "cacheAndFilter": {
+              "reuse": {
+                "encodes": 1,
+                "decodes": 1,
+                "retryTimers": 0
+              },
+              "hidden": true,
+              "stableId": true,
+              "filterApplied": true,
+              "retryTimers": 0
+            },
+            "decodeOrdering": {
+              "firstUnfiltered": true,
+              "sharedPending": true,
+              "preserved": true,
+              "destroyed": true,
+              "gates": 3
+            },
+            "pointerMotion": [
+              {
+                "samples": 2,
+                "intermediate": false,
+                "stableId": false,
+                "encodes": 0,
+                "decodes": 0,
+                "retryTimers": 0
+              },
+              {
+                "samples": 2,
+                "intermediate": false,
+                "stableId": true,
+                "encodes": 0,
+                "decodes": 0,
+                "retryTimers": 0
+              }
+            ],
+            "scroll": [
+              {
+                "counts": {
+                  "enabled": false,
+                  "updates": 195,
+                  "aligns": 190,
+                  "offsets": 390,
+                  "rects": 836,
+                  "reads": 1226
+                },
+                "unrelated": {
+                  "enabled": false,
+                  "updates": 39,
+                  "aligns": 38,
+                  "offsets": 78,
+                  "rects": 76,
+                  "reads": 154
+                },
+                "imageShift": 110,
+                "stableIds": false
+              },
+              {
+                "counts": {
+                  "enabled": false,
+                  "updates": 0,
+                  "aligns": 190,
+                  "offsets": 0,
+                  "rects": 676,
+                  "reads": 676
+                },
+                "unrelated": {
+                  "enabled": false,
+                  "updates": 0,
+                  "aligns": 0,
+                  "offsets": 0,
+                  "rects": 0,
+                  "reads": 0
+                },
+                "imageShift": 110,
+                "stableIds": true
+              }
+            ],
+            "rapidAndTeardown": {
+              "released": true,
+              "idle": {
+                "enabled": false,
+                "updates": 0,
+                "aligns": 0,
+                "offsets": 0,
+                "rects": 0,
+                "reads": 0
+              },
+              "remainingFilters": 0
+            }
+          },
+          "shots": [
+            {
+              "state": 0,
+              "originalCandidate": {
+                "pixels": 0,
+                "maxChannelDelta": 0,
+                "totalPixels": 1316640
+              }
+            },
+            {
+              "state": 0.5,
+              "originalCandidate": {
+                "pixels": 0,
+                "maxChannelDelta": 0,
+                "totalPixels": 1316640
+              }
+            },
+            {
+              "state": 1,
+              "originalCandidate": {
+                "pixels": 0,
+                "maxChannelDelta": 0,
+                "totalPixels": 1316640
+              }
+            }
+          ],
+          "pageErrors": [],
+          "passed": true,
+          "assertions": 498
+        }
+      ]
+    }
+  ],
+  "chromeOutliers": [
+    {
+      "motion": "no-preference",
+      "state": 0,
+      "cross": {
+        "width": 780,
+        "height": 1688,
+        "pixels": 179,
+        "greaterThanOnePixels": 1,
+        "maxChannelDelta": 165,
+        "highDeltaCoordinates": [
+          {
+            "x": 568,
+            "y": 1158,
+            "delta": 165
+          }
+        ]
+      },
+      "originalRepeat": {
+        "width": 780,
+        "height": 1688,
+        "pixels": 179,
+        "greaterThanOnePixels": 1,
+        "maxChannelDelta": 165,
+        "highDeltaCoordinates": [
+          {
+            "x": 568,
+            "y": 1158,
+            "delta": 165
+          }
+        ]
+      },
+      "candidateRepeat": {
+        "width": 780,
+        "height": 1688,
+        "pixels": 203,
+        "greaterThanOnePixels": 1,
+        "maxChannelDelta": 165,
+        "highDeltaCoordinates": [
+          {
+            "x": 568,
+            "y": 1158,
+            "delta": 165
+          }
+        ]
+      }
+    },
+    {
+      "motion": "no-preference",
+      "state": 0.5,
+      "cross": {
+        "width": 780,
+        "height": 1688,
+        "pixels": 317,
+        "greaterThanOnePixels": 1,
+        "maxChannelDelta": 165,
+        "highDeltaCoordinates": [
+          {
+            "x": 568,
+            "y": 1158,
+            "delta": 165
+          }
+        ]
+      },
+      "originalRepeat": {
+        "width": 780,
+        "height": 1688,
+        "pixels": 353,
+        "greaterThanOnePixels": 0,
+        "maxChannelDelta": 1,
+        "highDeltaCoordinates": []
+      },
+      "candidateRepeat": {
+        "width": 780,
+        "height": 1688,
+        "pixels": 568,
+        "greaterThanOnePixels": 1,
+        "maxChannelDelta": 165,
+        "highDeltaCoordinates": [
+          {
+            "x": 568,
+            "y": 1158,
+            "delta": 165
+          }
+        ]
+      }
+    },
+    {
+      "motion": "no-preference",
+      "state": 1,
+      "cross": {
+        "width": 780,
+        "height": 1688,
+        "pixels": 96,
+        "greaterThanOnePixels": 1,
+        "maxChannelDelta": 165,
+        "highDeltaCoordinates": [
+          {
+            "x": 568,
+            "y": 1158,
+            "delta": 165
+          }
+        ]
+      },
+      "originalRepeat": {
+        "width": 780,
+        "height": 1688,
+        "pixels": 383,
+        "greaterThanOnePixels": 0,
+        "maxChannelDelta": 1,
+        "highDeltaCoordinates": []
+      },
+      "candidateRepeat": {
+        "width": 780,
+        "height": 1688,
+        "pixels": 302,
+        "greaterThanOnePixels": 1,
+        "maxChannelDelta": 165,
+        "highDeltaCoordinates": [
+          {
+            "x": 568,
+            "y": 1158,
+            "delta": 165
+          }
+        ]
+      }
+    },
+    {
+      "motion": "reduce",
+      "state": 0,
+      "cross": {
+        "width": 780,
+        "height": 1688,
+        "pixels": 203,
+        "greaterThanOnePixels": 1,
+        "maxChannelDelta": 165,
+        "highDeltaCoordinates": [
+          {
+            "x": 568,
+            "y": 1158,
+            "delta": 165
+          }
+        ]
+      }
+    },
+    {
+      "motion": "reduce",
+      "state": 0.5,
+      "cross": {
+        "width": 780,
+        "height": 1688,
+        "pixels": 447,
+        "greaterThanOnePixels": 0,
+        "maxChannelDelta": 1,
+        "highDeltaCoordinates": []
+      }
+    },
+    {
+      "motion": "reduce",
+      "state": 1,
+      "cross": {
+        "width": 780,
+        "height": 1688,
+        "pixels": 302,
+        "greaterThanOnePixels": 1,
+        "maxChannelDelta": 165,
+        "highDeltaCoordinates": [
+          {
+            "x": 568,
+            "y": 1158,
+            "delta": 165
+          }
+        ]
+      }
+    }
+  ],
+  "nativeWebKit": {
+    "cases": [
+      {
+        "passed": true,
+        "ready": true,
+        "variant": "original",
+        "engine": "webkit",
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)",
+        "width": 390,
+        "height": 844,
+        "dpr": 2,
+        "reducedMotion": false,
+        "refreshRetained": true,
+        "imageShift": 110,
+        "scroll": {
+          "enabled": false,
+          "updates": 30,
+          "aligns": 27,
+          "offsets": 60,
+          "rects": 126,
+          "reads": 186
+        },
+        "finalState": 0.5
+      },
+      {
+        "passed": true,
+        "ready": true,
+        "variant": "candidate",
+        "engine": "webkit",
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)",
+        "width": 390,
+        "height": 844,
+        "dpr": 2,
+        "reducedMotion": false,
+        "refreshRetained": true,
+        "imageShift": 110,
+        "scroll": {
+          "enabled": false,
+          "updates": 0,
+          "aligns": 27,
+          "offsets": 0,
+          "rects": 116,
+          "reads": 116
+        },
+        "finalState": 0.5
+      }
+    ],
+    "captureDifference": {
+      "width": 780,
+      "height": 1688,
+      "pixels": 0,
+      "greaterThanOnePixels": 0,
+      "maxChannelDelta": 0,
+      "highDeltaCoordinates": []
+    },
+    "limitation": "Two top-level 390×844 WKWebView captures with three extra sparse surfaces; native pointer events were dispatched in JavaScript"
+  },
+  "parentWebGL": {
+    "date": "2026-10-26T15:19:46.935Z",
+    "base": "068ad226f53e1ca62d857f78bdc32f58f3c5fce7",
+    "cases": [
+      {
+        "name": "chromium-1280-1-no-preference",
+        "browser": "156.0.8078.48",
+        "assertions": 164,
+        "pixelSamples": 41,
+        "exactSamples": 41
+      },
+      {
+        "name": "firefox-1280-1-no-preference",
+        "browser": "157.0",
+        "assertions": 163,
+        "pixelSamples": 41,
+        "exactSamples": 41
+      }
+    ]
+  },
+  "limits": [
+    "This suite covers core/component composition; separate runs cover the current core and WebGL renderer",
+    "DOM captures report raw differences; Chrome is not claimed to be pixel-identical",
+    "Viewport emulation is not a physical iPhone; no real background-tab suspension was tested",
+    "Operation counts are not CPU benchmarks",
+    "The isolated Firefox launcher used the standard Firefox 157 user agent and production Gecko detection; stock Firefox was not tested",
+    "The WebKit checks use macOS WKWebView at native DPR 2, not Safari or a physical phone",
+    "Earlier isolated CPU measurements are not combined benchmarks"
+  ]
+}
