@@ -1,27 +1,59 @@
 #!/usr/bin/env python3
 """
-Render the retained performance measurements with Python's standard library
+Plot the retained performance measurements with Matplotlib
 """
 
 import argparse
 import hashlib
+from io import StringIO
 import json
 import math
 from pathlib import Path
+import re
 from statistics import median
 from xml.etree import ElementTree
 from html import escape
 
+try:
+    import matplotlib
+except ModuleNotFoundError as error:
+    raise SystemExit("Install docs/performance/requirements.txt in your plotting environment") from error
+
+matplotlib.use("Agg")
+from matplotlib import pyplot as plt
+from matplotlib.lines import Line2D
+from matplotlib.patches import Patch
+from matplotlib.ticker import FuncFormatter
+
 
 ROOT = Path(__file__).resolve().parent
-STYLE = "\n".join((
-    "svg{--lg-paper:#fbfaf7;--lg-ink:#21313a;--lg-muted:#52616a;--lg-old:#687b87;--lg-new:#087d6a;--lg-rule:#dce1df;color-scheme:light dark}",
-    "@media(prefers-color-scheme:dark){svg{--lg-paper:#142027;--lg-ink:#edf1ec;--lg-muted:#b5c1c5;--lg-old:#a2b2bd;--lg-new:#72d6be;--lg-rule:#35464e}}",
-    "text{font-family:Arial,Helvetica,sans-serif;font-size:22px;fill:var(--lg-ink);font-variant-numeric:tabular-nums}",
-    ".paper{fill:var(--lg-paper)}.muted{fill:var(--lg-muted)}.old{fill:var(--lg-old)}.new{fill:var(--lg-new)}",
-    ".old-line{stroke:var(--lg-old);fill:none}.new-line{stroke:var(--lg-new);fill:none}.rule{stroke:var(--lg-rule);fill:none}",
-    ".title{font-size:32px;font-weight:700}.label{font-size:24px;font-weight:700}.value{font-size:26px;font-weight:700}",
-))
+COLORS = {
+    "paper": ("#ffffff", "#111b27"),
+    "ink": ("#243247", "#edf2f8"),
+    "muted": ("#5d6e83", "#aabbd0"),
+    "grid": ("#e0e6ee", "#304052"),
+    "axis": ("#a6b3c3", "#70859d"),
+    "original": ("#1171be", "#79bcf5"),
+    "candidate": ("#dd5400", "#ffa56b"),
+}
+PAPER, INK, MUTED, GRID, AXIS, ORIGINAL, CANDIDATE = (values[0] for values in COLORS.values())
+STYLE = {
+    "font.family": ["DejaVu Sans", "Arial", "Helvetica", "sans-serif"],
+    "font.size": 16,
+    "axes.labelsize": 16,
+    "axes.labelcolor": MUTED,
+    "axes.edgecolor": AXIS,
+    "axes.linewidth": 0.8,
+    "axes.facecolor": PAPER,
+    "figure.facecolor": PAPER,
+    "text.color": INK,
+    "xtick.color": MUTED,
+    "ytick.color": INK,
+    "xtick.labelsize": 15,
+    "ytick.labelsize": 17,
+    "svg.fonttype": "none",
+    "svg.hashsalt": "liquidglass-performance",
+}
 
 
 def pointer(value, path):
@@ -40,64 +72,74 @@ def resolve(data, reference):
     raise ValueError(f"No retained excerpt for {reference}")
 
 
-def text(x, y, value, css="", anchor="start", size=None):
-    extra = f' style="font-size:{size}px"' if size else ""
-    return f'<text x="{x}" y="{y}" class="{css}" text-anchor="{anchor}"{extra}>{escape(str(value))}</text>'
+def render_svg(figure, title, description, evidence_hash):
+    output = StringIO()
+    figure.savefig(output, format="svg", metadata={
+        "Date": None,
+        "Creator": f"Liquid Glass performance figures / Matplotlib {matplotlib.__version__}",
+    })
+    plt.close(figure)
+    rendered = output.getvalue()
+    # Let the exported SVG follow the reader's light or dark theme
+    for name, (light, _) in COLORS.items():
+        rendered = rendered.replace(light, f"var(--plot-{name})")
+    light = ";".join(f"--plot-{key}:{value[0]}" for key, value in COLORS.items())
+    dark = ";".join(f"--plot-{key}:{value[1]}" for key, value in COLORS.items())
+    header = (
+        f'<title id="chart-title">{escape(title)}</title>\n'
+        f'<desc id="chart-description">{escape(description)} Source: evidence.json; SHA-256: {evidence_hash}</desc>\n'
+        f'<style>:root{{{light};color-scheme:light dark}}'
+        f'@media(prefers-color-scheme:dark){{:root{{{dark}}}}}</style>'
+    )
+    rendered = re.sub(r"<svg\b[^>]*>", lambda match:
+        match[0][:-1] + ' role="img" aria-labelledby="chart-title chart-description">\n' + header,
+        rendered, count=1)
+    rendered = "\n".join(line.rstrip() for line in rendered.splitlines()) + "\n"
+    ElementTree.fromstring(rendered)
+    return rendered
 
 
-def line(x1, y1, x2, y2, css="rule", width=1):
-    return f'<line x1="{x1:g}" y1="{y1:g}" x2="{x2:g}" y2="{y2:g}" class="{css}" stroke-width="{width}"/>'
-
-
-def marker(x, y, css):
-    if css == "old":
-        return f'<circle cx="{x:g}" cy="{y:g}" r="6" class="old"/>'
-    return f'<rect x="{x - 6:g}" y="{y - 6:g}" width="12" height="12" class="new"/>'
-
-
-def svg(title, description, height, body, evidence_hash):
-    result = f'''<svg xmlns="http://www.w3.org/2000/svg" width="760" height="{height}" viewBox="0 0 760 {height}" role="img" aria-labelledby="title description">
-<title id="title">{escape(title)}</title>
-<desc id="description">{escape(description)}</desc>
-<metadata>Source: evidence.json; SHA-256: {evidence_hash}</metadata>
-<style>{STYLE}</style>
-<rect width="760" height="{height}" class="paper"/>
-{''.join(body)}
-</svg>
-'''
-    ElementTree.fromstring(result)
-    return result
+def style_axis(axis, ticks):
+    axis.set_axisbelow(True)
+    axis.grid(axis="x", color=GRID, linewidth=0.8)
+    axis.set_xticks(ticks)
+    axis.tick_params(axis="both", length=0, pad=9)
+    for side in ("top", "left", "right"):
+        axis.spines[side].set_visible(False)
 
 
 def operation_chart(data, evidence_hash):
-    title = "Measured operation counts"
-    body = [text(32, 48, title, "title"),
-            text(32, 82, "Original = 100% in each row · absolute counts at right", "muted")]
-    for x, css, label in ((32, "old", "Original"), (242, "new", "Individual change")):
-        body += [f'<rect x="{x}" y="112" width="28" height="12" class="{css}"/>', text(x + 42, 126, label)]
-    description = ["Each change was measured separately against upstream 068ad22. Bars show operation counts, not CPU savings. Each row has its own unit and original = 100% scale."]
-    for i, row in enumerate(data["operations"]):
+    figure = plt.figure(figsize=(7.2, 7.6))
+    figure.text(0.07, 0.945, "Rendering operations", fontsize=25, weight="bold")
+    figure.text(0.07, 0.899, "Four changes, measured separately", color=MUTED, fontsize=16)
+    figure.legend(handles=[Patch(color=ORIGINAL, label="Original"), Patch(color=CANDIDATE, label="Optimized")],
+                  loc="upper left", bbox_to_anchor=(0.055, 0.87), ncol=2,
+                  frameon=False, fontsize=16, handlelength=1.2, columnspacing=1.8)
+    axis = figure.add_axes((0.075, 0.16, 0.68, 0.59))
+    axis.set_xlim(0, 100)
+    axis.set_ylim(-0.7, 7.1)
+    axis.set_yticks([])
+    style_axis(axis, [0, 50, 100])
+    axis.xaxis.set_major_formatter(FuncFormatter(lambda value, _: f"{value:.0f}%"))
+    description = ["Each optimization was measured separately against upstream 068ad22. Each row has its own unit; its original count is normalized to 100%. Counts are not CPU savings."]
+    figure.text(0.92, 0.783, "Count", ha="right", color=MUTED, fontsize=14)
+    for index, row in enumerate(data["operations"]):
         original, candidate = (resolve(data, row[key]) for key in ("original", "candidate"))
         if not 0 <= candidate <= original or original == 0:
             raise ValueError("Operation chart requires nonnegative counts up to the original")
-        top = 176 + 118 * i
-        body += [text(32, top, row["label"], "label"), text(32, top + 28, row["detail"], "muted", size=21)]
-        for x in (32, 314, 596):
-            body.append(line(x, top + 43, x, top + 92))
-        for j, (value, css) in enumerate(((original, "old"), (candidate, "new"))):
-            y = top + 48 + 25 * j
-            width = 564 * value / original
-            if value:
-                body.append(f'<rect x="32" y="{y}" width="{width:.3f}" height="12" class="{css}"/>')
-            else:
-                body.append(f'<circle cx="32" cy="{y + 6}" r="5" class="paper new-line" stroke-width="2"/>')
-            body.append(text(728, y + 13, f"{value:,}", f"value {css}", "end"))
-        description.append(f'{row["label"]}: {original:,} original to {candidate:,} candidate {row["unit"]}. {row["detail"]}.')
-    body.append(line(32, 648, 596, 648))
-    for x, value in ((32, "0%"), (314, "50%"), (596, "100%")):
-        body += [line(x, 648, x, 654), text(x, 680, value, "muted", "middle" if x == 314 else "start" if x == 32 else "end")]
-    body.append(text(32, 718, "Independent changes vs 068ad22 · counts do not measure CPU", "muted", size=21))
-    return svg(title, " ".join(description), 744, body, evidence_hash)
+        y = 6 - 2 * index
+        axis.text(0, y + 0.62, row["label"], fontsize=17, weight="bold")
+        for value, offset, color in ((original, 0.18, ORIGINAL), (candidate, -0.18, CANDIDATE)):
+            axis.barh(y + offset, 100 * value / original, height=0.22, color=color, clip_on=False)
+            if value == 0:
+                axis.plot(0, y + offset, "o", color=color, markerfacecolor=PAPER,
+                          markersize=5, markeredgewidth=1.4, clip_on=False)
+            axis.text(1.24, y + offset, f"{value:,}", transform=axis.get_yaxis_transform(),
+                      ha="right", va="center", color=color, fontsize=17, weight="bold")
+        description.append(f'{row["label"]}: {original:,} original to {candidate:,} optimized {row["unit"]}. {row["detail"]}.')
+    figure.text(0.075, 0.075, "Original = 100% within each row", fontsize=15, color=MUTED)
+    figure.text(0.075, 0.028, "Upstream 068ad22 · operation counts, not CPU savings", fontsize=12.5, color=MUTED)
+    return render_svg(figure, "Rendering operation counts", " ".join(description), evidence_hash)
 
 
 def cpu_measurements(data):
@@ -123,44 +165,45 @@ def cpu_measurements(data):
 
 def cpu_chart(data, evidence_hash):
     rows = cpu_measurements(data)
-    title = "Map-cache CPU time vs 068ad22"
-    body = [text(32, 48, title, "title"),
-            text(32, 82, "Accelerated replay · 3 fresh-browser trials per variant", "muted")]
-    for x, css, label in ((40, "old", "Original"), (250, "new", "Map reuse")):
-        body += [marker(x, 118, css), text(x + 20, 126, label)]
-    description = ["Accumulated browser-process and descendant CPU time in milliseconds, not CPU utilization or real-time frame cost. Each engine uses the same 0 to 5,000 ms axis. Values are medians, whiskers span the minimum and maximum of three fresh-browser trials. Original is a circle; map reuse is a square. These are independent map-cache measurements, not a benchmark of all four changes together."]
-    body += [text(48, 170, "Chrome / Blink", "label"), text(416, 170, "Firefox / Gecko", "label")]
-    workloads = (("button", "Button · 12 cycles"), ("segmented", "Segmented control · 12 cycles"), ("mostly-unique", "Mostly unique · 1,200 map updates"))
-    for i, (workload, label) in enumerate(workloads):
-        y = 210 + 128 * i
-        body.append(text(32, y, label, "label"))
-        for engine, start in (("Blink", 48), ("Gecko", 416)):
+    figure = plt.figure(figsize=(7.2, 9.6))
+    figure.text(0.07, 0.952, "CPU time during map replay", fontsize=23, weight="bold")
+    figure.text(0.07, 0.913, "Accelerated replay · three trials per variant", fontsize=15, color=MUTED)
+    figure.legend(handles=[Line2D([], [], marker="o", color=ORIGINAL, linestyle="none", label="Original", markersize=7),
+                           Line2D([], [], marker="s", color=CANDIDATE, linestyle="none", label="Map reuse", markersize=7)],
+                  loc="upper left", bbox_to_anchor=(0.045, 0.89), ncol=2,
+                  frameon=False, fontsize=16, handletextpad=0.3, columnspacing=1.6)
+    description = ["Accumulated browser and descendant CPU time, not utilization or real-time frame cost. Both engines use a zero-based 0 to 5,000 ms axis. Circles and squares are medians; whiskers span the min and max of three trials. This measures only map-cache reuse, separately from the other optimizations."]
+    workloads = [("button", "Button"), ("segmented", "Segmented"), ("mostly-unique", "Mostly new")]
+    for engine, label, bottom in (("Blink", "Chrome / Blink", 0.54), ("Gecko", "Firefox / Gecko", 0.20)):
+        figure.text(0.07, bottom + 0.255, label, fontsize=19, weight="bold")
+        figure.text(0.94, bottom + 0.255, "Median (ms)", ha="right", fontsize=13, color=MUTED)
+        axis = figure.add_axes((0.29, bottom, 0.51, 0.22))
+        axis.set_xlim(0, 5000)
+        axis.set_ylim(-0.55, 2.55)
+        axis.set_yticks([2, 1, 0], [label for _, label in workloads])
+        style_axis(axis, [0, 2500, 5000])
+        axis.xaxis.set_major_formatter(FuncFormatter(lambda value, _: f"{value:,.0f}"))
+        for index, (workload, _) in enumerate(workloads):
             row = next(r for r in rows if r["engine"] == engine and r["workload"] == workload)
-            original, candidate = (row[key]["median"] for key in ("original", "candidate"))
-            body.append(f'<text x="{start}" y="{y + 36}" class="value"><tspan class="old">{original:,.0f}</tspan><tspan class="muted"> → </tspan><tspan class="new">{candidate:,.0f}</tspan><tspan class="muted" style="font-size:22px"> ms</tspan></text>')
-            for value in (0, 2500, 5000):
-                x = start + 300 * value / 5000
-                body.append(line(x, y + 46, x, y + 83))
-            for j, (variant, css) in enumerate((("original", "old"), ("candidate", "new"))):
-                center = y + 55 + 19 * j
-                lo, hi = (start + 300 * v / 5000 for v in row[variant]["range"])
-                middle = start + 300 * row[variant]["median"] / 5000
-                body += [line(lo, center, hi, center, css + "-line", 3),
-                         line(lo, center - 5, lo, center + 5, css + "-line", 2),
-                         line(hi, center - 5, hi, center + 5, css + "-line", 2), marker(middle, center, css)]
-            description.append(f'{row["browser"]}, {workload}: original median {original:,.0f}, range {row["original"]["range"][0]:,.0f}–{row["original"]["range"][1]:,.0f}; map reuse median {candidate:,.0f}, range {row["candidate"]["range"][0]:,.0f}–{row["candidate"]["range"][1]:,.0f} ms.')
-    for start in (48, 416):
-        body.append(line(start, 570, start + 300, 570))
-        for value, anchor in ((0, "start"), (2500, "middle"), (5000, "end")):
-            x = start + 300 * value / 5000
-            body += [line(x, 570, x, 576), text(x, 602, f"{value:,}", "muted", anchor)]
-    overhead = {r["engine"]: r["overhead"] for r in rows if r["workload"] == "mostly-unique"}
-    note = f'Mostly-unique CPU overhead: +{overhead["Blink"]:.1f}% Chrome · +{overhead["Gecko"]:.1f}% Gecko'
-    body += [text(32, 646, note, size=21),
-             text(32, 682, "Dots / squares: medians · whiskers: three-trial min–max", "muted", size=21),
-             text(32, 714, "Noisy ranges; no combined benchmark or significance claim", "muted", size=21)]
-    description.append(note + ". Ranges are noisy; no statistical significance is claimed.")
-    return svg(title, " ".join(description), 740, body, evidence_hash)
+            for variant, offset, marker, color in (("original", 0.19, "o", ORIGINAL), ("candidate", -0.19, "s", CANDIDATE)):
+                value = row[variant]["median"]
+                lo, hi = row[variant]["range"]
+                y = 2 - index + offset
+                axis.errorbar(value, y, xerr=[[value - lo], [hi - value]], fmt=marker,
+                              color=color, markersize=6.5, capsize=3.5, capthick=1.4, elinewidth=1.6)
+                axis.text(1.28, y, f"{value:,.0f}", transform=axis.get_yaxis_transform(),
+                          ha="right", va="center", color=color, fontsize=16, weight="bold")
+            description.append(f'{row["browser"]}, {workload}: ' + "; ".join(
+                f'{variant} median {row[variant]["median"]:,.0f}, range {row[variant]["range"][0]:,.0f}–{row[variant]["range"][1]:,.0f} ms'
+                for variant in ("original", "candidate")) + ".")
+    figure.text(0.55, 0.139, "Accumulated CPU time (ms)", ha="center", fontsize=16, color=MUTED)
+    figure.text(0.07, 0.086, "Markers: median · bars: min–max (3 trials)", fontsize=13, color=MUTED)
+    increases = {row["engine"]: row["overhead"] for row in rows if row["workload"] == "mostly-unique"}
+    note = f'New-map median: +{increases["Blink"]:.1f}% Chrome · +{increases["Gecko"]:.1f}% Firefox'
+    figure.text(0.07, 0.050, note, fontsize=13, color=MUTED)
+    figure.text(0.07, 0.020, "Ranges overlap; no statistical significance claim", fontsize=13, color=MUTED)
+    description.append("Button and segmented workloads used twelve cycles; the mostly-unique workload used 1,200 updates. " + note + ". Ranges overlap; no statistical significance is claimed.")
+    return render_svg(figure, "Map-cache CPU time", " ".join(description), evidence_hash)
 
 
 def verify_source(data, argument):
@@ -186,16 +229,17 @@ def main():
     for source in args.verify_source:
         verify_source(data, source)
     digest = hashlib.sha256(raw).hexdigest()
-    for name, chart in (("operation-counts.svg", operation_chart), ("cpu-time.svg", cpu_chart)):
-        rendered = chart(data, digest)
-        path = ROOT / name
-        if args.check:
-            if not path.exists() or path.read_text() != rendered:
-                raise SystemExit(f"Out of date: {name}; run generate.py")
-            print(f"Verified SVG: {name}")
-        else:
-            path.write_text(rendered)
-            print(f"Generated: {name}")
+    with matplotlib.rc_context(STYLE):
+        for name, chart in (("operation-counts.svg", operation_chart), ("cpu-time.svg", cpu_chart)):
+            rendered = chart(data, digest)
+            path = ROOT / name
+            if args.check:
+                if not path.exists() or path.read_text() != rendered:
+                    raise SystemExit(f"Out of date: {name}; run generate.py")
+                print(f"Verified SVG: {name}")
+            else:
+                path.write_text(rendered)
+                print(f"Generated: {name}")
 
 
 if __name__ == "__main__":

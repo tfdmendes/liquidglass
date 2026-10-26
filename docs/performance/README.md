@@ -55,22 +55,37 @@ the broader caveats below.
 | `scroll` | `surface-scroll-results.json` | Desktop/phone reads and phone repeat controls |
 | `webgl` | `webgl-demand-results.json` | The named idle ImageBitmap sample and its runtime |
 
-Run from the repository root with Python 3; no packages or browser are needed.
-The first command replaces only the two SVGs. The second checks their XML,
+The figures are rendered with Matplotlib 3.11.0, using blue and orange from
+[MATLAB's current gem palette](https://www.mathworks.com/help/matlab/ref/colororder.html).
+The layout uses light grid lines and two vertically stacked CPU panels, so each
+engine remains readable on narrow screens. MATLAB itself is not required.
+
+Run from the repository root with Python 3 and the pinned plotting dependency.
+The first two commands create a temporary Python environment and install
+Matplotlib and its dependencies there. `-m` runs the named Python module;
+`--requirement` reads the pinned package list. This does not install packages
+globally or add a runtime dependency to the glass library. Remove
+`/tmp/liquidglass-plots` to remove that environment.
+
+The third command replaces only the two SVGs. The fourth checks their XML,
 recomputes CPU medians/ranges from the retained samples, checks them against the
 review summary and compares the generated SVGs byte for byte without writing.
 Regeneration redraws existing evidence; it does not rerun the browser benchmarks.
 
 ```sh
-python3 docs/performance/generate.py
-python3 docs/performance/generate.py --check
+python3 -m venv /tmp/liquidglass-plots
+/tmp/liquidglass-plots/bin/python -m pip install --requirement docs/performance/requirements.txt
+/tmp/liquidglass-plots/bin/python docs/performance/generate.py
+/tmp/liquidglass-plots/bin/python docs/performance/generate.py --check
 ```
 
 When a complete original artifact is available, add
 `--verify-source ID=PATH` to check its SHA-256 and every retained JSON pointer.
 The source IDs are listed above; the path is supplied locally and is not saved.
 SVGs have accessible titles/descriptions, an opaque background and embedded
-light/dark colors. They contain no script, embedded font or external asset.
+light/dark colors. Text remains selectable, with sans-serif font fallbacks.
+They contain no script, embedded font or external asset. The pinned Matplotlib
+version, fixed SVG IDs and omitted timestamps keep regeneration deterministic.
 
 ## Visual evidence limits
 
@@ -94,6 +109,6 @@ intermediate frame or historical browser version. Real background-tab suspension
 was not established by the synthetic visibility and viewport checks.
 
 The generated figures passed XML and deterministic-output checks. Browser image
-renders were inspected at 760 px and 360 px in light and dark themes, with no
+renders were inspected at 760 px and 390 px in light and dark themes, with no
 horizontal overflow. This checks local SVG rendering; it is not a live GitHub
 or physical-phone test.

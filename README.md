@@ -44,7 +44,7 @@ The next chart shows accumulated browser CPU time during an accelerated animatio
 
 ![Measured browser CPU time, including sample ranges and the cost of new maps](docs/performance/cpu-time.svg)
 
-Repeated shapes benefited from the cache. When nearly every map was new, the comparison added about 1–1.5% to the median CPU time in these samples. These numbers describe the measured workloads, rather than a fixed reduction in CPU use for every page.
+Repeated shapes benefited from the cache. When nearly every map was new, median CPU time was about 1–1.5% higher in these samples. These numbers describe the measured workloads, rather than a fixed reduction in CPU use for every page.
 
 ## Run the demo and comparisons
 
