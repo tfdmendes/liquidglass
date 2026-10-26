@@ -33,7 +33,7 @@ for (const engine of option('engine', 'chromium,firefox').split(',')) {
       const errors = [];
       page.on('pageerror', (error) => errors.push(error.message));
       try {
-        await page.goto(pathToFileURL(resolve('review/webgl-demand.html')).href);
+        await page.goto(pathToFileURL(resolve(option('page', 'review/webgl-demand.html'))).href);
         await page.waitForFunction(() => window.reviewReady || window.reviewError, null, { timeout: 10000 });
         const result = await page.evaluate(async () => {
           if (window.reviewError) throw new Error(window.reviewError);

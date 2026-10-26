@@ -5,25 +5,13 @@ import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { fixture as renderFixture, runtime } from '../review/build-surface-scroll.mjs';
+import { comparePixels } from './helpers/compare-pixels.mjs';
 
 const playwright = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const modulePath = process.env.PLAYWRIGHT_MODULE || createRequire(import.meta.url).resolve('playwright');
 const { PNG } = await import(new URL('../playwright-core/lib/utilsBundle.js', pathToFileURL(modulePath)));
 function difference(a, b) {
-  const left = PNG.sync.read(a), right = PNG.sync.read(b);
-  assert.equal(left.width, right.width);
-  assert.equal(left.height, right.height);
-  let pixels = 0, maxChannelDelta = 0;
-  for (let i = 0; i < left.data.length; i += 4) {
-    let changed = false;
-    for (let c = 0; c < 4; c++) {
-      const delta = Math.abs(left.data[i + c] - right.data[i + c]);
-      maxChannelDelta = Math.max(maxChannelDelta, delta);
-      changed ||= delta > 0;
-    }
-    if (changed) pixels++;
-  }
-  return { pixels, maxChannelDelta, totalPixels: left.width * left.height };
+  return comparePixels(PNG.sync.read(a), PNG.sync.read(b));
 }
 const engine = process.argv[2] || 'chromium';
 const output = process.env.EVIDENCE_DIR || '/tmp/liquidglass-surface-scroll';
