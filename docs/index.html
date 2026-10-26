@@ -206,8 +206,8 @@ import('https://liquidglass.dev/lib/components.js');
     <!-- ======================================================== segmented -->
     <section id="segmented">
       <h2><span data-l="en">Segmented control</span><span data-l="zh">分段控件</span> <code>&lt;lg-segmented&gt;</code></h2>
-      <p data-l="en">A radio group whose selection indicator is a glass lens. It springs between options and stretches with its speed. Arrow keys move the selection.</p>
-      <p data-l="zh">一个单选组，选中指示器是一块玻璃透镜，在选项之间弹簧移动，速度越快拉得越长。方向键可以切换选项。</p>
+      <p data-l="en">Press and drag the glass indicator between options. It grows while held, refracts the labels as it moves, and springs into place when released. Selection changes on release; cancelling restores the previous option. Click or use arrow keys, Home and End to select directly.</p>
+      <p data-l="zh">按住玻璃指示器并在选项之间拖动。按住时透镜会变大，移动时折射标签，松开后弹回选项位置。松开时确认选择，取消则恢复原选项。也可点击或使用方向键、Home 和 End 键选择。</p>
       <div class="demo">
         <lg-segmented value="week" label="Range">
           <button value="day">Day</button>
@@ -233,7 +233,9 @@ import('https://liquidglass.dev/lib/components.js');
         <tbody>
           <tr><td><code>value</code></td><td><span data-l="en">Attribute (initial) and property: the selected button’s <code>value</code>, or its text.</span><span data-l="zh">属性（初始值）和特性：选中按钮的 <code>value</code>，没有则取文字。</span></td></tr>
           <tr><td><code>label</code></td><td><span data-l="en">Accessible name of the group.</span><span data-l="zh">选项组的无障碍名称。</span></td></tr>
-          <tr><td><code>change</code></td><td><span data-l="en">Event with <code>detail.value</code> and <code>detail.index</code>.</span><span data-l="zh">事件，带 <code>detail.value</code> 和 <code>detail.index</code>。</span></td></tr>
+          <tr><td><code>radius="capsule"</code></td><td><span data-l="en">Round the track, options and moving lens into capsules.</span><span data-l="zh">将轨道、选项和移动透镜设为胶囊形。</span></td></tr>
+          <tr><td><code>disabled</code></td><td><span data-l="en">Disable the group. Individual buttons can also be disabled.</span><span data-l="zh">禁用整个选项组，也可单独禁用按钮。</span></td></tr>
+          <tr><td><code>change</code></td><td><span data-l="en">Emitted once when a click, key or completed drag changes the selection, with <code>detail.value</code> and <code>detail.index</code>.</span><span data-l="zh">点击、按键或完成拖动改变选择时触发一次，带 <code>detail.value</code> 和 <code>detail.index</code>。</span></td></tr>
           <tr><td><code>refresh()</code></td><td><span data-l="en">Call after changing option labels.</span><span data-l="zh">修改选项文字后调用。</span></td></tr>
         </tbody>
       </table></div>
@@ -498,6 +500,10 @@ glass.destroy();
 // springs for press and drag animations; honours prefers-reduced-motion
 const press = createSpring(0, (value, velocity) => glass.update({ width: 180 + 20 * value }));
 press.set(1);
+
+// Continue a drag with its release speed in pixels per second
+const position = createSpring(0, (x) => glass.update({ x }));
+position.set(120, { velocity: 240 });
       </script>
       <div class="props-wrap"><table class="props">
         <thead><tr><th><span data-l="en">Option</span><span data-l="zh">选项</span></th><th><span data-l="en">Description</span><span data-l="zh">说明</span></th></tr></thead>

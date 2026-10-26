@@ -56,6 +56,10 @@ For glass over a photo, mark the image as its backdrop:
 
 The [component reference](docs/index.html) covers attributes, events and styling.
 
+`<lg-segmented>` supports press-and-drag selection with continuous label refraction.
+The lens grows while held and snaps to an enabled option on release. Click and
+keyboard selection remain available; `radius="capsule"` gives it a capsule outline.
+
 ## What changed
 
 - **Map reuse:** identical lens pixels share an image instead of being encoded and decoded again. Recent exact shapes also avoid recalculating those pixels.
@@ -93,6 +97,12 @@ sh scripts/sync-skill.sh
 ```
 
 This copies the three library files into the bundled skill. Browser regression tests live in `tests/`; comparison builders and measurement records live in `review/`. They use Node.js and a separate Playwright installation; neither is required to use the library.
+
+Run segmented-control regression tests with `node --test tests/segmented.test.mjs`.
+Set `LG_PLAYWRIGHT_MODULE` to an existing Playwright `index.mjs` when it is installed
+outside this repository. `LG_BROWSER=firefox` selects Firefox; use
+`LG_FIREFOX_EXECUTABLE` or `LG_CHROME_EXECUTABLE` to select an existing browser binary.
+The suite serves a temporary loopback page and closes it after the checks.
 
 See [the combined regression checks](review/combined-validation.md) for reproduction commands and the tested source hashes.
 

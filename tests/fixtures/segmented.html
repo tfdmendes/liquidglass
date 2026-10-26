@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Segmented controls</title>
+<style>
+  body { margin: 0; background: #f7f8fa; color: #111827; font: 15px/1.5 system-ui, sans-serif; }
+  main { max-width: 560px; margin: auto; padding: 32px 24px 480px; }
+  h1 { margin: 0 0 40px; font-size: 28px; letter-spacing: -0.02em; }
+  h2 { margin: 36px 0 16px; font-size: 17px; font-weight: 600; }
+  #library { --lg-track: #e9ebef; --lg-surface: #fff; }
+  #library .lg-seg__option { flex-direction: column; gap: 2px; line-height: 20px; }
+  #library > button { min-width: 132px; height: 64px; padding: 4px 12px; }
+  #library svg { width: 28px; height: 28px; flex: none; }
+  #range > button { min-width: 56px; padding-inline: 8px; }
+  #empty { margin-top: 24px; }
+</style>
+<main>
+  <h1>Segmented controls</h1>
+  <h2>Photos</h2>
+  <lg-segmented id="library" radius="capsule" label="Photos" value="library">
+    <button value="library"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1"/><path d="m3 17 6-6 4 4 3-3 5 5"/></svg>Library</button>
+    <button value="collections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="7" width="18" height="14" rx="3"/><path d="M5 3h14M4 5h16"/></svg>Collections</button>
+  </lg-segmented>
+  <h2>Date range</h2>
+  <lg-segmented id="range" label="Date range" value="day">
+    <button value="day">Day</button>
+    <button value="week" disabled>Week</button>
+    <button value="month">Full month</button>
+  </lg-segmented>
+  <h2>Unavailable</h2>
+  <lg-segmented id="disabled" label="Unavailable" disabled>
+    <button value="a">First</button><button value="b">Second</button>
+  </lg-segmented>
+  <lg-segmented id="empty" label="Empty"></lg-segmented>
+</main>
+<script type="module" src="../../lib/components.js"></script>
+</html>
