@@ -1,6 +1,6 @@
 # WebGL demand rendering
 
-The branch is `fix/webgl-render-on-change`. HEAD remains `068ad226f53e1ca62d857f78bdc32f58f3c5fce7`; all changes are uncommitted. The runtime catalog confirmed `codex / gpt-6.1-sol`, `reasoningEffort=max`, `serviceTier=default`.
+This record measures the isolated WebGL scheduling change against upstream `068ad226f53e1ca62d857f78bdc32f58f3c5fce7`. The saved comparison preserves that candidate; the current library also includes the other fork optimizations.
 
 `webgl-demand.html` is the standalone review artifact. It embeds the actual baseline from `git show 068ad226:lib/...`, the candidate, the same generated backdrop, and local media. Each runtime runs in its own iframe. No build or CDN is needed to open it. State controls and replay update both panels together. Pixel captures read WebGL immediately after drawing; the overlay and amplified difference use those real samples.
 
@@ -57,6 +57,8 @@ python3 skill/liquid-glass-web/scripts/serve.py . 4384
 ```
 
 Open `http://127.0.0.1:4384/review/webgl-demand.html`, or open the HTML file directly. `window.reviewReady` and visible `Ready` indicate initialization. `?check=1` runs the same in-browser checks and exposes `window.webglResults`. The runner normally opens the file directly and writes JSON/screenshots to `output/playwright/webgl-demand/`. `--quick` selects one desktop case per engine; `--engine chromium` or `--engine firefox` narrows engines; `--output PATH` changes the evidence directory.
+
+To check the current combined core and WebGL renderer without replacing the saved isolated experiment, run `node scripts/build-webgl-review.mjs /tmp/liquidglass-current-webgl.html`. The positional argument selects the output file. Pass `--page /tmp/liquidglass-current-webgl.html` to the test runner; `--quick` limits it to one desktop case per engine. This creates temporary evidence and does not modify the library or saved comparison.
 
 The isolated Firefox wrapper runs the Firefox 157 binary with temporary Name/Vendor branding to avoid the macOS app-data startup issue. The runner sets the original Firefox UA and asserts `engine === 'gecko'`; production engine detection is unchanged. `PLAYWRIGHT_MODULE`, `FIREFOX_EXECUTABLE`, and optional `CHROME_EXECUTABLE` allow other existing installations. No package dependency or system browser was modified.
 

@@ -1,6 +1,6 @@
 # Filter refresh validation
 
-The branch `fix/browser-filter-refresh` keeps HEAD at `068ad226f53e1ca62d857f78bdc32f58f3c5fce7`. Changes are uncommitted. The production change keeps one filter ID and removes map-settling timers in Blink and Gecko. WebKit and unknown engines retain both workarounds. All three `lib/` files match their skill asset mirrors.
+This record measures the isolated filter-refresh change against upstream `068ad226f53e1ca62d857f78bdc32f58f3c5fce7`. The saved comparison preserves that candidate; the current library also includes the other fork optimizations. The production change keeps one filter ID and removes map-settling timers in Blink and Gecko. WebKit and unknown engines retain both workarounds. All three `lib/` files match their skill asset mirrors.
 
 On 2026-10-26, 208 original/candidate capture pairs matched every RGBA pixel: 90 Blink, 90 Gecko and 28 native WKWebView. The five behavioral regression tests pass; the original fails the two stable-ID tests. Native fit original-vs-original and original-vs-candidate controls also matched. The initial fixed-delay fixture sampled stale resize state; final runs wait for geometry, PNG dimensions, SVG regions, pending decodes/timers and two animation frames.
 

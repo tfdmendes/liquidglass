@@ -1,0 +1,971 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-10-26",
+  "upstream_base": "068ad226f53e1ca62d857f78bdc32f58f3c5fce7",
+  "scope": "Each change was measured independently against the same upstream base. These are retained review measurements, not a new benchmark of the integrated fork.",
+  "retention": "Excerpts preserve selected JSON subtrees exactly. Source SHA-256 values identify the complete original artifacts; JSON pointers identify each retained value. Process IDs, screenshots and unrelated test output are omitted.",
+  "cpu_run": {
+    "trials_per_variant": 3,
+    "order": "Original then candidate for repeats 0 and 2; candidate then original for repeat 1. Each variant launches a fresh browser.",
+    "viewport": [
+      1280,
+      900
+    ],
+    "device_pixel_ratio": 2,
+    "button_cycles": 12,
+    "segmented_cycles": 12,
+    "mostly_unique_map_updates_including_creation": 1200,
+    "input": "Deterministic 60 Hz spring steps replayed faster than wall clock; final decode/repaint waits remain inside the sampled CPU interval.",
+    "measurement": "macOS accumulated browser-process and descendant CPU time; 10 ms quantization per process. WindowServer and graphics drivers are excluded.",
+    "limits": "Shared-host variance, three trials, no statistical significance claim. CPU time is not utilization, energy, FPS or real-time frame cost."
+  },
+  "sources": {
+    "map_summary": {
+      "file": "map-cache-results.json",
+      "sha256": "39c94d603240eeddc881434c2cc4ae68b8cddf0ed83b2dd7c8d7d551de6dbba6",
+      "excerpts": {
+        "/base": "068ad226f53e1ca62d857f78bdc32f58f3c5fce7",
+        "/candidateSHA256": "c7fd5e9903ed7a3248aa1eb1e49abd046b56aca6ac035913a432b0bce5ae66fc",
+        "/cpu": [
+          {
+            "engine": "Blink",
+            "summary": [
+              {
+                "workload": "button",
+                "originalMedianCPUms": 1440,
+                "candidateMedianCPUms": 1280,
+                "changePercent": -11.111111111111116
+              },
+              {
+                "workload": "segmented",
+                "originalMedianCPUms": 4590,
+                "candidateMedianCPUms": 4360,
+                "changePercent": -5.010893246187365
+              },
+              {
+                "workload": "mostly-unique",
+                "originalMedianCPUms": 2730,
+                "candidateMedianCPUms": 2770,
+                "changePercent": 1.46520146520146
+              }
+            ]
+          },
+          {
+            "engine": "Gecko",
+            "summary": [
+              {
+                "workload": "button",
+                "originalMedianCPUms": 2870,
+                "candidateMedianCPUms": 2380,
+                "changePercent": -17.07317073170732
+              },
+              {
+                "workload": "segmented",
+                "originalMedianCPUms": 4770,
+                "candidateMedianCPUms": 4560,
+                "changePercent": -4.402515723270439
+              },
+              {
+                "workload": "mostly-unique",
+                "originalMedianCPUms": 1850,
+                "candidateMedianCPUms": 1870,
+                "changePercent": 1.08108108108107
+              }
+            ]
+          }
+        ],
+        "/cpuRanges": [
+          {
+            "engine": "blink",
+            "workload": "button",
+            "originalRangeMs": [
+              1420,
+              1530
+            ],
+            "candidateRangeMs": [
+              1270,
+              1340
+            ]
+          },
+          {
+            "engine": "blink",
+            "workload": "segmented",
+            "originalRangeMs": [
+              3590,
+              4790
+            ],
+            "candidateRangeMs": [
+              4300,
+              4540
+            ]
+          },
+          {
+            "engine": "blink",
+            "workload": "mostly-unique",
+            "originalRangeMs": [
+              2710,
+              2820
+            ],
+            "candidateRangeMs": [
+              2770,
+              2850
+            ]
+          },
+          {
+            "engine": "gecko",
+            "workload": "button",
+            "originalRangeMs": [
+              2100,
+              3020
+            ],
+            "candidateRangeMs": [
+              1400,
+              3010
+            ]
+          },
+          {
+            "engine": "gecko",
+            "workload": "segmented",
+            "originalRangeMs": [
+              2880,
+              4840
+            ],
+            "candidateRangeMs": [
+              4300,
+              4630
+            ]
+          },
+          {
+            "engine": "gecko",
+            "workload": "mostly-unique",
+            "originalRangeMs": [
+              1830,
+              1870
+            ],
+            "candidateRangeMs": [
+              1810,
+              1899.9999999999998
+            ]
+          }
+        ],
+        "/cpuMethod": "Median of 3 fresh-browser trials, alternating order. CPU time is the macOS ps accumulated time for the browser and all descendants, including map rendering, equality checks, canvas upload, PNG encode/decode and rendering. Resolution: 10 ms per process. Shared-host variance is visible in the raw evidence; these figures are not CPU percentages. Fixed 60 Hz spring input steps are replayed faster than wall clock; this measures that accelerated workload, including the native paint work processed during it, rather than real-time interactive frame cost.",
+        "/visual": [
+          {
+            "engine": "blink",
+            "browser": "156.0.8078.48",
+            "configurations": 6,
+            "states": 30,
+            "threshold": 1,
+            "maxObservedDelta": 1
+          },
+          {
+            "engine": "gecko",
+            "browser": "157.0",
+            "configurations": 6,
+            "states": 30,
+            "threshold": 0,
+            "maxObservedDelta": 0
+          }
+        ],
+        "/baselineControl": {
+          "engine": "Blink",
+          "states": 30,
+          "maxObservedDelta": 1
+        },
+        "/visualSummary": "30 states per engine: Chrome 156 / Blink and Firefox 157 / Gecko, desktop 1280x900 and phone 390x844, DPR 1/2 plus fractional 1.25, and emulated reduced motion. Gecko delta 0. Chrome delta <=1 per channel; an independent original-versus-original control also reaches 1. Public renderLensMap PNGs match exactly across 20 fractional geometry/optics/scale cases per engine. System WKWebView / Safari 27.0.1 on macOS 27.0.1: desktop moving and phone pressed, backing DPR 2, four top-level captures. Original/candidate PNG files match byte for byte in both pairs. Each runtime also passed 10 fractional map cases and pending-alias/decode-order/destruction checks.",
+        "/native/visual": [
+          {
+            "width": 1280,
+            "state": "moving",
+            "encodedPNGsEqual": true,
+            "sha256": [
+              "e5392b2adde7a9a1a92d6852867feed658d17226ef5763edcfbdf85333751a19",
+              "e5392b2adde7a9a1a92d6852867feed658d17226ef5763edcfbdf85333751a19"
+            ],
+            "bytes": [
+              241180,
+              241180
+            ]
+          },
+          {
+            "width": 390,
+            "state": "pressed",
+            "encodedPNGsEqual": true,
+            "sha256": [
+              "8fae7a92035adbf57121ddea4c51d751776f1e6cc90cf4cc80588c38c0f98111",
+              "8fae7a92035adbf57121ddea4c51d751776f1e6cc90cf4cc80588c38c0f98111"
+            ],
+            "bytes": [
+              126666,
+              126666
+            ]
+          }
+        ],
+        "/native/macOS": "27.0.1 (26A434)",
+        "/native/Safari": "27.0.1"
+      }
+    },
+    "map_blink": {
+      "file": "blink-cpu-final.json",
+      "sha256": "2797fdd099b3689e4e268097d4e55d0153e6a95380b1390159b2faa5eab0ce5c",
+      "excerpts": {
+        "/sourceSHA256": {
+          "original": "92a62e5b80cfa7e03912b13bdc53aff1c0ae367a5f296de1327e0f62f0579210",
+          "candidate": "c7fd5e9903ed7a3248aa1eb1e49abd046b56aca6ac035913a432b0bce5ae66fc"
+        },
+        "/method": "macOS ps accumulated CPU time for the browser process and descendants; includes pixel generation, equality, canvas upload, PNG encoding/decoding and rendering tasks. 10ms per-process quantization. Excludes WindowServer and graphics drivers. Wall time includes intentionally scheduled waits. No CPU percentage is inferred. Fixed 60 Hz spring steps are replayed faster than wall clock; native paint work can be coalesced. Not a real-time frame-cost or CPU-percentage estimate.",
+        "/results/0/workload": "button",
+        "/results/0/variant": "original",
+        "/results/0/cycles": 12,
+        "/results/0/stats": {
+          "rasterizations": 149,
+          "uploads": 149,
+          "encodes": 149,
+          "decodes": 149,
+          "encodeMs": 313.60000002384186,
+          "decodeElapsedMs": 74.7000000178814
+        },
+        "/results/1/workload": "button",
+        "/results/1/variant": "candidate",
+        "/results/1/cycles": 12,
+        "/results/1/stats": {
+          "rasterizations": 96,
+          "uploads": 41,
+          "encodes": 41,
+          "decodes": 41,
+          "encodeMs": 70.79999996721745,
+          "decodeElapsedMs": 40.80000002682209
+        },
+        "/results/0/cpuMs": 1420,
+        "/results/3/cpuMs": 1530,
+        "/results/4/cpuMs": 1440,
+        "/results/1/cpuMs": 1340,
+        "/results/2/cpuMs": 1270,
+        "/results/5/cpuMs": 1280,
+        "/results/6/cpuMs": 4790,
+        "/results/9/cpuMs": 4590,
+        "/results/10/cpuMs": 3590,
+        "/results/7/cpuMs": 4540,
+        "/results/8/cpuMs": 4300,
+        "/results/11/cpuMs": 4360,
+        "/results/12/cpuMs": 2820,
+        "/results/15/cpuMs": 2710,
+        "/results/16/cpuMs": 2730,
+        "/results/13/cpuMs": 2770,
+        "/results/14/cpuMs": 2770,
+        "/results/17/cpuMs": 2850
+      }
+    },
+    "map_gecko": {
+      "file": "gecko-cpu-final.json",
+      "sha256": "6be977c6dafb7a791df37800e93418e2565d2cced3452f035a424e207e5c17f2",
+      "excerpts": {
+        "/sourceSHA256": {
+          "original": "92a62e5b80cfa7e03912b13bdc53aff1c0ae367a5f296de1327e0f62f0579210",
+          "candidate": "c7fd5e9903ed7a3248aa1eb1e49abd046b56aca6ac035913a432b0bce5ae66fc"
+        },
+        "/method": "macOS ps accumulated CPU time for the browser process and descendants; includes pixel generation, equality, canvas upload, PNG encoding/decoding and rendering tasks. 10ms per-process quantization. Excludes WindowServer and graphics drivers. Wall time includes intentionally scheduled waits. No CPU percentage is inferred. Fixed 60 Hz spring steps are replayed faster than wall clock; native paint work can be coalesced. Not a real-time frame-cost or CPU-percentage estimate.",
+        "/results/0/cpuMs": 3020,
+        "/results/3/cpuMs": 2100,
+        "/results/4/cpuMs": 2870,
+        "/results/1/cpuMs": 2380,
+        "/results/2/cpuMs": 1400,
+        "/results/5/cpuMs": 3010,
+        "/results/6/cpuMs": 2880,
+        "/results/9/cpuMs": 4770,
+        "/results/10/cpuMs": 4840,
+        "/results/7/cpuMs": 4300,
+        "/results/8/cpuMs": 4560,
+        "/results/11/cpuMs": 4630,
+        "/results/12/cpuMs": 1870,
+        "/results/15/cpuMs": 1850,
+        "/results/16/cpuMs": 1830,
+        "/results/13/cpuMs": 1870,
+        "/results/14/cpuMs": 1899.9999999999998,
+        "/results/17/cpuMs": 1810
+      }
+    },
+    "filters": {
+      "file": "filter-refresh-evidence.json",
+      "sha256": "6602a8312e3750f2b24bebf02c0f471d14e677e063228079f6664449b71bfd60",
+      "excerpts": {
+        "/summary/date": "2026-10-26",
+        "/summary/baseline": "068ad226f53e1ca62d857f78bdc32f58f3c5fce7",
+        "/summary/candidateSHA256": "f451d111157c7588933cf80b8d56ab2e870df00805fd5df9db5e8f9372c2ec7a",
+        "/summary/comparisons": 208,
+        "/summary/pixelIdentical": 208,
+        "/summary/maxChannelDifference": 0,
+        "/summary/runtimes/0/engine": "blink",
+        "/summary/runtimes/0/runtime": "Chrome 156.0.8078.48",
+        "/summary/runtimes/0/idle": {
+          "original": {
+            "idChanges": 3,
+            "attributes": 182,
+            "mapWrites": 2,
+            "retryTimers": 2,
+            "retriesFired": 2,
+            "pendingRetries": 0
+          },
+          "candidate": {
+            "idChanges": 1,
+            "attributes": 62,
+            "mapWrites": 2,
+            "retryTimers": 0,
+            "retriesFired": 0,
+            "pendingRetries": 0
+          }
+        },
+        "/summary/runtimes/1/engine": "gecko",
+        "/summary/runtimes/1/runtime": "Firefox 157.0",
+        "/summary/runtimes/1/idle": {
+          "original": {
+            "idChanges": 3,
+            "attributes": 182,
+            "mapWrites": 2,
+            "retryTimers": 2,
+            "retriesFired": 2,
+            "pendingRetries": 0
+          },
+          "candidate": {
+            "idChanges": 1,
+            "attributes": 62,
+            "mapWrites": 2,
+            "retryTimers": 0,
+            "retriesFired": 0,
+            "pendingRetries": 0
+          }
+        },
+        "/summary/runtimes/2/engine": "webkit",
+        "/summary/runtimes/2/runtime": "System WKWebView · macOS 27.0.1 (Safari app 27.0.1)",
+        "/summary/runtimes/2/idle": {
+          "original": {
+            "idChanges": 3,
+            "attributes": 197,
+            "mapWrites": 2,
+            "retryTimers": 2,
+            "retriesFired": 2,
+            "pendingRetries": 0
+          },
+          "candidate": {
+            "idChanges": 3,
+            "attributes": 197,
+            "mapWrites": 2,
+            "retryTimers": 2,
+            "retriesFired": 2,
+            "pendingRetries": 0
+          }
+        }
+      }
+    },
+    "scroll": {
+      "file": "surface-scroll-results.json",
+      "sha256": "683f4eebdcf432802f026b27aabad666b93bc70cb14e2d7a55a5185c202a9167",
+      "excerpts": {
+        "/base": "068ad226f53e1ca62d857f78bdc32f58f3c5fce7",
+        "/evidence/chromium.json/0/candidateSha256": "56ccca6f02d5f57a1129e9c977ac06699cbdb30b7cd1f92f632fd95406117545",
+        "/evidence/chromium.json/0/width": 1280,
+        "/evidence/chromium.json/0/height": 800,
+        "/evidence/chromium.json/0/dpr": 1,
+        "/evidence/chromium.json/0/runtime": "156.0.8078.48",
+        "/evidence/chromium.json/0/counts": [
+          {
+            "enabled": false,
+            "updates": 8398,
+            "aligns": 8364,
+            "offsets": 16796,
+            "rects": 16728,
+            "reads": 33524
+          },
+          {
+            "enabled": false,
+            "updates": 0,
+            "aligns": 8364,
+            "offsets": 0,
+            "rects": 8561,
+            "reads": 8561
+          }
+        ],
+        "/evidence/chromium.json/1/counts": [
+          {
+            "enabled": false,
+            "updates": 8398,
+            "aligns": 8364,
+            "offsets": 16796,
+            "rects": 16728,
+            "reads": 33524
+          },
+          {
+            "enabled": false,
+            "updates": 0,
+            "aligns": 8364,
+            "offsets": 0,
+            "rects": 8569,
+            "reads": 8569
+          }
+        ],
+        "/evidence/chromium.json/1/shots": [
+          {
+            "state": 0,
+            "key": "chromium-390-dpr2-no-preference-p0",
+            "originalCandidate": {
+              "pixels": 203,
+              "maxChannelDelta": 165,
+              "totalPixels": 1316640
+            },
+            "originalRepeat": {
+              "pixels": 35,
+              "maxChannelDelta": 1,
+              "totalPixels": 1316640
+            },
+            "candidateRepeat": {
+              "pixels": 199,
+              "maxChannelDelta": 165,
+              "totalPixels": 1316640
+            }
+          },
+          {
+            "state": 0.5,
+            "key": "chromium-390-dpr2-no-preference-p0.5",
+            "originalCandidate": {
+              "pixels": 510,
+              "maxChannelDelta": 165,
+              "totalPixels": 1316640
+            },
+            "originalRepeat": {
+              "pixels": 418,
+              "maxChannelDelta": 165,
+              "totalPixels": 1316640
+            },
+            "candidateRepeat": {
+              "pixels": 169,
+              "maxChannelDelta": 1,
+              "totalPixels": 1316640
+            }
+          },
+          {
+            "state": 1,
+            "key": "chromium-390-dpr2-no-preference-p1",
+            "originalCandidate": {
+              "pixels": 197,
+              "maxChannelDelta": 1,
+              "totalPixels": 1316640
+            },
+            "originalRepeat": {
+              "pixels": 169,
+              "maxChannelDelta": 1,
+              "totalPixels": 1316640
+            },
+            "candidateRepeat": {
+              "pixels": 0,
+              "maxChannelDelta": 0,
+              "totalPixels": 1316640
+            }
+          }
+        ],
+        "/evidence/regression-red-evidence.json/nativeLimit": {
+          "longReplay": "35 positions with three rAFs each exceeded15s in ORIGINAL at scrollY2300",
+          "validatedReplay": "same seven native positions in both top-level documents,25s readiness deadline; six exact pairs",
+          "viewport": "1280x800 and390x844,actual DPR2"
+        },
+        "/evidence/pixel-outliers.json": [
+          {
+            "state": 0,
+            "label": "cross",
+            "pixels": [
+              {
+                "x": 568,
+                "y": 1158,
+                "a": [
+                  245,
+                  208,
+                  157
+                ],
+                "b": [
+                  115,
+                  43,
+                  110
+                ]
+              }
+            ]
+          },
+          {
+            "state": 0,
+            "label": "originalRepeat",
+            "pixels": []
+          },
+          {
+            "state": 0,
+            "label": "candidateRepeat",
+            "pixels": [
+              {
+                "x": 568,
+                "y": 1158,
+                "a": [
+                  115,
+                  43,
+                  110
+                ],
+                "b": [
+                  245,
+                  208,
+                  157
+                ]
+              }
+            ]
+          },
+          {
+            "state": 0.5,
+            "label": "cross",
+            "pixels": [
+              {
+                "x": 568,
+                "y": 1158,
+                "a": [
+                  115,
+                  43,
+                  110
+                ],
+                "b": [
+                  245,
+                  208,
+                  157
+                ]
+              }
+            ]
+          },
+          {
+            "state": 0.5,
+            "label": "originalRepeat",
+            "pixels": [
+              {
+                "x": 568,
+                "y": 1158,
+                "a": [
+                  115,
+                  43,
+                  110
+                ],
+                "b": [
+                  245,
+                  208,
+                  157
+                ]
+              }
+            ]
+          },
+          {
+            "state": 0.5,
+            "label": "candidateRepeat",
+            "pixels": []
+          },
+          {
+            "state": 1,
+            "label": "cross",
+            "pixels": []
+          },
+          {
+            "state": 1,
+            "label": "originalRepeat",
+            "pixels": []
+          },
+          {
+            "state": 1,
+            "label": "candidateRepeat",
+            "pixels": []
+          }
+        ]
+      }
+    },
+    "webgl": {
+      "file": "webgl-demand-results.json",
+      "sha256": "1891885aeb68d402cd462900c5a061366699521a54860fe8fc5f609d6c2ab3fa",
+      "excerpts": {
+        "/base": "068ad226f53e1ca62d857f78bdc32f58f3c5fce7",
+        "/candidateSha256": "17c5d8123aee314ebc87de1fee2c469b7177d0603f7f5e2d89185e6cee09eb6b",
+        "/matrix/date": "2026-10-26T11:18:11.436Z",
+        "/matrix/cases/0/name": "chromium-1280-1-no-preference",
+        "/matrix/cases/0/browser": "156.0.8078.48",
+        "/matrix/cases/0/runtime": {
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "viewport": [
+            1280,
+            900
+          ],
+          "dpr": 1,
+          "reducedMotion": false,
+          "engines": [
+            "blink",
+            "blink"
+          ],
+          "videoFrames": true,
+          "videoFallback": false
+        },
+        "/matrix/cases/0/work/bitmapIdle": {
+          "elapsedMs": 302,
+          "original": {
+            "draws": 36,
+            "sourceUploads": 18,
+            "mapUploads": 0,
+            "deletedTextures": 0
+          },
+          "candidate": {
+            "draws": 0,
+            "sourceUploads": 0,
+            "mapUploads": 0,
+            "deletedTextures": 0
+          }
+        }
+      }
+    }
+  },
+  "operations": [
+    {
+      "label": "Map PNG encodes",
+      "detail": "Button · 12 cycles · Chrome / Blink",
+      "unit": "PNG encodes",
+      "original": {
+        "source": "map_blink",
+        "pointer": "/results/0/stats/encodes"
+      },
+      "candidate": {
+        "source": "map_blink",
+        "pointer": "/results/1/stats/encodes"
+      }
+    },
+    {
+      "label": "Initial SVG attribute writes",
+      "detail": "Static lens · Chrome / Blink",
+      "unit": "SVG attribute mutations",
+      "original": {
+        "source": "filters",
+        "pointer": "/summary/runtimes/0/idle/original/attributes"
+      },
+      "candidate": {
+        "source": "filters",
+        "pointer": "/summary/runtimes/0/idle/candidate/attributes"
+      }
+    },
+    {
+      "label": "Scroll geometry reads",
+      "detail": "240 extra surfaces · 35 positions · Chrome",
+      "unit": "geometry API reads",
+      "original": {
+        "source": "scroll",
+        "pointer": "/evidence/chromium.json/0/counts/0/reads"
+      },
+      "candidate": {
+        "source": "scroll",
+        "pointer": "/evidence/chromium.json/0/counts/1/reads"
+      }
+    },
+    {
+      "label": "Idle WebGL source uploads",
+      "detail": "Unchanged ImageBitmap · 302 ms · Chrome",
+      "unit": "source texture uploads",
+      "original": {
+        "source": "webgl",
+        "pointer": "/matrix/cases/0/work/bitmapIdle/original/sourceUploads"
+      },
+      "candidate": {
+        "source": "webgl",
+        "pointer": "/matrix/cases/0/work/bitmapIdle/candidate/sourceUploads"
+      }
+    }
+  ],
+  "cpu": [
+    {
+      "engine": "Blink",
+      "browser": "Chrome 156.0.8078.48",
+      "workload": "button",
+      "original": [
+        {
+          "source": "map_blink",
+          "pointer": "/results/0/cpuMs"
+        },
+        {
+          "source": "map_blink",
+          "pointer": "/results/3/cpuMs"
+        },
+        {
+          "source": "map_blink",
+          "pointer": "/results/4/cpuMs"
+        }
+      ],
+      "candidate": [
+        {
+          "source": "map_blink",
+          "pointer": "/results/1/cpuMs"
+        },
+        {
+          "source": "map_blink",
+          "pointer": "/results/2/cpuMs"
+        },
+        {
+          "source": "map_blink",
+          "pointer": "/results/5/cpuMs"
+        }
+      ],
+      "summary": {
+        "source": "map_summary",
+        "pointer": "/cpu/0/summary/0"
+      },
+      "range": {
+        "source": "map_summary",
+        "pointer": "/cpuRanges/0"
+      }
+    },
+    {
+      "engine": "Blink",
+      "browser": "Chrome 156.0.8078.48",
+      "workload": "segmented",
+      "original": [
+        {
+          "source": "map_blink",
+          "pointer": "/results/6/cpuMs"
+        },
+        {
+          "source": "map_blink",
+          "pointer": "/results/9/cpuMs"
+        },
+        {
+          "source": "map_blink",
+          "pointer": "/results/10/cpuMs"
+        }
+      ],
+      "candidate": [
+        {
+          "source": "map_blink",
+          "pointer": "/results/7/cpuMs"
+        },
+        {
+          "source": "map_blink",
+          "pointer": "/results/8/cpuMs"
+        },
+        {
+          "source": "map_blink",
+          "pointer": "/results/11/cpuMs"
+        }
+      ],
+      "summary": {
+        "source": "map_summary",
+        "pointer": "/cpu/0/summary/1"
+      },
+      "range": {
+        "source": "map_summary",
+        "pointer": "/cpuRanges/1"
+      }
+    },
+    {
+      "engine": "Blink",
+      "browser": "Chrome 156.0.8078.48",
+      "workload": "mostly-unique",
+      "original": [
+        {
+          "source": "map_blink",
+          "pointer": "/results/12/cpuMs"
+        },
+        {
+          "source": "map_blink",
+          "pointer": "/results/15/cpuMs"
+        },
+        {
+          "source": "map_blink",
+          "pointer": "/results/16/cpuMs"
+        }
+      ],
+      "candidate": [
+        {
+          "source": "map_blink",
+          "pointer": "/results/13/cpuMs"
+        },
+        {
+          "source": "map_blink",
+          "pointer": "/results/14/cpuMs"
+        },
+        {
+          "source": "map_blink",
+          "pointer": "/results/17/cpuMs"
+        }
+      ],
+      "summary": {
+        "source": "map_summary",
+        "pointer": "/cpu/0/summary/2"
+      },
+      "range": {
+        "source": "map_summary",
+        "pointer": "/cpuRanges/2"
+      }
+    },
+    {
+      "engine": "Gecko",
+      "browser": "Firefox 157.0",
+      "workload": "button",
+      "original": [
+        {
+          "source": "map_gecko",
+          "pointer": "/results/0/cpuMs"
+        },
+        {
+          "source": "map_gecko",
+          "pointer": "/results/3/cpuMs"
+        },
+        {
+          "source": "map_gecko",
+          "pointer": "/results/4/cpuMs"
+        }
+      ],
+      "candidate": [
+        {
+          "source": "map_gecko",
+          "pointer": "/results/1/cpuMs"
+        },
+        {
+          "source": "map_gecko",
+          "pointer": "/results/2/cpuMs"
+        },
+        {
+          "source": "map_gecko",
+          "pointer": "/results/5/cpuMs"
+        }
+      ],
+      "summary": {
+        "source": "map_summary",
+        "pointer": "/cpu/1/summary/0"
+      },
+      "range": {
+        "source": "map_summary",
+        "pointer": "/cpuRanges/3"
+      }
+    },
+    {
+      "engine": "Gecko",
+      "browser": "Firefox 157.0",
+      "workload": "segmented",
+      "original": [
+        {
+          "source": "map_gecko",
+          "pointer": "/results/6/cpuMs"
+        },
+        {
+          "source": "map_gecko",
+          "pointer": "/results/9/cpuMs"
+        },
+        {
+          "source": "map_gecko",
+          "pointer": "/results/10/cpuMs"
+        }
+      ],
+      "candidate": [
+        {
+          "source": "map_gecko",
+          "pointer": "/results/7/cpuMs"
+        },
+        {
+          "source": "map_gecko",
+          "pointer": "/results/8/cpuMs"
+        },
+        {
+          "source": "map_gecko",
+          "pointer": "/results/11/cpuMs"
+        }
+      ],
+      "summary": {
+        "source": "map_summary",
+        "pointer": "/cpu/1/summary/1"
+      },
+      "range": {
+        "source": "map_summary",
+        "pointer": "/cpuRanges/4"
+      }
+    },
+    {
+      "engine": "Gecko",
+      "browser": "Firefox 157.0",
+      "workload": "mostly-unique",
+      "original": [
+        {
+          "source": "map_gecko",
+          "pointer": "/results/12/cpuMs"
+        },
+        {
+          "source": "map_gecko",
+          "pointer": "/results/15/cpuMs"
+        },
+        {
+          "source": "map_gecko",
+          "pointer": "/results/16/cpuMs"
+        }
+      ],
+      "candidate": [
+        {
+          "source": "map_gecko",
+          "pointer": "/results/13/cpuMs"
+        },
+        {
+          "source": "map_gecko",
+          "pointer": "/results/14/cpuMs"
+        },
+        {
+          "source": "map_gecko",
+          "pointer": "/results/17/cpuMs"
+        }
+      ],
+      "summary": {
+        "source": "map_summary",
+        "pointer": "/cpu/1/summary/2"
+      },
+      "range": {
+        "source": "map_summary",
+        "pointer": "/cpuRanges/5"
+      }
+    }
+  ],
+  "review_record": {
+    "file": "orchestrator-review.md",
+    "sha256": "c6136483fab860ceab527730718045a239ffe6947d073a9cd6d69cc64afc0cf8",
+    "sections_used": [
+      "Measured behavior",
+      "Visual and edge-case evidence",
+      "Reproduction"
+    ]
+  },
+  "candidates": [
+    {
+      "change": "Map reuse",
+      "module": "lib/liquid-glass.js",
+      "sha256": {
+        "source": "map_summary",
+        "pointer": "/candidateSHA256"
+      }
+    },
+    {
+      "change": "Filter refresh",
+      "module": "lib/liquid-glass.js",
+      "sha256": {
+        "source": "filters",
+        "pointer": "/summary/candidateSHA256"
+      }
+    },
+    {
+      "change": "Surface scroll",
+      "module": "lib/components.js",
+      "sha256": {
+        "source": "scroll",
+        "pointer": "/evidence/chromium.json/0/candidateSha256"
+      }
+    },
+    {
+      "change": "WebGL scheduling",
+      "module": "lib/glass-webgl.js",
+      "sha256": {
+        "source": "webgl",
+        "pointer": "/candidateSha256"
+      }
+    }
+  ],
+  "figure_validation": {
+    "method": "Generated XML parsed; deterministic SVG output checked; all six original JSON artifact hashes and retained excerpts verified; CPU medians and min-max ranges recomputed from all 36 sample values",
+    "visual_inspection": "Browser-rendered SVG images at 760 px and 360 px in light and dark themes; both images loaded and no horizontal page overflow occurred",
+    "limits": "Local browser rendering, not a live GitHub page or a physical phone test"
+  }
+}
