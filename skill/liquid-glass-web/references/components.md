@@ -1,14 +1,14 @@
-# liquidglass.dev web components
+# Liquid Glass web components
 
-`assets/components.js` (also hosted at `https://liquidglass.dev/lib/components.js`) defines light-DOM custom elements on top of the engine. They need `liquid-glass.js` in the same directory. Styles are injected once; theme them with the `--lg-*` custom properties below. Full docs with live demos: https://liquidglass.dev/docs/.
+`assets/components.js` defines light-DOM custom elements on top of the fork's engine. Copy it with the bundled `liquid-glass.js` into the same directory. Styles are injected once; theme them with the `--lg-*` custom properties below. The fork checkout's `docs/index.html` contains the full API reference and demos; serve it locally. Remote modules from liquidglass.dev are not guaranteed to match this fork.
 
 Contents: loading · backdrops · theming · each element · optics attributes
 
 ## Loading
 
 ```html
-<script type="module" src="https://liquidglass.dev/lib/components.js"></script>
-<!-- or self-host: copy components.js and liquid-glass.js side by side -->
+<!-- Copy components.js and liquid-glass.js into the project's lib directory -->
+<script type="module" src="./lib/components.js"></script>
 ```
 
 The module also re-exports `createGlass`, `createSpring`, `renderLensMap`, `engine`, `DEFAULTS`, and exports `toast`. React: import it in a client-side `useEffect`; Vue: set `compilerOptions.isCustomElement = (t) => t.startsWith('lg-')`.

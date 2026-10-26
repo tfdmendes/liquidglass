@@ -1,10 +1,10 @@
 #!/bin/sh
-# Install the liquid-glass-web skill.
-#   curl -fsSL https://liquidglass.dev/install-skill.sh | sh
+# Install the liquid-glass-web skill from this fork
+#   curl -fsSL https://raw.githubusercontent.com/tfdmendes/liquidglass/main/install-skill.sh | sh
 # Copies skill/liquid-glass-web from the latest GitHub archive into the skills folder of each
-# supported agent home found below, replacing an older copy.
+# supported agent home found below, replacing an older copy
 set -eu
-ARCHIVE=https://github.com/gentpan/liquidglass/archive/refs/heads/main.tar.gz
+ARCHIVE=https://github.com/tfdmendes/liquidglass/archive/refs/heads/main.tar.gz
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
 
@@ -16,12 +16,12 @@ if [ -z "$src" ]; then
 fi
 
 installed=0
-for home in "$HOME/.claude" "$HOME/.codex"; do
-  [ -d "$home" ] || continue
-  mkdir -p "$home/skills"
-  rm -rf "$home/skills/liquid-glass-web"
-  cp -R "$src" "$home/skills/liquid-glass-web"
-  echo "installed: $home/skills/liquid-glass-web"
+for agent_home in "$HOME/.claude" "$HOME/.codex"; do
+  [ -d "$agent_home" ] || continue
+  mkdir -p "$agent_home/skills"
+  rm -rf "$agent_home/skills/liquid-glass-web"
+  cp -R "$src" "$agent_home/skills/liquid-glass-web"
+  echo "installed: $agent_home/skills/liquid-glass-web"
   installed=1
 done
 

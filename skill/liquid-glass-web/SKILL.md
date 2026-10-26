@@ -1,22 +1,22 @@
 ---
 name: liquid-glass-web
-description: Build refractive "liquid glass" UI for the web (Apple Liquid Glass style) that renders the same in Chrome, Safari/iOS and Firefox — SVG feDisplacementMap applied through CSS filter to the content itself, runtime displacement maps, chromatic fringe and rim highlights, press/squish springs, WebKit-specific fixes, WebGL for video. Ships the liquidglass.dev web components (switch, slider, segmented, button, panel, navbar, menu bar, toast, dock, lens), the zero-dependency engine, a reference page and a three-engine screenshot script. Use whenever a web or front-end task (HTML/CSS/React/Vue/Svelte) asks for liquid glass, glass refraction, a glass lens or magnifier, glassmorphism that should actually bend light, or Apple-style glass switches, sliders, segmented controls, tab indicators, cards, navbars, menus, toasts or docks — and when a backdrop-filter glass effect does not show up in Safari or Firefox. Not for native SwiftUI/UIKit apps (use the system glassEffect there).
+description: Build refractive liquid glass UI for the web with the bundled engine and web components. Use for liquid glass controls, panels, lenses or magnifiers, glassmorphism that bends light, and Safari or Firefox refraction failures. Covers SVG filters, WebGL for video and canvas, and browser verification. Not for native SwiftUI or UIKit apps.
 ---
 
 # Liquid glass for the web
 
-Goal: glass that really bends light, like Apple's Liquid Glass, rather than a blur — and looks the same in Chromium, WebKit (Safari and every iOS browser) and Gecko (Firefox). The approach follows Aave Labs' [Building Glass for the Web](https://aave.com/design/building-glass-for-the-web); the bundled code is an independent implementation, verified screenshot-by-screenshot in all three engines. Live site and docs: https://liquidglass.dev.
+Build glass that bends the content beneath its rim, with browser-specific fallbacks where refraction is unavailable. This skill ships the [tfdmendes/liquidglass fork](https://github.com/tfdmendes/liquidglass) of gentpan's implementation, based on Aave Labs' [Building Glass for the Web](https://aave.com/design/building-glass-for-the-web). Use the bundled modules together so the fork's rendering optimizations are retained. The upstream showcase at liquidglass.dev is not a versioned distribution of this fork.
 
 ## How it works
 
 1. **Refraction goes on `filter: url(#id)`, not `backdrop-filter`.** `backdrop-filter: url()` only renders in Chromium. A plain `filter` referencing an SVG filter works everywhere, but it bends the element's *own* pixels — so whatever should be bent must be inside the glass element: the real content, or a decorative copy of it.
 2. **The displacement map is generated at runtime from the lens shape.** Red/green = horizontal/vertical bend, blue = rim highlight, alpha = lens coverage, neutral grey 128 outside the lens. Pixels outside the lens pass through untouched, so text stays selectable and links clickable.
-3. **Moving is cheap, reshaping regenerates.** Moving a lens only changes filter sub-region coordinates; the map is redrawn only when shape or optics change (cached, only a quarter computed).
-4. **Surfaces without live DOM use WebGL with the same map.** Safari never runs SVG filters on a playing `<video>`; canvas content has no DOM either.
+3. **Moving reuses the map; reshaping checks the cache.** Recent exact shapes skip pixel generation. Different shapes that produce identical retained map pixels share the encoded image and decode. New maps use quadrant symmetry and a cached refraction profile.
+4. **Video and canvas use WebGL with the same map.** The renderer follows source and lens changes. Unchanged `ImageBitmap` sources and paused videos sleep between updates; canvas and `<img>` sources stay live because their pixels may change without an event.
 
 ## Step 1 — pick the path
 
-**Fastest: the ready-made web components.** If the project can load an ES module, use `assets/components.js` (copy it next to `assets/liquid-glass.js`, or load `https://liquidglass.dev/lib/components.js`). Elements: `lg-switch`, `lg-slider`, `lg-segmented`, `lg-button`, `lg-panel`, `lg-navbar`, `lg-menubar` + `lg-menu`, `toast()`, `lg-dock`, `lg-lens`. Usage, attributes and theming variables: [references/components.md](references/components.md).
+**Fastest: the ready-made web components.** If the project can load an ES module, copy `assets/components.js` next to `assets/liquid-glass.js` and load the local module. Elements: `lg-switch`, `lg-slider`, `lg-segmented`, `lg-button`, `lg-panel`, `lg-navbar`, `lg-menubar` + `lg-menu`, `toast()`, `lg-dock`, `lg-lens`. Usage, attributes and theming variables: [references/components.md](references/components.md).
 
 **Custom glass:** use the engine (`createGlass`) with one of these patterns:
 
@@ -40,7 +40,7 @@ import { createGlass, createSpring } from './lib/liquid-glass.js';
 
 const glass = createGlass(surface, { x: 40, y: 40, width: 180, height: 120, radius: 60, refraction: 28 });
 glass.update({ x: 120 });        // move: coordinates only, cheap
-glass.update({ width: 200 });    // reshape: new map (cached)
+glass.update({ width: 200 });    // reshape: reuse a cached map or generate one
 glass.update({ hidden: true });  // remove the lens without destroying it
 glass.destroy();                 // always on unmount
 ```
@@ -57,7 +57,7 @@ In frameworks: create after mount, `destroy()` on unmount; drive per-frame chang
 - **Motion makes it liquid.** Press → grow and squish (wider, shorter); drag → stretch with velocity; release → spring back (`createSpring`, which sub-steps so slow frames don't slow the animation). Switch and slider thumbs are **solid white at rest and turn into glass while pressed**, as on iOS.
 - The glass layer needs an **opaque background** (chroma sums channels in premultiplied space and over-counts alpha on transparent pixels), and **room to grow**: filter output is clipped to the element's border box.
 
-Starting values (from `assets/demo.html` and liquidglass.dev, checked in all three engines):
+Starting values from the bundled `assets/demo.html`; verify them against the application's actual backdrop:
 
 | Use | refraction | bezel | curvature | chroma | specular | notes |
 |---|---|---|---|---|---|---|
@@ -78,7 +78,7 @@ The bundled engine already does all of this. Keep it when writing or changing fi
 1. `primitiveUnits="objectBoundingBox"`. WebKit renders any HTML element whose filter uses `userSpaceOnUse` primitives as **completely blank**.
 2. In bounding-box units, `feDisplacementMap`'s `scale` is converted differently by each engine; compensate per engine (`bendScale`).
 3. `color-interpolation-filters="sRGB"`, or 128 stops meaning "no bend" and everything shifts.
-4. WebKit caches filter output per filter id: new id on every update; decode the map before swapping it in; re-issue the id shortly after a swap.
+4. WebKit and unknown engines refresh filter ids and retry after map swaps. Blink and Gecko keep stable ids and skip those retries. Reuse cached map decodes before swapping images into the filter.
 5. The `<svg>` holding the filters must not be `display: none`.
 6. Keep filtered surfaces small; never filter the whole page. WebKit caps a filter's input size and breaks large areas into tiles.
 7. `<video>` and canvas in Safari → WebGL.
@@ -90,10 +90,12 @@ Symptom → cause → fix, with the measurements: [references/browser-quirks.md]
 - Real controls stay native, focusable and labelled; copies and decoration are `aria-hidden="true"` with `pointer-events: none`; draw focus rings on the visible thumb (`input:focus-visible ~ .thumb`).
 - `prefers-reduced-motion`: `createSpring` jumps straight to the target; don't add squish on top.
 - `prefers-reduced-transparency` / `prefers-contrast: more`: stronger tint or a solid surface.
-- Text on glass: at least 4.5:1, guaranteed by the tint layer.
+- Text on glass: check at least 4.5:1 against the actual backdrop; adjust the tint or use a solid surface. A tint percentage alone does not guarantee contrast.
 - Without JavaScript the content renders normally — the filter is only attached once its map is ready.
 
 ## Step 5 — verify before handing over
+
+Resolve bundled script paths from this skill's directory. Use the application's existing test setup where available. When modifying the bundled engine or components, read [references/validation.md](references/validation.md) for the fork's regression suites and evidence limits.
 
 1. Serve the page (the project's dev server, or `python3 scripts/serve.py <dir>`). **Avoid browser-blocked ports** (e.g. 4190, 6000, 6665–6669, 10080): WebKit silently refuses them and the page stays `about:blank`.
 2. On macOS run `scripts/shoot.sh "<url>?hold=2500" <out-dir>` → Chrome (2x), WebKit (2x — the system WebKit is Safari's engine) and Firefox screenshots. **Crop and compare at full resolution**; don't judge from thumbnails. Check: the glass is present in all three, rims really bend, text outside the lens is crisp, controls line up with their copies.
@@ -104,10 +106,12 @@ Symptom → cause → fix, with the measurements: [references/browser-quirks.md]
 5. When possible, look at it on a real iPhone.
 6. When unsure how something should behave, open `assets/demo.html` through `serve.py`: `?pressed` freezes pressed states, `?auto` animates everything.
 
+Report which browsers, interactions and viewport sizes were checked. Separate macOS WKWebView and phone-sized layouts from physical iPhone testing; screenshots alone do not establish cache reuse, idle rendering or scroll-work reductions.
+
 ## Files
 
 - `assets/liquid-glass.js` — engine: map generation, filter graph, controller, springs
-- `assets/components.js` — the liquidglass.dev web components (needs `liquid-glass.js` beside it)
+- `assets/components.js` — the fork's web components (needs `liquid-glass.js` beside it)
 - `assets/glass-webgl.js` — WebGL renderer (video, canvas)
 - `assets/demo.html` — reference implementations of every pattern with a parameter panel
 - `scripts/serve.py` — static server with `?hold=<ms>`
@@ -118,3 +122,4 @@ Symptom → cause → fix, with the measurements: [references/browser-quirks.md]
 - `references/patterns.md` — code for each pattern and framework wiring
 - `references/browser-quirks.md` — compatibility, performance, measurements
 - `references/optics.md` — map encoding, filter graph, parameters, writing a filter by hand
+- `references/validation.md` — fork regression coverage, reproduction pointers and evidence limits

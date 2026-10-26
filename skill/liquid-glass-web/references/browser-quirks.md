@@ -1,6 +1,6 @@
 # Compatibility, performance and measurements
 
-Measured in 2026-09 with Chrome 153, the macOS 27.2 system WebKit (the same engine as Safari 27.2) and Firefox 156. Items marked "Aave" come from Aave's article; items marked "measured" were found with minimal A/B pages while building the bundled engine and liquidglass.dev.
+The compatibility observations below were recorded upstream in 2026-09 with Chrome 153, macOS 27.2 system WebKit and Firefox 156. Items marked "Aave" come from Aave's article; items marked "measured" are upstream A/B observations, not new tests of this fork. Current fork behavior is described below; the separate 2026-10-26 regression coverage and its limits are linked in [validation.md](validation.md).
 
 Contents: symptoms · units and scale · WebKit caching and map loading · performance · video · verification pitfalls
 
@@ -47,17 +47,18 @@ Engine detection by UA: `userAgentData.brands` containing Chromium → Blink; `F
 ## WebKit caching and map loading
 
 - Re-issuing the id: rename the same `<filter>` element and set `filter: url(#new-id)` on the element in the same frame. The old id need not survive.
-- Every map change is a new data URL. Decode it through an `<img>` (`decode()`) before writing it into `feImage`; this also avoids a blank frame in Blink.
+- A new map image is decoded through an `<img>` (`decode()`) before writing it into `feImage`; this also avoids a blank frame in Blink. Cached images reuse their data URL and decode promise, including maps with different geometry keys whose retained pixels are identical.
 - After the swap WebKit loads its own copy and does not repaint when that load lands, so re-issue the id again ~60 ms and ~250 ms later.
 - Leave the element unfiltered until the first map is ready — normal content beats a blank element.
 
 ## Performance
 
 - **Moving never redraws the map** — only sub-region fractions change. This is what keeps Aave's slider at full frame rate on phones.
-- **Reshaping redraws**: only the top-left quadrant is computed, then mirrored (x bend negated across the vertical axis, y bend across the horizontal one). Maps are LRU-cached by shape and optics, so a switch toggling between two states hits the cache.
+- **Reshaping checks the cache.** Recent exact shape/optics keys reuse a map without recalculating pixels. Otherwise, quadrant symmetry and a cached refraction profile reduce pixel-generation work; equal retained pixels reuse an existing PNG and decode. Pixel comparisons have a memory budget, so reuse across different geometry keys is not guaranteed for every map size.
 - `mapScale` defaults to devicePixelRatio capped at 2. For animations that request a new map every frame, 1 cuts the work to a quarter.
 - Every lens-related primitive is restricted to the lens rectangle, so cost scales with the lens, not the element. Aave saw sub-pixel flicker in Blink when restricting the highlight pass; with device-pixel snapping it did not reproduce here. If it does, widen that pass's sub-region to the whole element.
 - **Skip no-op updates.** The engine returns early when nothing changed, avoiding filter attribute writes. Blink and Gecko keep one filter id and skip the map-settling retries; WebKit and unknown engines retain id refreshes and the 60/250 ms retries. Backdrop copies only rewrite styles when their offset changes.
+- **Scroll realigns affected copies.** Scroll events are grouped into one animation frame; only copies affected by the scrolled container are considered, and offscreen copies skip alignment. Host resizing still uses the resize observer; source alignment is checked separately.
 - `will-change: filter` on filtered elements; keep a page to a few dozen glass elements at most.
 
 ## Video and canvas
@@ -65,6 +66,7 @@ Engine detection by UA: `userAgentData.brands` containing Chromium → Blink; `F
 - WebKit never runs SVG filters on a playing `<video>`: use WebGL with the video as a texture, one quad per lens, sampling the same displacement map (`renderLensMap` returns a canvas that uploads directly).
 - Fragment shaders work in CSS pixels and need highp (`#ifdef GL_FRAGMENT_PRECISION_HIGH`); mediump misplaces samples on wide canvases. A uniform used in both shaders must have the same precision in both or linking fails — use separate uniforms.
 - Cross-origin video needs `crossorigin="anonymous"` plus CORS headers, or `texImage2D` throws SecurityError.
+- `start()` follows source and lens changes. Video uses decoded-frame callbacks where available; paused video and unchanged `ImageBitmap` sources sleep between updates. Canvas and `<img>` sources remain continuous, including animated SVG images. `render()` explicitly draws one frame; `stop()` stops automatic scheduling; `destroy()` releases observers, listeners and GPU resources.
 
 ## Verification pitfalls
 

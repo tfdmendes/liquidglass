@@ -201,13 +201,14 @@ renderer.setLenses([
   { x: cx - 32, y: cy - 32, width: 64, height: 64, radius: 32, refraction: 14, bezel: 0.8, curvature: 3, chroma: 0.25, specular: 0.8, specularWidth: 1.5 },
   { x: 24, y: h - 28, width: w - 48, height: 12, radius: 6, refraction: 8, bezel: 1 },   // scrubber
 ]);
-renderer.start();              // redraw every frame; renderer.render() for one frame
+renderer.start();              // follow source and lens changes; renderer.render() draws once
 // relayout: setLenses again; move one lens: renderer.updateLens(i, { x })
 ```
 
 - Put real `<button>`s over the lenses (transparent background, white icons) for clicks, focus and screen readers; WebGL only paints.
 - Cross-origin video needs `crossorigin="anonymous"` and CORS headers.
 - The source `<video>` can sit under the canvas or at `opacity: 0`, but not `display: none` — some browsers stop decoding.
+- Paused videos and unchanged `ImageBitmap` sources sleep between updates. Canvas and `<img>` sources stay live; lens changes wake the renderer. Call `renderer.stop()` to stop automatic scheduling, and `renderer.destroy()` on unmount to release GPU resources and observers.
 
 ---
 
