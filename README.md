@@ -1,8 +1,10 @@
 # Liquid Glass
 
-This is a fork of [gentpan/liquidglass](https://github.com/gentpan/liquidglass) with optimizations that reduce repeated rendering work. The original glass engine and web components are by gentpan. This fork keeps their API and appearance, with additional regression tests and side-by-side comparisons.
+Liquid Glass is a JavaScript library that adds glass effects to web interfaces. It uses image distortion, blur and highlights to simulate a view through curved glass. The library provides a rendering engine and web components. The components include buttons, switches, sliders and menus.
 
-It provides glass buttons, switches, sliders, menus and lenses for the web. The library has no runtime dependencies and works with plain HTML or a framework.
+The library works with plain HTML and web frameworks. It runs without additional JavaScript libraries.
+
+This project is a fork of [gentpan/liquidglass](https://github.com/gentpan/liquidglass). The original engine and components are by gentpan. This fork reduces repeated rendering work and keeps the original programming interface and visual behavior.
 
 ## Use the engine
 
