@@ -1,0 +1,263 @@
+{
+  "base": "068ad226f53e1ca62d857f78bdc32f58f3c5fce7",
+  "candidateSHA256": "c7fd5e9903ed7a3248aa1eb1e49abd046b56aca6ac035913a432b0bce5ae66fc",
+  "visualSummary": "30 states per engine: Chrome 156 / Blink and Firefox 157 / Gecko, desktop 1280x900 and phone 390x844, DPR 1/2 plus fractional 1.25, and emulated reduced motion. Gecko delta 0. Chrome delta <=1 per channel; an independent original-versus-original control also reaches 1. Public renderLensMap PNGs match exactly across 20 fractional geometry/optics/scale cases per engine. System WKWebView / Safari 27.0.1 on macOS 27.0.1: desktop moving and phone pressed, backing DPR 2, four top-level captures. Original/candidate PNG files match byte for byte in both pairs. Each runtime also passed 10 fractional map cases and pending-alias/decode-order/destruction checks.",
+  "cpu": [
+    {
+      "engine": "Blink",
+      "summary": [
+        {
+          "workload": "button",
+          "originalMedianCPUms": 1440,
+          "candidateMedianCPUms": 1280,
+          "changePercent": -11.111111111111116
+        },
+        {
+          "workload": "segmented",
+          "originalMedianCPUms": 4590,
+          "candidateMedianCPUms": 4360,
+          "changePercent": -5.010893246187365
+        },
+        {
+          "workload": "mostly-unique",
+          "originalMedianCPUms": 2730,
+          "candidateMedianCPUms": 2770,
+          "changePercent": 1.46520146520146
+        }
+      ]
+    },
+    {
+      "engine": "Gecko",
+      "summary": [
+        {
+          "workload": "button",
+          "originalMedianCPUms": 2870,
+          "candidateMedianCPUms": 2380,
+          "changePercent": -17.07317073170732
+        },
+        {
+          "workload": "segmented",
+          "originalMedianCPUms": 4770,
+          "candidateMedianCPUms": 4560,
+          "changePercent": -4.402515723270439
+        },
+        {
+          "workload": "mostly-unique",
+          "originalMedianCPUms": 1850,
+          "candidateMedianCPUms": 1870,
+          "changePercent": 1.08108108108107
+        }
+      ]
+    }
+  ],
+  "cpuMethod": "Median of 3 fresh-browser trials, alternating order. CPU time is the macOS ps accumulated time for the browser and all descendants, including map rendering, equality checks, canvas upload, PNG encode/decode and rendering. Resolution: 10 ms per process. Shared-host variance is visible in the raw evidence; these figures are not CPU percentages. Fixed 60 Hz spring input steps are replayed faster than wall clock; this measures that accelerated workload, including the native paint work processed during it, rather than real-time interactive frame cost.",
+  "limits": "A unique map must still be fully rasterized. The 1200 mostly-unique-frame workload costs about 1.5% more median CPU in Blink and 1.1% in Gecko. Cache-held RGBA is capped at 8 MiB; the current raster (4 x map width x map height bytes), canvas, decoded browser images and PNG strings are additional. Larger maps retain PNG/geometry caching. Firefox used the same Gecko157 renderer with an isolated app-data name and a normal Firefox UA. No physical iPhone evidence. Native WebKit coverage is limited to the two captured states at backing DPR 2. Native DPR 1, native reduced-motion preferences, and arbitrary live page backdrops were not visually exhausted.",
+  "visual": [
+    {
+      "engine": "blink",
+      "browser": "156.0.8078.48",
+      "configurations": 6,
+      "states": 30,
+      "threshold": 1,
+      "maxObservedDelta": 1
+    },
+    {
+      "engine": "gecko",
+      "browser": "157.0",
+      "configurations": 6,
+      "states": 30,
+      "threshold": 0,
+      "maxObservedDelta": 0
+    }
+  ],
+  "baselineControl": {
+    "engine": "Blink",
+    "states": 30,
+    "maxObservedDelta": 1
+  },
+  "rawEvidenceDirectory": "/tmp/liquidglass-map-evidence",
+  "cpuRanges": [
+    {
+      "engine": "blink",
+      "workload": "button",
+      "originalRangeMs": [
+        1420,
+        1530
+      ],
+      "candidateRangeMs": [
+        1270,
+        1340
+      ]
+    },
+    {
+      "engine": "blink",
+      "workload": "segmented",
+      "originalRangeMs": [
+        3590,
+        4790
+      ],
+      "candidateRangeMs": [
+        4300,
+        4540
+      ]
+    },
+    {
+      "engine": "blink",
+      "workload": "mostly-unique",
+      "originalRangeMs": [
+        2710,
+        2820
+      ],
+      "candidateRangeMs": [
+        2770,
+        2850
+      ]
+    },
+    {
+      "engine": "gecko",
+      "workload": "button",
+      "originalRangeMs": [
+        2100,
+        3020
+      ],
+      "candidateRangeMs": [
+        1400,
+        3010
+      ]
+    },
+    {
+      "engine": "gecko",
+      "workload": "segmented",
+      "originalRangeMs": [
+        2880,
+        4840
+      ],
+      "candidateRangeMs": [
+        4300,
+        4630
+      ]
+    },
+    {
+      "engine": "gecko",
+      "workload": "mostly-unique",
+      "originalRangeMs": [
+        1830,
+        1870
+      ],
+      "candidateRangeMs": [
+        1810,
+        1899.9999999999998
+      ]
+    }
+  ],
+  "native": {
+    "checks": [
+      {
+        "ready": true,
+        "passed": true,
+        "variant": "original",
+        "state": "moving",
+        "engine": "webkit",
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)",
+        "dpr": 2,
+        "viewport": [
+          1280,
+          900
+        ],
+        "exactMapCases": 10,
+        "exactMaps": true,
+        "firstUnfiltered": true,
+        "aliasDecodes": 2,
+        "ordered": true,
+        "destroyed": true
+      },
+      {
+        "ready": true,
+        "passed": true,
+        "variant": "candidate",
+        "state": "moving",
+        "engine": "webkit",
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)",
+        "dpr": 2,
+        "viewport": [
+          1280,
+          900
+        ],
+        "exactMapCases": 10,
+        "exactMaps": true,
+        "firstUnfiltered": true,
+        "aliasDecodes": 1,
+        "ordered": true,
+        "destroyed": true
+      },
+      {
+        "ready": true,
+        "passed": true,
+        "variant": "original",
+        "state": "pressed",
+        "engine": "webkit",
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)",
+        "dpr": 2,
+        "viewport": [
+          390,
+          844
+        ],
+        "exactMapCases": 10,
+        "exactMaps": true,
+        "firstUnfiltered": true,
+        "aliasDecodes": 2,
+        "ordered": true,
+        "destroyed": true
+      },
+      {
+        "ready": true,
+        "passed": true,
+        "variant": "candidate",
+        "state": "pressed",
+        "engine": "webkit",
+        "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)",
+        "dpr": 2,
+        "viewport": [
+          390,
+          844
+        ],
+        "exactMapCases": 10,
+        "exactMaps": true,
+        "firstUnfiltered": true,
+        "aliasDecodes": 1,
+        "ordered": true,
+        "destroyed": true
+      }
+    ],
+    "visual": [
+      {
+        "width": 1280,
+        "state": "moving",
+        "encodedPNGsEqual": true,
+        "sha256": [
+          "e5392b2adde7a9a1a92d6852867feed658d17226ef5763edcfbdf85333751a19",
+          "e5392b2adde7a9a1a92d6852867feed658d17226ef5763edcfbdf85333751a19"
+        ],
+        "bytes": [
+          241180,
+          241180
+        ]
+      },
+      {
+        "width": 390,
+        "state": "pressed",
+        "encodedPNGsEqual": true,
+        "sha256": [
+          "8fae7a92035adbf57121ddea4c51d751776f1e6cc90cf4cc80588c38c0f98111",
+          "8fae7a92035adbf57121ddea4c51d751776f1e6cc90cf4cc80588c38c0f98111"
+        ],
+        "bytes": [
+          126666,
+          126666
+        ]
+      }
+    ],
+    "macOS": "27.0.1 (26A434)",
+    "Safari": "27.0.1"
+  }
+}
