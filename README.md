@@ -4,9 +4,36 @@ This is a fork of [gentpan/liquidglass](https://github.com/gentpan/liquidglass) 
 
 It provides glass buttons, switches, sliders, menus and lenses for the web. The library has no runtime dependencies and works with plain HTML or a framework.
 
-## Use it
+## Use the engine
 
-Copy `lib/liquid-glass.js` and `lib/components.js` into your project, keeping them in the same folder. Load your local copy:
+Copy `lib/liquid-glass.js` into your project. Serve the page through your app's web server so the browser can load the module.
+
+The engine refracts an element's own content and background. Give the element a size and visible content or a background:
+
+```html
+<div id="glass" style="width: 320px; height: 180px; background: #b6d0ee;">
+  Your content
+</div>
+
+<script type="module">
+  import { createGlass } from './lib/liquid-glass.js';
+
+  const glass = createGlass(document.getElementById('glass'), {
+    fit: true,
+    clip: true,
+    radius: 24,
+    blur: 2,
+  });
+</script>
+```
+
+`fit` tracks the element's size, `clip` rounds its outline, and `radius` and `blur` are in CSS pixels. Change settings with `glass.update({ blur: 4 })`. Call `glass.destroy()` when the element is no longer used to remove its filters and observers.
+
+The [core API reference](docs/index.html#api) covers lens position, size, refraction and other options. For video or canvas, also copy `lib/glass-webgl.js` and import its `createGlassRenderer` factory.
+
+### Web components
+
+For buttons, switches, sliders and other controls, copy `lib/components.js` beside `lib/liquid-glass.js` and load it instead:
 
 ```html
 <script type="module" src="./lib/components.js"></script>
@@ -25,7 +52,7 @@ For glass over a photo, mark the image as its backdrop:
 </div>
 ```
 
-The [component reference](docs/index.html) covers attributes, events and styling. The optional `lib/glass-webgl.js` renders glass over video or canvas; keep it beside `liquid-glass.js`.
+The [component reference](docs/index.html) covers attributes, events and styling.
 
 ## What changed
 
@@ -45,21 +72,6 @@ The next chart shows accumulated browser CPU time during an accelerated animatio
 ![Measured browser CPU time, including sample ranges and the cost of new maps](docs/performance/cpu-time.svg)
 
 Repeated shapes benefited from the cache. When nearly every map was new, median CPU time was about 1–1.5% higher in these samples. These numbers describe the measured workloads, rather than a fixed reduction in CPU use for every page.
-
-## Run the demo and comparisons
-
-You need Python 3. From the repository root:
-
-```sh
-python3 -m http.server 4180 --bind 127.0.0.1
-```
-
-`-m http.server` runs Python's built-in HTTP server. `4180` is the local port, and `--bind 127.0.0.1` limits it to this computer. Stop it with `Ctrl+C`.
-
-- [Demo](http://127.0.0.1:4180/)
-- [Original versus optimized comparisons](http://127.0.0.1:4180/review/)
-
-The comparison pages also open as standalone HTML files. They include replay controls, operation counts and the tested limits.
 
 ## Browser behavior
 
@@ -81,6 +93,8 @@ sh scripts/sync-skill.sh
 This copies the three library files into the bundled skill. Browser regression tests live in `tests/`; comparison builders and measurement records live in `review/`. They use Node.js and a separate Playwright installation; neither is required to use the library.
 
 See [the combined regression checks](review/combined-validation.md) for reproduction commands and the tested source hashes.
+
+The [side-by-side comparisons](review/README.md) include standalone HTML pages with replay controls, operation counts and coverage limits.
 
 ## Credits and license
 
