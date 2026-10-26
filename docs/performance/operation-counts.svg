@@ -1,13 +1,247 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="760" height="744" viewBox="0 0 760 744" role="img" aria-labelledby="title description">
-<title id="title">Measured operation counts</title>
-<desc id="description">Each change was measured separately against upstream 068ad22. Bars show operation counts, not CPU savings. Each row has its own unit and original = 100% scale. Map PNG encodes: 149 original to 41 candidate PNG encodes. Button · 12 cycles · Chrome / Blink. Initial SVG attribute writes: 182 original to 62 candidate SVG attribute mutations. Static lens · Chrome / Blink. Scroll geometry reads: 33,524 original to 8,561 candidate geometry API reads. 240 extra surfaces · 35 positions · Chrome. Idle WebGL source uploads: 18 original to 0 candidate source texture uploads. Unchanged ImageBitmap · 302 ms · Chrome.</desc>
-<metadata>Source: evidence.json; SHA-256: c0a594e4945862915435f7b7e2b859f2d87a61982de25674655336efbeb91c57</metadata>
-<style>svg{--lg-paper:#fbfaf7;--lg-ink:#21313a;--lg-muted:#52616a;--lg-old:#687b87;--lg-new:#087d6a;--lg-rule:#dce1df;color-scheme:light dark}
-@media(prefers-color-scheme:dark){svg{--lg-paper:#142027;--lg-ink:#edf1ec;--lg-muted:#b5c1c5;--lg-old:#a2b2bd;--lg-new:#72d6be;--lg-rule:#35464e}}
-text{font-family:Arial,Helvetica,sans-serif;font-size:22px;fill:var(--lg-ink);font-variant-numeric:tabular-nums}
-.paper{fill:var(--lg-paper)}.muted{fill:var(--lg-muted)}.old{fill:var(--lg-old)}.new{fill:var(--lg-new)}
-.old-line{stroke:var(--lg-old);fill:none}.new-line{stroke:var(--lg-new);fill:none}.rule{stroke:var(--lg-rule);fill:none}
-.title{font-size:32px;font-weight:700}.label{font-size:24px;font-weight:700}.value{font-size:26px;font-weight:700}</style>
-<rect width="760" height="744" class="paper"/>
-<text x="32" y="48" class="title" text-anchor="start">Measured operation counts</text><text x="32" y="82" class="muted" text-anchor="start">Original = 100% in each row · absolute counts at right</text><rect x="32" y="112" width="28" height="12" class="old"/><text x="74" y="126" class="" text-anchor="start">Original</text><rect x="242" y="112" width="28" height="12" class="new"/><text x="284" y="126" class="" text-anchor="start">Individual change</text><text x="32" y="176" class="label" text-anchor="start">Map PNG encodes</text><text x="32" y="204" class="muted" text-anchor="start" style="font-size:21px">Button · 12 cycles · Chrome / Blink</text><line x1="32" y1="219" x2="32" y2="268" class="rule" stroke-width="1"/><line x1="314" y1="219" x2="314" y2="268" class="rule" stroke-width="1"/><line x1="596" y1="219" x2="596" y2="268" class="rule" stroke-width="1"/><rect x="32" y="224" width="564.000" height="12" class="old"/><text x="728" y="237" class="value old" text-anchor="end">149</text><rect x="32" y="249" width="155.195" height="12" class="new"/><text x="728" y="262" class="value new" text-anchor="end">41</text><text x="32" y="294" class="label" text-anchor="start">Initial SVG attribute writes</text><text x="32" y="322" class="muted" text-anchor="start" style="font-size:21px">Static lens · Chrome / Blink</text><line x1="32" y1="337" x2="32" y2="386" class="rule" stroke-width="1"/><line x1="314" y1="337" x2="314" y2="386" class="rule" stroke-width="1"/><line x1="596" y1="337" x2="596" y2="386" class="rule" stroke-width="1"/><rect x="32" y="342" width="564.000" height="12" class="old"/><text x="728" y="355" class="value old" text-anchor="end">182</text><rect x="32" y="367" width="192.132" height="12" class="new"/><text x="728" y="380" class="value new" text-anchor="end">62</text><text x="32" y="412" class="label" text-anchor="start">Scroll geometry reads</text><text x="32" y="440" class="muted" text-anchor="start" style="font-size:21px">240 extra surfaces · 35 positions · Chrome</text><line x1="32" y1="455" x2="32" y2="504" class="rule" stroke-width="1"/><line x1="314" y1="455" x2="314" y2="504" class="rule" stroke-width="1"/><line x1="596" y1="455" x2="596" y2="504" class="rule" stroke-width="1"/><rect x="32" y="460" width="564.000" height="12" class="old"/><text x="728" y="473" class="value old" text-anchor="end">33,524</text><rect x="32" y="485" width="144.028" height="12" class="new"/><text x="728" y="498" class="value new" text-anchor="end">8,561</text><text x="32" y="530" class="label" text-anchor="start">Idle WebGL source uploads</text><text x="32" y="558" class="muted" text-anchor="start" style="font-size:21px">Unchanged ImageBitmap · 302 ms · Chrome</text><line x1="32" y1="573" x2="32" y2="622" class="rule" stroke-width="1"/><line x1="314" y1="573" x2="314" y2="622" class="rule" stroke-width="1"/><line x1="596" y1="573" x2="596" y2="622" class="rule" stroke-width="1"/><rect x="32" y="578" width="564.000" height="12" class="old"/><text x="728" y="591" class="value old" text-anchor="end">18</text><circle cx="32" cy="609" r="5" class="paper new-line" stroke-width="2"/><text x="728" y="616" class="value new" text-anchor="end">0</text><line x1="32" y1="648" x2="596" y2="648" class="rule" stroke-width="1"/><line x1="32" y1="648" x2="32" y2="654" class="rule" stroke-width="1"/><text x="32" y="680" class="muted" text-anchor="start">0%</text><line x1="314" y1="648" x2="314" y2="654" class="rule" stroke-width="1"/><text x="314" y="680" class="muted" text-anchor="middle">50%</text><line x1="596" y1="648" x2="596" y2="654" class="rule" stroke-width="1"/><text x="596" y="680" class="muted" text-anchor="end">100%</text><text x="32" y="718" class="muted" text-anchor="start" style="font-size:21px">Independent changes vs 068ad22 · counts do not measure CPU</text>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="518.4pt" height="547.2pt" viewBox="0 0 518.4 547.2" xmlns="http://www.w3.org/2000/svg" version="1.1" role="img" aria-labelledby="chart-title chart-description">
+<title id="chart-title">Rendering operation counts</title>
+<desc id="chart-description">Each optimization was measured separately against upstream 068ad22. Each row has its own unit; its original count is normalized to 100%. Counts are not CPU savings. Map PNG encodes: 149 original to 41 optimized PNG encodes. Button · 12 cycles · Chrome / Blink. Initial SVG attribute writes: 182 original to 62 optimized SVG attribute mutations. Static lens · Chrome / Blink. Scroll geometry reads: 33,524 original to 8,561 optimized geometry API reads. 240 extra surfaces · 35 positions · Chrome. Idle WebGL source uploads: 18 original to 0 optimized source texture uploads. Unchanged ImageBitmap · 302 ms · Chrome. Source: evidence.json; SHA-256: c0a594e4945862915435f7b7e2b859f2d87a61982de25674655336efbeb91c57</desc>
+<style>:root{--plot-paper:#ffffff;--plot-ink:#243247;--plot-muted:#5d6e83;--plot-grid:#e0e6ee;--plot-axis:#a6b3c3;--plot-original:#1171be;--plot-candidate:#dd5400;color-scheme:light dark}@media(prefers-color-scheme:dark){:root{--plot-paper:#111b27;--plot-ink:#edf2f8;--plot-muted:#aabbd0;--plot-grid:#304052;--plot-axis:#70859d;--plot-original:#79bcf5;--plot-candidate:#ffa56b}}</style>
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Liquid Glass performance figures / Matplotlib 3.11.0</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 547.2
+L 518.4 547.2
+L 518.4 0
+L 0 0
+z
+" style="fill: var(--plot-paper)"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 38.88 459.648
+L 391.392 459.648
+L 391.392 136.8
+L 38.88 136.8
+z
+" style="fill: var(--plot-paper)"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 38.88 459.648
+L 38.88 136.8
+" clip-path="url(#pa52980832d)" style="fill: none; stroke: var(--plot-grid); stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_2"/>
+     <g id="text_1">
+      <text style="font-size: 15px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Avant Garde', sans-serif; text-anchor: middle; fill: var(--plot-muted)" x="38.88" y="480.044484" transform="rotate(-0 38.88 480.044484)">0%</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 215.136 459.648
+L 215.136 136.8
+" clip-path="url(#pa52980832d)" style="fill: none; stroke: var(--plot-grid); stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_4"/>
+     <g id="text_2">
+      <text style="font-size: 15px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Avant Garde', sans-serif; text-anchor: middle; fill: var(--plot-muted)" x="215.136" y="480.044484" transform="rotate(-0 215.136 480.044484)">50%</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 391.392 459.648
+L 391.392 136.8
+" clip-path="url(#pa52980832d)" style="fill: none; stroke: var(--plot-grid); stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6"/>
+     <g id="text_3">
+      <text style="font-size: 15px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Avant Garde', sans-serif; text-anchor: middle; fill: var(--plot-muted)" x="391.392" y="480.044484" transform="rotate(-0 391.392 480.044484)">100%</text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2"/>
+   <g id="patch_3">
+    <path d="M 38.88 179.432492
+L 391.392 179.432492
+L 391.392 170.326523
+L 38.88 170.326523
+z
+" style="fill: var(--plot-original)"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 38.88 194.333169
+L 135.879946 194.333169
+L 135.879946 185.2272
+L 38.88 185.2272
+z
+" style="fill: var(--plot-candidate)"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 38.88 262.214031
+L 391.392 262.214031
+L 391.392 253.108062
+L 38.88 253.108062
+z
+" style="fill: var(--plot-original)"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 38.88 277.114708
+L 158.966505 277.114708
+L 158.966505 268.008738
+L 38.88 268.008738
+z
+" style="fill: var(--plot-candidate)"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 38.88 344.995569
+L 391.392 344.995569
+L 391.392 335.8896
+L 38.88 335.8896
+z
+" style="fill: var(--plot-original)"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 38.88 359.896246
+L 128.900738 359.896246
+L 128.900738 350.790277
+L 38.88 350.790277
+z
+" style="fill: var(--plot-candidate)"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 38.88 427.777108
+L 391.392 427.777108
+L 391.392 418.671138
+L 38.88 418.671138
+z
+" style="fill: var(--plot-original)"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 38.88 442.677785
+L 38.88 442.677785
+L 38.88 433.571815
+L 38.88 433.571815
+z
+" style="fill: var(--plot-candidate)"/>
+   </g>
+   <g id="line2d_7">
+    <defs>
+     <path id="m8f951b20a7" d="M 0 2.5
+C 0.663008 2.5 1.29895 2.236584 1.767767 1.767767
+C 2.236584 1.29895 2.5 0.663008 2.5 0
+C 2.5 -0.663008 2.236584 -1.29895 1.767767 -1.767767
+C 1.29895 -2.236584 0.663008 -2.5 0 -2.5
+C -0.663008 -2.5 -1.29895 -2.236584 -1.767767 -1.767767
+C -2.236584 -1.29895 -2.5 -0.663008 -2.5 0
+C -2.5 0.663008 -2.236584 1.29895 -1.767767 1.767767
+C -1.29895 2.236584 -0.663008 2.5 0 2.5
+z
+" style="stroke: var(--plot-candidate); stroke-width: 1.4"/>
+    </defs>
+    <g>
+     <use xlink:href="#m8f951b20a7" x="38.88" y="438.1248" style="fill: var(--plot-paper); stroke: var(--plot-candidate); stroke-width: 1.4"/>
+    </g>
+   </g>
+   <g id="patch_11">
+    <path d="M 38.88 459.648
+L 391.392 459.648
+" style="fill: none; stroke: var(--plot-axis); stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_4">
+    <text style="font-weight: 700; font-size: 17px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Avant Garde', sans-serif; text-anchor: start; fill: var(--plot-ink)" x="38.88" y="156.667569" transform="rotate(-0 38.88 156.667569)">Map PNG encodes</text>
+   </g>
+   <g id="text_5">
+    <text style="font-weight: 700; font-size: 17px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Avant Garde', sans-serif; text-anchor: end; fill: var(--plot-original)" x="475.99488" y="179.295523" transform="rotate(-0 475.99488 179.295523)">149</text>
+   </g>
+   <g id="text_6">
+    <text style="font-weight: 700; font-size: 17px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Avant Garde', sans-serif; text-anchor: end; fill: var(--plot-candidate)" x="475.99488" y="194.1962" transform="rotate(-0 475.99488 194.1962)">41</text>
+   </g>
+   <g id="text_7">
+    <text style="font-weight: 700; font-size: 17px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Avant Garde', sans-serif; text-anchor: start; fill: var(--plot-ink)" x="38.88" y="239.449108" transform="rotate(-0 38.88 239.449108)">Initial SVG attribute writes</text>
+   </g>
+   <g id="text_8">
+    <text style="font-weight: 700; font-size: 17px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Avant Garde', sans-serif; text-anchor: end; fill: var(--plot-original)" x="475.99488" y="262.077062" transform="rotate(-0 475.99488 262.077062)">182</text>
+   </g>
+   <g id="text_9">
+    <text style="font-weight: 700; font-size: 17px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Avant Garde', sans-serif; text-anchor: end; fill: var(--plot-candidate)" x="475.99488" y="276.977739" transform="rotate(-0 475.99488 276.977739)">62</text>
+   </g>
+   <g id="text_10">
+    <text style="font-weight: 700; font-size: 17px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Avant Garde', sans-serif; text-anchor: start; fill: var(--plot-ink)" x="38.88" y="322.230646" transform="rotate(-0 38.88 322.230646)">Scroll geometry reads</text>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 700; font-size: 17px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Avant Garde', sans-serif; text-anchor: end; fill: var(--plot-original)" x="475.99488" y="344.8586" transform="rotate(-0 475.99488 344.8586)">33,524</text>
+   </g>
+   <g id="text_12">
+    <text style="font-weight: 700; font-size: 17px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Avant Garde', sans-serif; text-anchor: end; fill: var(--plot-candidate)" x="475.99488" y="359.759277" transform="rotate(-0 475.99488 359.759277)">8,561</text>
+   </g>
+   <g id="text_13">
+    <text style="font-weight: 700; font-size: 17px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Avant Garde', sans-serif; text-anchor: start; fill: var(--plot-ink)" x="38.88" y="405.012185" transform="rotate(-0 38.88 405.012185)">Idle WebGL source uploads</text>
+   </g>
+   <g id="text_14">
+    <text style="font-weight: 700; font-size: 17px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Avant Garde', sans-serif; text-anchor: end; fill: var(--plot-original)" x="475.99488" y="427.640139" transform="rotate(-0 475.99488 427.640139)">18</text>
+   </g>
+   <g id="text_15">
+    <text style="font-weight: 700; font-size: 17px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Avant Garde', sans-serif; text-anchor: end; fill: var(--plot-candidate)" x="475.99488" y="442.540816" transform="rotate(-0 475.99488 442.540816)">0</text>
+   </g>
+  </g>
+  <g id="text_16">
+   <text style="font-weight: 700; font-size: 25px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Avant Garde', sans-serif; text-anchor: start; fill: var(--plot-ink)" x="36.288" y="30.096" transform="rotate(-0 36.288 30.096)">Rendering operations</text>
+  </g>
+  <g id="text_17">
+   <text style="font-size: 16px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Avant Garde', sans-serif; text-anchor: start; fill: var(--plot-muted)" x="36.288" y="55.2672" transform="rotate(-0 36.288 55.2672)">Four changes, measured separately</text>
+  </g>
+  <g id="text_18">
+   <text style="font-size: 14px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Avant Garde', sans-serif; text-anchor: end; fill: var(--plot-muted)" x="476.928" y="118.7424" transform="rotate(-0 476.928 118.7424)">Count</text>
+  </g>
+  <g id="text_19">
+   <text style="font-size: 15px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Avant Garde', sans-serif; text-anchor: start; fill: var(--plot-muted)" x="38.88" y="506.16" transform="rotate(-0 38.88 506.16)">Original = 100% within each row</text>
+  </g>
+  <g id="text_20">
+   <text style="font-size: 12.5px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Avant Garde', sans-serif; text-anchor: start; fill: var(--plot-muted)" x="38.88" y="531.8784" transform="rotate(-0 38.88 531.8784)">Upstream 068ad22 · operation counts, not CPU savings</text>
+  </g>
+  <g id="legend_1">
+   <g id="patch_12">
+    <path d="M 42.912 97.6935
+L 62.112 97.6935
+L 62.112 86.4935
+L 42.912 86.4935
+z
+" style="fill: var(--plot-original); stroke: var(--plot-original); stroke-linejoin: miter"/>
+   </g>
+   <g id="text_21">
+    <text style="font-size: 16px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Avant Garde', sans-serif; text-anchor: start; fill: var(--plot-ink)" x="74.912" y="97.6935" transform="rotate(-0 74.912 97.6935)">Original</text>
+   </g>
+   <g id="patch_13">
+    <path d="M 166.322 97.6935
+L 185.522 97.6935
+L 185.522 86.4935
+L 166.322 86.4935
+z
+" style="fill: var(--plot-candidate); stroke: var(--plot-candidate); stroke-linejoin: miter"/>
+   </g>
+   <g id="text_22">
+    <text style="font-size: 16px; font-family: 'DejaVu Sans', 'Arial', 'Helvetica', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Avant Garde', sans-serif; text-anchor: start; fill: var(--plot-ink)" x="198.322" y="97.6935" transform="rotate(-0 198.322 97.6935)">Optimized</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pa52980832d">
+   <rect x="38.88" y="136.8" width="352.512" height="322.848"/>
+  </clipPath>
+ </defs>
 </svg>
