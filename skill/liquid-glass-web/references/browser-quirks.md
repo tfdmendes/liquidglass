@@ -57,7 +57,7 @@ Engine detection by UA: `userAgentData.brands` containing Chromium → Blink; `F
 - **Reshaping redraws**: only the top-left quadrant is computed, then mirrored (x bend negated across the vertical axis, y bend across the horizontal one). Maps are LRU-cached by shape and optics, so a switch toggling between two states hits the cache.
 - `mapScale` defaults to devicePixelRatio capped at 2. For animations that request a new map every frame, 1 cuts the work to a quarter.
 - Every lens-related primitive is restricted to the lens rectangle, so cost scales with the lens, not the element. Aave saw sub-pixel flicker in Blink when restricting the highlight pass; with device-pixel snapping it did not reproduce here. If it does, widen that pass's sub-region to the whole element.
-- **Skip no-op updates.** Every flush re-issues the id, which repaints the glass. Pages with many glass elements call `update()` on every scroll frame; the engine returns early when nothing changed, and backdrop copies only rewrite styles when their offset changes.
+- **Skip no-op updates.** The engine returns early when nothing changed, avoiding filter attribute writes. Blink and Gecko keep one filter id and skip the map-settling retries; WebKit and unknown engines retain id refreshes and the 60/250 ms retries. Backdrop copies only rewrite styles when their offset changes.
 - `will-change: filter` on filtered elements; keep a page to a few dozen glass elements at most.
 
 ## Video and canvas
