@@ -83,13 +83,36 @@ test('hover and keyboard focus keep the lens on the committed selection', async 
   assert.equal(await page.locator('#navigation').evaluate((c) => c.current), 2);
 });
 
-test('pressing an unselected item starts the drag there without committing early', async (t) => {
+test('clicks animate from the visible position without jumping on press or release', async (t) => {
+  const page = await open(t);
+  const before = await page.locator('#navigation').evaluate((c) => {
+    window.positions = [];
+    const sample = (phase) => positions.push({ phase, x: c.x });
+    document.addEventListener('pointerdown', () => sample('down'));
+    document.addEventListener('pointerup', () => sample('up'));
+    const frame = () => { sample('frame'); if (positions.length < 120) requestAnimationFrame(frame); };
+    requestAnimationFrame(frame);
+    return { x: c.x, target: c.metrics[1].x };
+  });
+  await page.locator('#navigation > a').nth(1).click();
+  await page.waitForFunction(() => document.querySelector('#navigation').current === 1);
+  await settle(page);
+  const positions = await page.evaluate(() => positions);
+  assert.equal(positions.find((p) => p.phase === 'down').x, before.x);
+  assert(positions.some((p) => p.phase === 'frame' && p.x > before.x + 1 && p.x < before.target - 1));
+  const up = positions.findIndex((p) => p.phase === 'up');
+  assert(Math.abs(positions[up].x - positions[up - 1].x) < Math.abs(before.target - before.x) / 2);
+  assert.equal(await page.locator('#navigation').evaluate((c) => c.x), before.target);
+});
+
+test('pressing an unselected item approaches smoothly and keeps the drag anchored there', async (t) => {
   const page = await open(t);
   const start = await grab(page, 'navigation', 1);
-  const pressed = await page.locator('#navigation').evaluate((c) => ({ x: c.x, item: c.metrics[1].x, current: c.current }));
-  assert.equal(pressed.x, pressed.item);
+  const pressed = await page.locator('#navigation').evaluate((c) => ({ origin: c.gesture.origin, item: c.metrics[1].x, current: c.current }));
+  assert.equal(pressed.origin, pressed.item);
   assert.equal(pressed.current, 0);
   assert.deepEqual(await page.evaluate(() => changes), []);
+  await settle(page);
   await page.mouse.move(start.x + 130, start.y, { steps: 8 });
   assert.equal(await page.locator('#navigation').evaluate((c) => c.current), 0);
   await page.mouse.up();
