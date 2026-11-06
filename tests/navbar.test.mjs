@@ -60,6 +60,45 @@ async function grab(page, id = 'navigation', index = 0, inset = 15) {
   return point;
 }
 
+test('hover and keyboard focus keep the lens on the committed selection', async (t) => {
+  const page = await open(t);
+  await page.locator('#navigation > a').nth(1).click();
+  await page.waitForFunction(() => document.querySelector('#navigation').current === 1);
+  await settle(page);
+  const before = await page.locator('#navigation').evaluate((c) => ({ x: c.x, target: c.target, current: c.current }));
+  const count = await page.evaluate(() => changes.length);
+  for (const index of [0, 2, 1, 0]) {
+    const item = page.locator('#navigation > a, #navigation > button').nth(index);
+    await item.hover();
+    await item.focus();
+    assert.deepEqual(await page.locator('#navigation').evaluate((c) => ({ x: c.x, target: c.target, current: c.current })), before);
+  }
+  await page.keyboard.press('End');
+  assert.equal(await page.evaluate(() => document.activeElement.textContent), 'All photos');
+  assert.deepEqual(await page.locator('#navigation').evaluate((c) => ({ x: c.x, target: c.target, current: c.current })), before);
+  assert.equal(await page.evaluate(() => changes.length), count);
+  await page.keyboard.press(' ');
+  await page.waitForFunction(() => document.querySelector('#navigation').current === 2);
+  await settle(page);
+  assert.equal(await page.locator('#navigation').evaluate((c) => c.current), 2);
+});
+
+test('pressing an unselected item starts the drag there without committing early', async (t) => {
+  const page = await open(t);
+  const start = await grab(page, 'navigation', 1);
+  const pressed = await page.locator('#navigation').evaluate((c) => ({ x: c.x, item: c.metrics[1].x, current: c.current }));
+  assert.equal(pressed.x, pressed.item);
+  assert.equal(pressed.current, 0);
+  assert.deepEqual(await page.evaluate(() => changes), []);
+  await page.mouse.move(start.x + 130, start.y, { steps: 8 });
+  assert.equal(await page.locator('#navigation').evaluate((c) => c.current), 0);
+  await page.mouse.up();
+  await settle(page);
+  assert.equal(await page.locator('#navigation').evaluate((c) => c.current), 2);
+  assert.equal(await page.evaluate(() => changes.length), 1);
+  assert.deepEqual(await page.evaluate(() => activations), []);
+});
+
 test('press lifts the lens, drag keeps the grab offset and fixed labels, release selects without navigation', async (t) => {
   const page = await open(t);
   const start = await grab(page);
@@ -96,8 +135,10 @@ test('native click, keyboard activation, form submit and programmatic selection 
   assert.equal(await page.locator('#navigation').evaluate((c) => c.current), 1);
   await page.keyboard.press('Enter');
   assert.equal(new URL(page.url()).hash, '#library');
+  await page.waitForFunction(() => document.querySelector('#navigation').current === 0);
   await page.keyboard.press('End');
   await page.keyboard.press(' ');
+  await page.waitForFunction(() => document.querySelector('#navigation').current === 2);
   assert.equal(await page.locator('#navigation').evaluate((c) => c.current), 2);
   await page.locator('#form > button').nth(1).click();
   assert.equal(await page.evaluate(() => submits), 1);

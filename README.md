@@ -54,7 +54,7 @@ Try every component in the [live showcase](https://tfdmendes.github.io/liquidgla
 
 The segmented control supports click, keyboard and press-and-drag selection. Its lens follows the pointer and snaps to an enabled option on release. Use `radius="capsule"` for a capsule outline.
 
-The navbar’s indicator enlarges while held and follows a drag across the row. Release to select an item without opening its link. Click or use normal keyboard activation to follow a link; arrow keys preview items without selecting them. See the [navbar reference](docs/index.html#navbar) to handle selection changes.
+The navbar’s indicator enlarges while held and follows a drag across the row. Release to select an item without opening its link. Click or use normal keyboard activation to follow a link; hover and keyboard focus keep the indicator on the selected item. See the [navbar reference](docs/index.html#navbar) to handle selection changes.
 
 See the [component reference](docs/index.html) for attributes, events and examples, or [theming](docs/index.html#theming) for CSS variables.
 

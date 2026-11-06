@@ -1038,12 +1038,6 @@ class LgNavbar extends LgElement {
     this.copy = el('span', 'lg-nav__copy', { 'aria-hidden': 'true' });
     this.fillCopy();
     for (const link of this.links) {
-      link.addEventListener('pointerenter', (e) => {
-        if (!this.gesture && !this.disabled && !this.unavailable(link) && e.pointerType !== 'touch') this.moveTo(this.links.indexOf(link));
-      });
-      link.addEventListener('focus', () => {
-        if (!this.gesture && !this.disabled && !this.unavailable(link)) this.moveTo(this.links.indexOf(link));
-      });
       link.addEventListener('click', (e) => {
         if (link.localName === 'a' && (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || (link.target && link.target !== '_self') || link.hasAttribute('download'))) return;
         // A later listener can still cancel native activation, including one on document
@@ -1069,10 +1063,6 @@ class LgNavbar extends LgElement {
     this.addEventListener('pointercancel', (e) => this.endDrag(e, true));
     this.addEventListener('lostpointercapture', (e) => this.endDrag(e, true));
     this.addEventListener('dragstart', (e) => e.preventDefault());
-    this.addEventListener('pointerleave', () => { if (!this.gesture) this.moveTo(this.restTarget()); });
-    this.addEventListener('focusout', (e) => {
-      if (!this.gesture && !this.contains(e.relatedTarget)) this.moveTo(this.current);
-    });
     this.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.gesture) {
         e.preventDefault();
@@ -1218,11 +1208,6 @@ class LgNavbar extends LgElement {
     this.ordered = [...this.metrics].sort((a, b) => a.x - b.x);
   }
 
-  restTarget() {
-    const focused = this.links.indexOf(document.activeElement);
-    return focused >= 0 && !this.unavailable(this.links[focused]) ? focused : this.current;
-  }
-
   beginDrag(e) {
     if (!this.gesture) this.suppressUntil = 0;
     const link = e.target.closest('a, button');
@@ -1231,6 +1216,11 @@ class LgNavbar extends LgElement {
     const rect = this.getBoundingClientRect();
     const scale = rect.width / (parseFloat(getComputedStyle(this).width) || this.offsetWidth) || 1;
     this.xs.stop();
+    const x = (e.clientX - rect.left) / scale;
+    const y = (e.clientY - rect.top) / scale;
+    const lens = this.geometry();
+    // Catch a moving lens where it is, or lift the newly pressed item
+    if (x < lens.x || x > lens.x + lens.w || y < lens.y || y > lens.y + lens.h) this.moveTo(this.links.indexOf(link), true);
     this.gesture = { id: e.pointerId, link, rect, scale, startX: e.clientX, startY: e.clientY, origin: this.x, motion: reducedMotion.matches, samples: [{ x: this.x, time: e.timeStamp }], dragging: false, velocity: 0 };
     // Capturing on the pressed link keeps a normal tap's native activation target
     link.setPointerCapture(e.pointerId);
