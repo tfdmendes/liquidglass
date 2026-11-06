@@ -87,7 +87,7 @@ test('clicks animate from the visible position without jumping on press or relea
   const page = await open(t);
   const before = await page.locator('#navigation').evaluate((c) => {
     window.positions = [];
-    const sample = (phase) => positions.push({ phase, x: c.x });
+    const sample = (phase) => positions.push({ phase, x: c.x, target: c.xs.target });
     document.addEventListener('pointerdown', () => sample('down'));
     document.addEventListener('pointerup', () => sample('up'));
     const frame = () => { sample('frame'); if (positions.length < 120) requestAnimationFrame(frame); };
@@ -101,8 +101,35 @@ test('clicks animate from the visible position without jumping on press or relea
   assert.equal(positions.find((p) => p.phase === 'down').x, before.x);
   assert(positions.some((p) => p.phase === 'frame' && p.x > before.x + 1 && p.x < before.target - 1));
   const up = positions.findIndex((p) => p.phase === 'up');
+  assert.equal(positions[up].target, before.target);
   assert(Math.abs(positions[up].x - positions[up - 1].x) < Math.abs(before.target - before.x) / 2);
   assert.equal(await page.locator('#navigation').evaluate((c) => c.x), before.target);
+});
+
+test('the painted glass and its shadow stay aligned throughout a click', async (t) => {
+  const page = await open(t);
+  await page.locator('#navigation').evaluate((c) => {
+    window.paintSamples = [];
+    window.paintActive = true;
+    const frame = () => {
+      if (!paintActive) return;
+      setTimeout(() => {
+        if (!paintActive) return;
+        const inset = c.copy.style.clipPath.match(/^inset\(([^)]*)\)/)?.[1].split(' round ')[0].trim().split(/\s+/).map(parseFloat);
+        if (inset?.length !== 4) return;
+        const shadowX = parseFloat(c.shadow.style.transform.match(/translate\(([^,]+)/)?.[1]);
+        paintSamples.push(Math.abs(inset[3] - Math.round((shadowX + 16) * devicePixelRatio) / devicePixelRatio));
+      }, 0);
+      requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  });
+  await page.locator('#navigation > a').nth(1).click({ delay: 50 });
+  await page.waitForFunction(() => document.querySelector('#navigation').current === 1);
+  await settle(page);
+  const samples = await page.evaluate(() => { paintActive = false; return paintSamples; });
+  assert(samples.length > 5);
+  assert(Math.max(...samples) <= 0.5, `Glass and shadow separated by ${Math.max(...samples)} CSS pixels`);
 });
 
 test('pressing an unselected item approaches smoothly and keeps the drag anchored there', async (t) => {
@@ -120,6 +147,23 @@ test('pressing an unselected item approaches smoothly and keeps the drag anchore
   assert.equal(await page.locator('#navigation').evaluate((c) => c.current), 2);
   assert.equal(await page.evaluate(() => changes.length), 1);
   assert.deepEqual(await page.evaluate(() => activations), []);
+});
+
+test('a rapid drag from an unselected item catches up without jumping and selects the drop target', async (t) => {
+  const page = await open(t);
+  await page.locator('#navigation').evaluate((c) => {
+    window.pickupJumps = [];
+    let before;
+    document.addEventListener('pointermove', () => { before = c.gesture && !c.gesture.dragging ? c.x : undefined; }, true);
+    document.addEventListener('pointermove', () => { if (before !== undefined && c.gesture?.dragging) pickupJumps.push(Math.abs(c.x - before)); });
+  });
+  const start = await grab(page, 'navigation', 1);
+  await page.mouse.move(start.x + 120, start.y);
+  assert(Math.max(...await page.evaluate(() => pickupJumps)) <= 0.5);
+  await page.mouse.up();
+  await settle(page);
+  assert.equal(await page.locator('#navigation').evaluate((c) => c.current), 2);
+  assert.equal(await page.evaluate(() => changes.length), 1);
 });
 
 test('press lifts the lens, drag keeps the grab offset and fixed labels, release selects without navigation', async (t) => {
