@@ -124,7 +124,7 @@ code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
 .feedback-content p { font-size: 32px; font-weight: 500; letter-spacing: -.04em; }
 .feedback-content lg-button { min-height: 48px; padding-inline: 22px; font-size: 14px; --lg-tint-strong: var(--feedback-tint); --lg-text: var(--feedback-ink); }
 .feedback-content output { font-size: 13px; }
-.feedback-scene .lg-toast-region { top: 100px; width: 100%; }
+.feedback-scene .lg-toast-region { top: auto; bottom: 18px; width: 100%; }
 .feedback-scene lg-toast { --lg-tint-strong: var(--feedback-menu-tint); --lg-text: var(--feedback-ink); max-width: calc(100% - 32px); }
 .component-footnote { margin-top: 60px; font-size: 14px; color: var(--muted); max-width: 70ch; }
 .component-footnote code { font-size: 13px; }

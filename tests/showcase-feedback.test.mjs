@@ -57,6 +57,13 @@ for (const width of [1440, 390]) {
     await scene.getByRole('button', { name: 'Show notification' }).click();
     await scene.locator('lg-toast').waitFor();
     assert.equal(await scene.locator('lg-toast').evaluate((node) => node.surface.glass.params.blur), frosted.button);
+    await scene.locator('#material-menu .lg-menu__trigger').click();
+    await page.waitForFunction(() => document.querySelector('#material-menu').os.value === 1);
+    assert(await scene.locator('#material-menu .lg-menu__items > button[value="aurora"]').evaluate((node) => {
+      const rect = node.getBoundingClientRect();
+      return node.contains(document.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2));
+    }), 'Notifications must not cover material choices');
+    await scene.locator('#material-menu .lg-menu__items > button').first().press('Escape');
 
     await choose('#style-menu', 'soft');
     const soft = await scene.locator('lg-menubar').evaluate((node) => node.surface.glass.params.blur);
