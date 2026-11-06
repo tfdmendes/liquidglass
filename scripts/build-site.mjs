@@ -1,0 +1,58 @@
+import { createHash } from 'node:crypto';
+import { copyFileSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { extname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { buildShowcase } from './build-showcase.mjs';
+
+const root = new URL('../', import.meta.url);
+const output = new URL('dist/', root);
+const mediaTypes = ['.svg', '.png', '.jpg', '.jpeg', '.webp', '.avif', '.gif', '.ico'];
+
+function verifyBenchmarkEvidence() {
+  const raster = JSON.parse(readFileSync(new URL('docs/performance/raster-spans-results.json', root), 'utf8'));
+  const animation = JSON.parse(readFileSync(new URL('showcase/recorded-fps.json', root), 'utf8'));
+  function requireHash(recorded, expected, description) {
+    if (!/^[a-f0-9]{64}$/.test(recorded) || recorded !== expected) {
+      throw Error(`Stale benchmark evidence: ${description}. Update the recorded evidence before publishing`);
+    }
+  }
+  for (const file of ['liquid-glass.js', 'glass-webgl.js', 'components.js']) {
+    const actual = createHash('sha256').update(readFileSync(new URL(`lib/${file}`, root))).digest('hex');
+    requireHash(animation.sourceSHA256?.current?.[file], actual, `recorded animation hash does not match lib/${file}`);
+  }
+  requireHash(raster.sourceSHA256?.new, animation.sourceSHA256?.current?.['liquid-glass.js'], 'raster and animation current core hashes differ');
+  requireHash(raster.sourceSHA256?.previous, animation.sourceSHA256?.previous?.['liquid-glass.js'], 'raster and animation previous core hashes differ');
+}
+
+function copyPublicTree(source, destination, extensions) {
+  mkdirSync(destination, { recursive: true });
+  for (const entry of readdirSync(source, { withFileTypes: true })) {
+    if (entry.name.startsWith('.')) continue;
+    const input = new URL(entry.name + (entry.isDirectory() ? '/' : ''), source);
+    const target = new URL(entry.name + (entry.isDirectory() ? '/' : ''), destination);
+    if (entry.isDirectory()) copyPublicTree(input, target, extensions);
+    else if (entry.isFile() && extensions.includes(extname(entry.name).toLowerCase())) copyFileSync(input, target);
+  }
+}
+
+export function buildSite() {
+  verifyBenchmarkEvidence();
+  rmSync(output, { recursive: true, force: true });
+  mkdirSync(output, { recursive: true });
+  for (const name of ['index.html', 'LICENSE', 'robots.txt', 'sitemap.xml']) copyFileSync(new URL(name, root), new URL(name, output));
+  copyPublicTree(new URL('lib/', root), new URL('lib/', output), ['.js']);
+  copyPublicTree(new URL('assets/', root), new URL('assets/', output), [...mediaTypes, '.css', '.js', '.woff', '.woff2', '.ttf', '.otf', '.mp4', '.webm']);
+  copyFileSync(new URL('assets/fonts/OFL.txt', root), new URL('assets/fonts/OFL.txt', output));
+  copyPublicTree(new URL('images/', root), new URL('images/', output), mediaTypes);
+  mkdirSync(new URL('docs/', output), { recursive: true });
+  for (const name of ['index.html', 'deployment.md']) copyFileSync(new URL(`docs/${name}`, root), new URL(`docs/${name}`, output));
+  copyPublicTree(new URL('docs/performance/', root), new URL('docs/performance/', output), ['.html', '.md', '.svg', '.json']);
+  buildShowcase(fileURLToPath(new URL('showcase/', output)));
+  copyFileSync(new URL('showcase/README.md', root), new URL('showcase/README.md', output));
+  writeFileSync(new URL('.nojekyll', output), '');
+  return fileURLToPath(output);
+}
+
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  console.log(`Built static site: ${buildSite()}`);
+}

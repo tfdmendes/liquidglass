@@ -1,7 +1,7 @@
 # Straight-edge optimization and animation FPS
 
-The second optimization pass compares the engine delivered earlier in this chat
-with the new core. The generated [comparison website](../../showcase/README.md)
+The second optimization pass compares the previous optimized engine with the current core.
+The generated [comparison website](https://github.com/tfdmendes/liquidglass/blob/main/showcase/README.md)
 contains source snapshots; its `builds/manifest.json` identifies every module
 by SHA-256. `previous` is the first optimization pass,
 `current` is rebuilt from `lib/`, and the optional `original` is our earlier
@@ -13,6 +13,8 @@ calculations and resolution. Wide lenses benefit; circular lenses retain the
 same pixel path. Both the SVG and WebGL renderers use this map generator.
 
 ## Map generation
+
+![Current-engine map and unique-lens update timing comparison](current-map-time.svg)
 
 Seven alternating paired samples, elapsed milliseconds per operation at map
 scale 2. These are a fresh comparison against `previous`, independent of the
@@ -47,12 +49,14 @@ reshaping changes geometry and light angle. Static WebGL sources use the
 existing ImageBitmap source type. Each animation step calls the explicit
 WebGL `render()` method, including its source-refresh behavior, in both builds.
 
-The compact [recorded report](../../showcase/recorded-fps.json) retains
+The compact [recorded report](https://github.com/tfdmendes/liquidglass/blob/main/showcase/recorded-fps.json) retains
 configuration, settings, summary, medians, ranges, trial counts, environment
 details, engine hashes and fixture hashes; individual frame intervals and trial
 data are omitted. The website shows its medians separately from measurements made on a visitor's device.
 
 Higher animation FPS is better. Lower update time is better:
+
+![Animation cadence with min–max trial ranges](current-animation-fps.svg)
 
 | Scene | Previous FPS | Current FPS | Previous update | Current update |
 | --- | ---: | ---: | ---: | ---: |
@@ -61,8 +65,10 @@ Higher animation FPS is better. Lower update time is better:
 | SVG, 24 cached moving lenses | 44.00 | 44.00 | 0.463 ms | 0.451 ms |
 | WebGL, 24 reshaping lenses | 60.00 | 60.00 | 7.88 ms | 7.02 ms |
 
+![Synchronous animation update time with min–max trial ranges](current-update-time.svg)
+
 The 12-lens SVG case gained 3.0% in median animation FPS in these samples, while
-the 24-lens SVG median fell by 3.0%. Ranges overlap in all four cases; these
+the 24-lens SVG median fell by 3.0%. FPS ranges overlap in all four cases; these
 samples do not establish a general FPS gain. Negative results are retained.
 WebGL stayed near the browser's roughly 60 Hz cadence cap while synchronous
 update work fell by about 11%. Faster map generation does not remove PNG, SVG
@@ -93,7 +99,7 @@ while Pause or benchmark disposal prevents further preview rAF requests.
 The headless visual inspector found no failures at 1440, 768 and 390 px. Its
 two advisory warnings concern the absence of prerecorded video and restrained
 parent-page motion; the site uses actual live lens rendering and suppresses
-other animation during benchmarks. [The design record](../../showcase/design.md)
+other animation during benchmarks. [The design record](https://github.com/tfdmendes/liquidglass/blob/main/showcase/design.md)
 documents the render review. Fresh checks used Chromium; Firefox, native
 WebKit and physical-phone performance were not rerun for this pass.
 

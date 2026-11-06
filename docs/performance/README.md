@@ -1,6 +1,24 @@
 # Performance evidence
 
-The [second raster pass and FPS measurements](fps.md) compare the first delivered optimization with the current engine and include a runnable comparison website. The [first raster pass](raster.md) compares the earlier integrated fork at `862e553` with the retained `previous` build. Both remain separate from the historical upstream comparisons below.
+## Current engine
+
+These figures use the recorded measurements from 6 November 2026. They compare the previous optimized build at `938df92` with the current engine. The generator checks that the recorded library hashes still match `lib/` before drawing them.
+
+![Current-engine map generation and unique-lens update times, with medians and min–max ranges](current-map-time.svg)
+
+The labels show absolute milliseconds on zero-based scales. Each workload has its own printed scale; compare Previous and Current within a workload. Points show medians and whiskers show the recorded minimum and maximum. Map timings use seven paired samples per build.
+
+![Recorded animation cadence for the previous and current engines](current-animation-fps.svg)
+
+![Recorded synchronous update times for the previous and current engines](current-update-time.svg)
+
+Animation measurements use three trials per build. FPS means browser `requestAnimationFrame` cadence, and update time is the median of the trials' mean synchronous update times. FPS ranges overlap, and the heavier SVG scene is slower in these samples. These results do not establish a general FPS gain.
+
+The [full methods and limits](fps.md), [raster report](raster-spans-results.json) and [animation report](https://github.com/tfdmendes/liquidglass/blob/main/showcase/recorded-fps.json) retain the source hashes and measurement details. Regenerating a figure redraws those records; it does not run a new benchmark. The current FPS runner differs from the runner identified in the saved report, so these plots are attributed to that recorded run.
+
+## Historical upstream measurements
+
+The [first raster pass](raster.md) compares the earlier integrated fork at `862e553` with the retained `previous` build. It remains separate from both the current-engine charts above and the independent upstream experiments below.
 
 These figures use measurements from the 26 October 2026 review. Each of the four
 changes was measured **independently** against upstream
@@ -57,10 +75,9 @@ the broader caveats below.
 | `scroll` | `surface-scroll-results.json` | Desktop/phone reads and phone repeat controls |
 | `webgl` | `webgl-demand-results.json` | The named idle ImageBitmap sample and its runtime |
 
-The figures are rendered with Matplotlib 3.11.0, using blue and orange from
-[MATLAB's current gem palette](https://www.mathworks.com/help/matlab/ref/colororder.html).
-The layout uses light grid lines and two vertically stacked CPU panels, so each
-engine remains readable on narrow screens. MATLAB itself is not required.
+All five figures are rendered with Matplotlib 3.11.0. The current-engine charts use a consistent light surface, direct labels and min–max whiskers. Their source and rendering code live in [`current_figures.py`](https://github.com/tfdmendes/liquidglass/blob/feat/liquidglass-showcase/docs/performance/current_figures.py). The [website](https://tfdmendes.github.io/liquidglass/#performance) reads the same recorded JSON into a responsive glass chart with selectable workloads.
+
+The historical figures retain blue and orange from [MATLAB's gem palette](https://www.mathworks.com/help/matlab/ref/colororder.html), light grid lines and two vertically stacked CPU panels. MATLAB itself is not required.
 
 Run from the repository root with Python 3 and the pinned plotting dependency.
 The first two commands create a temporary Python environment and install
@@ -69,9 +86,9 @@ Matplotlib and its dependencies there. `-m` runs the named Python module;
 globally or add a runtime dependency to the glass library. Remove
 `/tmp/liquidglass-plots` to remove that environment.
 
-The third command replaces only the two SVGs. The fourth checks their XML,
+The third command regenerates the five SVGs. The fourth checks their XML,
 recomputes CPU medians/ranges from the retained samples, checks them against the
-review summary and compares the generated SVGs byte for byte without writing.
+review summary, validates current library hashes and compares the generated SVGs byte for byte without writing.
 Regeneration redraws existing evidence; it does not rerun the browser benchmarks.
 
 ```sh
@@ -110,7 +127,9 @@ reduced-motion setting or live backdrop. Captured states do not prove every
 intermediate frame or historical browser version. Real background-tab suspension
 was not established by the synthetic visibility and viewport checks.
 
-The generated figures passed XML and deterministic-output checks. Browser image
+The historical figures passed XML and deterministic-output checks. Browser image
 renders were inspected at 760 px and 390 px in light and dark themes, with no
 horizontal overflow. This checks local SVG rendering; it is not a live GitHub
 or physical-phone test.
+
+The current-engine figures were rendered locally at 800 px and 358 px in both themes. Their text bounds had no clipping or overlap, and a separate visual review covered all three metrics at both sizes. These are presentation checks of the exported SVGs, separate from the recorded benchmark runs.

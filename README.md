@@ -1,16 +1,64 @@
-# Liquid Glass
+<p align="center">
+  <img src=".github/logos/liquid-glass-loop.png" width="160" height="160" alt="Liquid Glass logo">
+</p>
 
-Liquid Glass is a JavaScript library that adds glass effects to web interfaces. It uses image distortion, blur and highlights to simulate a view through curved glass. The library provides a rendering engine and web components. The components include buttons, switches, sliders and menus.
+<h1 align="center">Liquid Glass</h1>
 
-The library works with plain HTML and web frameworks. It runs without additional JavaScript libraries.
+Add refractive glass, frosted blur and edge highlights to web interfaces. Use ready-made web components or create your own effects with the JavaScript engine. No runtime dependencies, package manager or build step required.
 
-This project is a fork of [gentpan/liquidglass](https://github.com/gentpan/liquidglass). The original engine and components are by gentpan. This fork reduces repeated rendering work and keeps the original programming interface and visual behavior.
+[Live showcase](https://tfdmendes.github.io/liquidglass/) · [Documentation](https://tfdmendes.github.io/liquidglass/docs/) · [Quick start](#quick-start) · [Components](#components) · [Performance](#performance)
 
-## Use the engine
+![Live Liquid Glass playground with original optical materials](.github/screenshots/showcase.png)
 
-Copy `lib/liquid-glass.js` into your project. Serve the page through your app's web server so the browser can load the module.
+This is a fork of [gentpan/liquidglass](https://github.com/gentpan/liquidglass), focused on reducing repeated rendering work while retaining the original API. The original engine and components are by gentpan.
 
-The engine refracts an element's own content and background. Give the element a size and visible content or a background:
+## Quick start
+
+Copy [`lib/components.js`](lib/components.js) and [`lib/liquid-glass.js`](lib/liquid-glass.js) into a `lib/` directory in your project. Load the components once, then use them in your HTML:
+
+```html
+<script type="module" src="./lib/components.js"></script>
+
+<lg-button>Continue</lg-button>
+<lg-switch checked>Wi-Fi</lg-switch>
+<lg-slider value="40" label="Volume"></lg-slider>
+```
+
+Serve the page through your app's development server so the browser can load the modules. The library works with plain HTML and browser-based frameworks. See [the framework examples](docs/index.html#frameworks) for React and Vue.
+
+### Glass over an image
+
+Place a component over an image and set `data-lg-backdrop="img"` on their container. This tells the component which image to refract. Replace `photo.jpg` with an image in your project:
+
+```html
+<div data-lg-backdrop="img" style="position: relative; max-width: 640px;">
+  <img src="photo.jpg" alt="" style="display: block; width: 100%;">
+  <lg-button style="position: absolute; left: 24px; bottom: 24px;">
+    Continue
+  </lg-button>
+</div>
+```
+
+## Components
+
+| Purpose | Components |
+| --- | --- |
+| Controls | `<lg-button>`, `<lg-switch>`, `<lg-slider>`, `<lg-segmented>` |
+| Panels | `<lg-panel>` |
+| Navigation | `<lg-navbar>`, `<lg-dock>` |
+| Menus | `<lg-menubar>`, `<lg-menu>` |
+| Notifications | `<lg-toast>` and the `toast()` helper |
+| Custom lenses | `<lg-lens>` |
+
+Try every component in the [live showcase](https://tfdmendes.github.io/liquidglass/#components), including the movable lens, material picker, menus and notifications.
+
+The segmented control supports click, keyboard and press-and-drag selection. Its lens follows the pointer and snaps to an enabled option on release. Use `radius="capsule"` for a capsule outline.
+
+See the [component reference](docs/index.html) for attributes, events and examples, or [theming](docs/index.html#theming) for CSS variables.
+
+## Use the engine directly
+
+For a custom effect, copy only `lib/liquid-glass.js` and import `createGlass`. The engine bends the element's own content and background, so give it a size and something visible to render:
 
 ```html
 <div id="glass" style="width: 320px; height: 180px; background: #b6d0ee;">
@@ -29,111 +77,80 @@ The engine refracts an element's own content and background. Give the element a 
 </script>
 ```
 
-`fit` tracks the element's size, `clip` rounds its outline, and `radius` and `blur` are in CSS pixels. Change settings with `glass.update({ blur: 4 })`. Call `glass.destroy()` when the element is no longer used to remove its filters and observers.
+`fit` follows the element's size, `clip` trims it to the lens shape, and `radius` and `blur` use CSS pixels. Change settings with `glass.update({ blur: 4 })`. When removing the element, call `glass.destroy()` to release its filters and observers.
 
-The [core API reference](docs/index.html#api) covers lens position, size, refraction and other options. For video or canvas, also copy `lib/glass-webgl.js` and import its `createGlassRenderer` factory. Update the core and WebGL files together so their shared optical model stays consistent.
+The [core API reference](docs/index.html#api) covers positioning, lens shape and optical settings. For video or canvas, also copy `lib/glass-webgl.js` and use [`createGlassRenderer`](docs/index.html#webgl). Keep the core and WebGL files from the same revision so they share the same optical model.
 
-### Web components
+## Browser support
 
-For buttons, switches, sliders and other controls, copy `lib/components.js` beside `lib/liquid-glass.js` and load it instead:
+For components placed over a background, refraction depends on the backdrop and browser:
 
-```html
-<script type="module" src="./lib/components.js"></script>
-
-<lg-button>Continue</lg-button>
-<lg-switch checked>Wi-Fi</lg-switch>
-<lg-slider value="40" label="Volume"></lg-slider>
-```
-
-For glass over a photo, mark the image as its backdrop:
-
-```html
-<div data-lg-backdrop="img">
-  <img src="photo.jpg" alt="">
-  <lg-button>Continue</lg-button>
-</div>
-```
-
-The [component reference](docs/index.html) covers attributes, events and styling.
-
-`<lg-segmented>` supports press-and-drag selection with continuous label refraction.
-The lens grows while held and snaps to an enabled option on release. Click and
-keyboard selection remain available; `radius="capsule"` gives it a capsule outline.
-
-## What changed
-
-- **Map reuse:** identical lens pixels share an image instead of being encoded and decoded again. Recent exact shapes also avoid recalculating those pixels.
-- **Filter updates:** Chrome and Firefox keep a stable filter between updates. Safari retains the extra refreshes it needs.
-- **Scrolling:** only affected glass copies are realigned, with fewer size and position measurements.
-- **WebGL:** unchanged static image snapshots (`ImageBitmap`) and paused videos sleep between updates. Canvas and animated images stay live.
-- **Map generation:** straight edges avoid corner-distance calculations, and neutral interior spans are filled together.
-
-## Results
-
-The second raster pass compares the first delivered optimization with the current engine. Median fresh-map times fell by **30–52%** and synchronous unique-lens updates by **12%** across seven paired samples. All 640 raw map comparisons were byte-exact. Headless animation trials recorded **25.3 → 26.0 FPS** for 12 SVG lenses and approximately **60 FPS** for both WebGL builds, with overlapping ranges. The heavier SVG case was slightly slower; these samples do not establish a general FPS gain. See the [measurements and their limits](docs/performance/fps.md).
-
-The [comparison website](showcase/README.md) generates a standalone site with original, previous and current builds. It offers live previews, SVG/WebGL workloads, frame-time charts and downloadable device measurements. It runs locally without opening a browser automatically.
-
-The historical charts below compare each earlier change separately with upstream revision `068ad22`. Their workloads and full results are in [the performance notes](docs/performance/README.md).
-
-![Rendering operations before and after each optimization](docs/performance/operation-counts.svg)
-
-The next chart shows accumulated browser CPU time during an accelerated animation replay. Lower is better. Each case has three samples; the ranges show how much they varied.
-
-![Measured browser CPU time, including sample ranges and the cost of new maps](docs/performance/cpu-time.svg)
-
-Repeated shapes benefited from the cache. When nearly every map was new, median CPU time was about 1–1.5% higher in these samples. These numbers describe the measured workloads, rather than a fixed reduction in CPU use for every page.
-
-## Browser behavior
-
-| Glass placed over | Chrome | Safari / WebKit | Firefox |
+| Component backdrop | Chrome | Safari / WebKit | Firefox |
 | --- | --- | --- | --- |
-| A marked image | Refraction | Refraction | Refraction |
+| Image marked with `data-lg-backdrop` | Refraction | Refraction | Refraction |
 | Arbitrary page content | Refraction | Frosted blur | Frosted blur |
 
-Checks cover Chrome, Firefox and native macOS WebKit, including desktop and phone-sized layouts. Physical iPhone behavior has not been tested. See the [performance notes](docs/performance/README.md) for the exact coverage and capture limits.
+Recorded checks cover Chrome, Firefox and native macOS WebKit using desktop and phone-sized layouts. Physical iPhone behavior has not been tested. See the [validation coverage and limits](docs/performance/README.md#visual-evidence-limits).
+
+## Performance
+
+This fork reuses lens maps, reduces filter and scroll updates, and avoids idle WebGL redraws for unchanged image snapshots and paused videos.
+
+Recorded comparisons against the previous optimized build found:
+
+- **30–52% lower median time** to generate fresh maps.
+- **12% lower median time** for synchronous updates using unique lens shapes.
+- **640 byte-exact map comparisons**, with no changed pixels.
+
+![Live glass chart showing panel map time from 5.76 to 2.78 milliseconds, with recorded ranges](.github/screenshots/performance.png)
+
+The timing results use seven paired samples and describe specific workloads. Headless animation results did not establish a general FPS gain. Earlier cache measurements also showed a small CPU cost when most maps were new.
+
+- [Map and unique-lens update figures](docs/performance/current-map-time.svg)
+- [Animation cadence and recorded ranges](docs/performance/current-animation-fps.svg)
+- [Current benchmarks and limits](docs/performance/fps.md)
+- [Synchronous animation update times](docs/performance/current-update-time.svg)
+- [Historical charts and CPU measurements](docs/performance/README.md#historical-upstream-measurements)
+- [Run the comparison site on your device](showcase/README.md)
+
+## Try the demo locally
+
+From the repository root, use Node.js 22 or newer to build and serve the complete website, documentation and three-build comparison. `--port 4173` selects the local port. The server listens only on `127.0.0.1` and regenerates the disposable `dist/` folder:
+
+```sh
+node scripts/serve-site.mjs --port 4173
+```
+
+Open the [showcase and playground](http://127.0.0.1:4173/liquidglass/) or [documentation](http://127.0.0.1:4173/liquidglass/docs/). Stop the server with **Ctrl+C**. Delete `dist/` to remove the generated files. The comparison requires the repository's full Git history. See [publication and preview details](docs/deployment.md).
 
 ## Development
 
-The source files live in `lib/`. Their copies in `skill/liquid-glass-web/assets/` must stay in sync:
+Edit the source files in `lib/`. After changing the library, run these commands from the repository root to update the copies bundled with the [agent skill](skill/liquid-glass-web/SKILL.md) and check they match. The first overwrites the three copies in `skill/liquid-glass-web/assets/`; `--check` only reports differences. Review or revert the copied changes with Git:
 
 ```sh
-# Update the bundled library copies
 sh scripts/sync-skill.sh
-
-# Report drift without writing files
 sh scripts/sync-skill.sh --check
 ```
 
-This copies the three library files into the bundled skill. Browser regression tests live in `tests/`; comparison builders and measurement records live in `review/`. They use Node.js and a separate Playwright installation; neither is required to use the library.
+Browser regression tests require Node.js, an existing Playwright installation and browser binaries. Run the segmented-control suite with Node's built-in test runner (`--test`); it starts a temporary local server and closes it after the checks:
 
-Run segmented-control regression tests with `node --test tests/segmented.test.mjs`.
-Set `LG_PLAYWRIGHT_MODULE` to an existing Playwright `index.mjs` when it is installed
-outside this repository. `LG_BROWSER=firefox` selects Firefox; use
-`LG_FIREFOX_EXECUTABLE` or `LG_CHROME_EXECUTABLE` to select an existing browser binary.
-The suite serves a temporary loopback page and closes it after the checks.
-All Playwright runners share this configuration. Without an executable override,
-they use the browser installed by Playwright. Existing `PLAYWRIGHT_MODULE`,
-`CHROME_EXECUTABLE` (or `CHROME`) and `FIREFOX_EXECUTABLE` overrides remain accepted;
-the `LG_` variables take precedence. No runner installs browser software.
+```sh
+node --test tests/segmented.test.mjs
+```
 
-Fixtures live in `review/*-fixture.mjs`; `review/runtime-sources.mjs` reads Git
-history only when a comparison explicitly requests its baseline. The combined
-fixture extends the surface scene through preparation and readiness hooks.
-Screenshot comparisons decode browser PNGs through a local Node.js helper,
-without importing Playwright internals. Historical HTML and measurement files
-are retained; builders regenerate comparisons only when invoked explicitly.
+If Playwright is installed outside this repository, set `LG_PLAYWRIGHT_MODULE` to its `index.mjs` path. Chromium is the default; `LG_BROWSER=firefox` selects Firefox. Use `LG_CHROME_EXECUTABLE` or `LG_FIREFOX_EXECUTABLE` to choose an existing browser binary. Shared configuration, including legacy variable names, lives in [`review/browser-runtime.mjs`](review/browser-runtime.mjs).
 
-The site entry point is `assets/site.js`; language, code blocks, demonstrations,
-navigation and playground behavior live beside it in separate modules.
-[Refactor decisions](docs/refactor-decisions.md) record the boundaries and validation.
+For further development work:
 
-See [the combined regression checks](review/combined-validation.md) for reproduction commands and the tested source hashes.
-
-The [side-by-side comparisons](review/README.md) include standalone HTML pages with replay controls, operation counts and coverage limits.
+- [`tests/`](tests/) contains the browser regression suites.
+- [`review/`](review/README.md) contains comparison builders, fixtures and measurement records.
+- [Combined regression checks](review/combined-validation.md) document reproduction commands and tested source hashes.
+- [`assets/main.js`](assets/main.js) runs the showcase; [`assets/docs.js`](assets/docs.js) runs the reference pages.
+- [`DESIGN.md`](DESIGN.md) records the visual direction, original materials and interaction requirements.
+- [Refactor decisions](docs/refactor-decisions.md) explain the module boundaries.
 
 ## Credits and license
 
-The original project is [gentpan/liquidglass](https://github.com/gentpan/liquidglass). Its MIT license and copyright notice are preserved in [LICENSE](LICENSE).
+The original engine and components are by [gentpan](https://github.com/gentpan/liquidglass). This fork preserves the [MIT license and copyright notice](LICENSE).
 
-The rendering approach was described by Aave Labs in [Building Glass for the Web](https://aave.com/design/building-glass-for-the-web); gentpan wrote an independent implementation. Icons are from [Lucide](https://lucide.dev), under the ISC license. Demo wallpapers in `images/` belong to their respective owners and are not covered by the MIT license.
+The rendering approach was described by Aave Labs in [Building Glass for the Web](https://aave.com/design/building-glass-for-the-web); gentpan wrote an independent implementation. Icons are from [Lucide](https://lucide.dev), under the ISC license. The new showcase uses original procedural optical materials. Its self-hosted Albert Sans font includes the [SIL Open Font License](assets/fonts/OFL.txt). Historical comparison wallpapers in `images/` belong to their respective owners and are not covered by the MIT license.
