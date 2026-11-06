@@ -22,7 +22,7 @@ function renderMetric(mount, rows, { unit, note, initial = 0, higher = false }) 
   shell.setAttribute('data-ui', '');
   shell.setAttribute('data-lg-backdrop', 'img');
   const backdrop = element('img', 'benchmark-backdrop');
-  backdrop.src = asset('./material-lagoon.png');
+  backdrop.src = asset('./material-lagoon.webp');
   backdrop.alt = '';
   backdrop.width = 1800;
   backdrop.height = 1200;

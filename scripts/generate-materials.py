@@ -6,6 +6,7 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parent.parent
 WIDTH, HEIGHT = 1800, 1200
+THUMBNAIL_SIZE = (216, 144)
 Y, X = np.mgrid[0:HEIGHT, 0:WIDTH].astype(np.float32)
 X /= WIDTH
 Y /= HEIGHT
@@ -36,14 +37,12 @@ def material(name, colours):
     pixels *= shade[..., None]
     rng = np.random.default_rng(2904)
     pixels += rng.normal(0, 0.65, (HEIGHT, WIDTH, 1))
-    Image.fromarray(np.uint8(np.clip(pixels, 0, 255))).save(ROOT / "assets" / f"material-{name}.png", optimize=True)
+    image = Image.fromarray(np.uint8(np.clip(pixels, 0, 255)))
+    image.save(ROOT / "assets" / f"material-{name}.webp", quality=90, method=6)
+    thumbnail = image.resize(THUMBNAIL_SIZE, Image.Resampling.LANCZOS)
+    thumbnail.save(ROOT / "assets" / f"material-{name}-thumb.webp", quality=88, method=6)
 
 
-for material_name, material_colours in PALETTES.items():
-    material(material_name, material_colours)
-
-logo = Image.open(ROOT / "assets" / "brand" / "liquid-glass.png")
-logo.thumbnail((384, 384), Image.Resampling.LANCZOS)
-logo.save(ROOT / "assets" / "brand" / "liquid-glass.png", optimize=True)
-logo.thumbnail((64, 64), Image.Resampling.LANCZOS)
-logo.save(ROOT / "assets" / "brand" / "favicon.png", optimize=True)
+if __name__ == "__main__":
+    for material_name, material_colours in PALETTES.items():
+        material(material_name, material_colours)

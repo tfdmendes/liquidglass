@@ -20,7 +20,7 @@
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header container">
-    <a class="brand" href="./" aria-label="Liquid Glass home"><img src="./assets/brand/liquid-glass.png" width="42" height="42" alt=""><span>Liquid Glass</span></a>
+    <a class="brand" href="./" aria-label="Liquid Glass home"><img src="./assets/brand/liquid-glass-mark.png" width="42" height="42" alt=""><span>Liquid Glass</span></a>
     <nav class="nav-links" aria-label="Main navigation"><a href="#playground">Playground</a><a href="#components">Components</a><a href="#performance">Performance</a><a href="./docs/">Docs</a></nav>
     <a class="header-action" href="https://github.com/tfdmendes/liquidglass">GitHub <span aria-hidden="true">↗</span></a>
   </header>
@@ -32,7 +32,7 @@
       </div>
       <div class="optical-stage" data-ui>
         <lg-lens id="hero-lens" width="260" height="178" radius="56" x="61" y="53" refraction="14" bezel="0.3" chroma="0.08" specular="0.12" specular-width="0.75" tabindex="0" role="group" aria-label="Interactive glass lens" aria-describedby="lens-instructions">
-          <img class="hero-material" id="hero-material" src="./assets/material-lagoon.png" width="1800" height="1200" alt="Original blue contour artwork" fetchpriority="high">
+          <img class="hero-material" id="hero-material" src="./assets/material-lagoon.webp" width="1800" height="1200" alt="Original blue contour artwork" fetchpriority="high">
           <span class="stage-word" aria-hidden="true">Look closer.</span>
           <span class="stage-caption">Light has a way<br>of changing things.</span>
         </lg-lens>
@@ -41,10 +41,10 @@
       </div>
       <div class="material-console" data-ui>
         <div class="material-picker" role="group" aria-label="Backdrop material">
-          <button type="button" class="material-option" data-material="lagoon" aria-pressed="true"><img src="./assets/material-lagoon.png" width="72" height="52" alt=""><span>Lagoon</span></button>
-          <button type="button" class="material-option" data-material="aurora" aria-pressed="false"><img src="./assets/material-aurora.png" width="72" height="52" alt="" loading="lazy"><span>Aurora</span></button>
-          <button type="button" class="material-option" data-material="ember" aria-pressed="false"><img src="./assets/material-ember.png" width="72" height="52" alt="" loading="lazy"><span>Ember</span></button>
-          <button type="button" class="material-option" data-material="mono" aria-pressed="false"><img src="./assets/material-mono.png" width="72" height="52" alt="" loading="lazy"><span>Mono</span></button>
+          <button type="button" class="material-option" data-material="lagoon" aria-pressed="true"><img src="./assets/material-lagoon-thumb.webp" width="72" height="52" alt=""><span>Lagoon</span></button>
+          <button type="button" class="material-option" data-material="aurora" aria-pressed="false"><img src="./assets/material-aurora-thumb.webp" width="72" height="52" alt="" loading="lazy"><span>Aurora</span></button>
+          <button type="button" class="material-option" data-material="ember" aria-pressed="false"><img src="./assets/material-ember-thumb.webp" width="72" height="52" alt="" loading="lazy"><span>Ember</span></button>
+          <button type="button" class="material-option" data-material="mono" aria-pressed="false"><img src="./assets/material-mono-thumb.webp" width="72" height="52" alt="" loading="lazy"><span>Mono</span></button>
         </div>
         <div class="optics-controls">
           <div class="range-field"><div><span>Refraction</span><output id="refraction-value">14px</output></div><lg-slider id="refraction" min="0" max="36" value="14" label="Refraction" specular="0.12" specular-width="0.75"></lg-slider></div>
@@ -60,7 +60,7 @@
       <div class="component-row control-row">
         <div class="component-copy"><h3>Go ahead.<br>Touch everything.</h3><p>Slide, switch, press and drag. Native inputs do their job while the glass follows with a spring.</p><p class="component-names"><code>lg-switch</code> <code>lg-slider</code><br><code>lg-segmented</code> <code>lg-panel</code></p><a class="text-link" href="./docs/#switch">Explore the controls <span aria-hidden="true">↗</span></a></div>
         <div class="component-scene controls-scene" data-ui data-lg-backdrop="img">
-          <img src="./assets/material-mono.png" width="1800" height="1200" alt="Silver contour artwork behind the controls" loading="lazy">
+          <img src="./assets/material-mono.webp" width="1800" height="1200" alt="Silver contour artwork behind the controls" loading="lazy">
           <lg-panel class="control-panel" tone="light" radius="24" refraction="10" bezel="0.2" blur="2" specular="0.12" specular-width="0.75">
             <h4>Your space.</h4><lg-switch id="notifications" checked>Notifications</lg-switch>
             <div class="panel-range"><div><span>Tint</span><output id="tint-value">64%</output></div><lg-slider id="panel-tint" min="30" max="85" value="64" label="Panel tint" specular="0.12" specular-width="0.75"></lg-slider></div>
@@ -72,21 +72,21 @@
       <div class="component-row navigation-row">
         <div class="component-copy"><h3>A little direction.</h3><p>An indicator that follows your focus. A dock that responds to your pointer. Enough depth to guide the next move.</p><p class="component-names"><code>lg-navbar</code> <code>lg-dock</code></p><a class="text-link" href="./docs/#navbar">Explore navigation <span aria-hidden="true">↗</span></a></div>
         <div class="component-scene navigation-scene" id="navigation-scene" data-ui data-lg-backdrop="img">
-          <img id="navigation-material" src="./assets/material-aurora.png" width="1800" height="1200" alt="Green contour artwork behind the navigation" loading="lazy">
+          <img id="navigation-material" src="./assets/material-aurora.webp" width="1800" height="1200" alt="Green contour artwork behind the navigation" loading="lazy">
           <lg-navbar id="sample-navbar" aria-label="Preview content" tone="light" radius="18" refraction="10" bezel="0.2" specular="0.12" specular-width="0.75"><button type="button" data-view="explore" aria-current="page">Explore</button><button type="button" data-view="create">Create</button><button type="button" data-view="collect">Collect</button></lg-navbar>
           <div class="navigation-content"><p id="navigation-title">Follow your curiosity.</p><span id="navigation-description">Pick a colour. Find your material.</span></div>
           <lg-dock id="material-dock" radius="20" refraction="10" bezel="0.2" specular="0.12" specular-width="0.75" aria-label="Navigation backdrop">
-            <button type="button" data-backdrop="lagoon" aria-label="Use Lagoon backdrop"><img src="./assets/material-lagoon.png" width="44" height="44" alt="" loading="lazy"></button>
-            <button type="button" data-backdrop="aurora" aria-label="Use Aurora backdrop" aria-pressed="true"><img src="./assets/material-aurora.png" width="44" height="44" alt="" loading="lazy"></button>
-            <button type="button" data-backdrop="ember" aria-label="Use Ember backdrop"><img src="./assets/material-ember.png" width="44" height="44" alt="" loading="lazy"></button>
-            <button type="button" data-backdrop="mono" aria-label="Use Mono backdrop"><img src="./assets/material-mono.png" width="44" height="44" alt="" loading="lazy"></button>
+            <button type="button" data-backdrop="lagoon" aria-label="Use Lagoon backdrop"><img src="./assets/material-lagoon-thumb.webp" width="44" height="44" alt="" loading="lazy"></button>
+            <button type="button" data-backdrop="aurora" aria-label="Use Aurora backdrop" aria-pressed="true"><img src="./assets/material-aurora-thumb.webp" width="44" height="44" alt="" loading="lazy"></button>
+            <button type="button" data-backdrop="ember" aria-label="Use Ember backdrop"><img src="./assets/material-ember-thumb.webp" width="44" height="44" alt="" loading="lazy"></button>
+            <button type="button" data-backdrop="mono" aria-label="Use Mono backdrop"><img src="./assets/material-mono-thumb.webp" width="44" height="44" alt="" loading="lazy"></button>
           </lg-dock>
         </div>
       </div>
       <div class="component-row feedback-row">
         <div class="component-copy"><h3>A clear response.</h3><p>A menu opens where you expect it. A button gives under your hand. A toast confirms that something happened.</p><p class="component-names"><code>lg-menubar</code> <code>lg-menu</code><br><code>lg-button</code> <code>lg-toast</code></p><a class="text-link" href="./docs/#menu">Explore feedback <span aria-hidden="true">↗</span></a></div>
         <div class="component-scene feedback-scene" id="feedback-scene" data-ui data-lg-backdrop="img">
-          <img src="./assets/material-ember.png" width="1800" height="1200" alt="Warm contour artwork behind the menu" loading="lazy">
+          <img src="./assets/material-ember.webp" width="1800" height="1200" alt="Warm contour artwork behind the menu" loading="lazy">
           <lg-menubar tone="light" radius="16" refraction="10" bezel="0.2" specular="0.12" specular-width="0.75" aria-label="Material settings"><span class="menubar-name">Material</span><lg-menu id="style-menu" label="Style" tone="light" radius="16" refraction="10" bezel="0.2" blur="4" specular="0.12" specular-width="0.75"><button value="clear">Clear</button><button value="soft">Soft</button><button value="frosted">Frosted</button></lg-menu></lg-menubar>
           <div class="feedback-content"><p id="feedback-title">Clear and present.</p><lg-button id="notify-button" tone="light" radius="14" refraction="10" bezel="0.2" specular="0.12" specular-width="0.75">Show notification <span aria-hidden="true">↗</span></lg-button><output id="feedback-status">Clear material selected</output></div>
         </div>
@@ -120,7 +120,7 @@
   style="--lg-tint: rgb(8 32 58 / .22)"&gt;
   Hello, glass.
 &lt;/lg-button&gt;</code></pre>
-          <div class="install-preview" data-ui data-lg-backdrop="img"><img src="./assets/material-lagoon.png" width="1800" height="1200" alt="" loading="lazy"><lg-button id="hello-button" radius="14" refraction="18" bezel="0.35" blur="0.5" specular="0.4" specular-width="1">Hello, glass. <span aria-hidden="true">↗</span></lg-button><output id="hello-output">A real button. Give it a press.</output></div>
+          <div class="install-preview" data-ui data-lg-backdrop="img"><img src="./assets/material-lagoon.webp" width="1800" height="1200" alt="" loading="lazy"><lg-button id="hello-button" radius="14" refraction="18" bezel="0.35" blur="0.5" specular="0.4" specular-width="1">Hello, glass. <span aria-hidden="true">↗</span></lg-button><output id="hello-output">A real button. Give it a press.</output></div>
           <p class="download-links">Download <a href="./lib/components.js" download>components.js</a> + <a href="./lib/liquid-glass.js" download>liquid-glass.js</a></p>
         </div>
       </div>

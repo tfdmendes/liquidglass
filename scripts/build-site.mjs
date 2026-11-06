@@ -35,6 +35,20 @@ function copyPublicTree(source, destination, extensions) {
   }
 }
 
+function versionSiteAssets() {
+  const asset = (name) => new URL(`assets/${name}`, output);
+  const version = (name) => createHash('sha256').update(readFileSync(asset(name))).digest('hex').slice(0, 12);
+  const main = asset('main.js');
+  writeFileSync(main, readFileSync(main, 'utf8').replace("'./benchmarks.js'", `'./benchmarks.js?v=${version('benchmarks.js')}'`));
+  const versions = new Map(['site.css', 'docs.css', 'main.js', 'docs.js'].map(name => [name, version(name)]));
+  for (const name of ['index.html', 'docs/index.html']) {
+    const page = new URL(name, output);
+    let html = readFileSync(page, 'utf8');
+    for (const [file, hash] of versions) html = html.replaceAll(`assets/${file}"`, `assets/${file}?v=${hash}"`);
+    writeFileSync(page, html);
+  }
+}
+
 export function buildSite() {
   verifyBenchmarkEvidence();
   rmSync(output, { recursive: true, force: true });
@@ -47,6 +61,7 @@ export function buildSite() {
   mkdirSync(new URL('docs/', output), { recursive: true });
   for (const name of ['index.html', 'deployment.md']) copyFileSync(new URL(`docs/${name}`, root), new URL(`docs/${name}`, output));
   copyPublicTree(new URL('docs/performance/', root), new URL('docs/performance/', output), ['.html', '.md', '.svg', '.json']);
+  versionSiteAssets();
   buildShowcase(fileURLToPath(new URL('showcase/', output)));
   copyFileSync(new URL('showcase/README.md', root), new URL('showcase/README.md', output));
   writeFileSync(new URL('.nojekyll', output), '');

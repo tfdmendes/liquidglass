@@ -23,7 +23,7 @@ function updateLens() {
 for (const button of document.querySelectorAll('[data-material]')) {
   button.addEventListener('click', () => {
     state.material = button.dataset.material;
-    materialImage.src = new URL(`./material-${state.material}.png`, import.meta.url).href;
+    materialImage.src = new URL(`./material-${state.material}.webp`, import.meta.url).href;
     materialImage.alt = `Original ${state.material} contour artwork`;
     for (const option of document.querySelectorAll('[data-material]')) option.setAttribute('aria-pressed', String(option === button));
   });
@@ -89,7 +89,7 @@ async function copyCode(text, label) {
 }
 
 document.querySelector('#copy-preset').addEventListener('click', () => {
-  const material = `https://tfdmendes.github.io/liquidglass/assets/material-${state.material}.png`;
+  const material = `https://tfdmendes.github.io/liquidglass/assets/material-${state.material}.webp`;
   const code = `<script type="module" src="./lib/components.js"></script>\n<style>\n  .lens-preview { height: 360px; }\n  .lens-preview .lg-lens__content { height: 100%; }\n  .lens-preview img { width: 100%; height: 100%; object-fit: cover; }\n</style>\n\n<lg-lens class="lens-preview" width="${lens.size.w}" height="${lens.size.h}" radius="${lens.getAttribute('radius')}"\n  refraction="${state.refraction}" blur="${state.blur}" bezel="0.3"\n  chroma="0.08" specular="0.12" specular-width="0.75">\n  <img src="${material}" alt="Abstract optical material">\n</lg-lens>`;
   copyCode(code, 'Lens example');
 });
@@ -139,7 +139,7 @@ navigationImage.addEventListener('load', () => {
 for (const button of document.querySelectorAll('[data-backdrop]')) {
   button.addEventListener('click', () => {
     const material = button.dataset.backdrop;
-    document.querySelector('#navigation-material').src = new URL(`./material-${material}.png`, import.meta.url).href;
+    document.querySelector('#navigation-material').src = new URL(`./material-${material}.webp`, import.meta.url).href;
     document.querySelector('#navigation-material').alt = `Original ${material} contour artwork behind the navigation`;
     for (const item of document.querySelectorAll('[data-backdrop]')) item.setAttribute('aria-pressed', String(item === button));
   });
@@ -187,21 +187,3 @@ document.querySelector('#hello-button').addEventListener('click', () => {
   presses++;
   document.querySelector('#hello-output').textContent = presses === 1 ? 'Native click received.' : `${presses} native clicks received.`;
 });
-
-if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  document.documentElement.classList.add('motion-ready');
-  if ('IntersectionObserver' in window) {
-    const reveal = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        const visual = entry.target.classList.contains('component-scene');
-        entry.target.animate([
-          { opacity: visual ? 0.5 : 0, transform: visual ? 'translateY(24px)' : 'translateX(-14px)' },
-          { opacity: 1, transform: 'none' },
-        ], { duration: visual ? 850 : 650, easing: 'cubic-bezier(.22,1,.36,1)' });
-        reveal.unobserve(entry.target);
-      }
-    }, { threshold: 0.16 });
-    for (const element of document.querySelectorAll('.section-heading > *, .component-copy > *, .component-scene, .performance-copy > *, .performance-figures, .start-copy > *, .start-example, .footer-top > *')) reveal.observe(element);
-  }
-}

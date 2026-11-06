@@ -58,6 +58,11 @@ performance Python dependencies, deployment-server configuration, or `.env`
 files. Performance documents retain some links to repository-only source and
 design records; those records are not part of the website.
 
+Built pages include content versions in the site CSS and JavaScript URLs. The
+main module also versions its benchmark module import, so a deployment cannot
+combine cached PNG references with the new WebP assets. The canonical library
+files are copied without rewriting, preserving their recorded source hashes.
+
 ## GitHub Pages workflow
 
 `.github/workflows/pages.yml` builds and deploys on pushes to
