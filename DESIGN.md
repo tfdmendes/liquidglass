@@ -49,6 +49,8 @@ Default showcase optics use refraction 10px, bezel 0.2, specular strength 0.12 a
 
 The installation button uses a clearer material: a 22% navy tint, 18px refraction, 0.35 bezel, 0.5px blur and a 1px specular rim at strength 0.4. Its backdrop stays visible through the body, and the copyable example includes the same material settings. This replaces the rejected 85% white tint.
 
+The navigation demo uses a 10% white body tint and a 12% indicator tint, replacing the opaque 80% bar and 60% indicator. Its body uses 20px refraction, a 0.4 bezel, 0.6px blur and a 1px rim at strength 0.4. White labels stay legible over all four backdrops. The central copy also switches to white on Lagoon's blue field. Reduced transparency or increased contrast restores a near-solid light surface and a contrasting selection.
+
 ## Interaction and acceptance
 
 The lens can be dragged or moved with arrow keys. Material selection, refraction and frost update the actual lens and copyable code. The component examples change visible state, open a menu and show a real toast. All page controls remain usable on a phone. Page content appears immediately, without load or scroll reveals. The glass controls keep their interactive springs and respect reduced motion.

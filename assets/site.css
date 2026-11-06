@@ -100,9 +100,10 @@ code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
 .panel-status { display: block; font-size: 13px; margin-top: 20px; color: var(--lg-text); }
 .control-panel.is-dark { --lg-text: #f4f7fa; --lg-tint-strong: rgb(9 29 48 / .8); --lg-track: rgb(255 255 255 / .14); --lg-on: #248b71; --lg-track-off: #6d7d88; }
 .navigation-scene { min-height: 370px; flex-direction: column; justify-content: space-between; padding: 32px; color: white; }
-.navigation-scene lg-navbar { --lg-tint-strong: rgb(255 255 255 / .8); --lg-text: #163d37; padding: 4px; }
+.navigation-scene lg-navbar { --lg-tint: rgb(255 255 255 / .1); --lg-indicator: rgb(255 255 255 / .12); --lg-text: #fff; --lg-on-glass: #fff; --lg-focus: #fff; padding: 4px; }
 .navigation-scene lg-navbar > button, .navigation-scene .lg-nav__copy > * { font-size: 14px; padding: 11px 19px; }
 .navigation-content { text-align: center; padding: 30px 0; color: #103b35; }
+.navigation-scene:has(button[data-backdrop="lagoon"][aria-pressed="true"]) .navigation-content { color: #fff; }
 .navigation-content p { font-size: 32px; letter-spacing: -.04em; font-weight: 500; line-height: 1.1; }
 .navigation-content span { display: block; font-size: 14px; margin-top: 12px; }
 .navigation-scene lg-dock { --lg-tint: rgb(255 255 255 / .23); }
@@ -289,3 +290,7 @@ code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
   .footer-wordmark { padding-block: 42px; font-size: 14vw; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .navigation-scene lg-navbar { --lg-tint: rgb(255 255 255 / .95); --lg-indicator: rgb(20 40 59 / .95); --lg-text: #14283b; --lg-on-glass: #14283b; --lg-focus: #14283b; }
+  .navigation-scene .lg-nav__copy > span { color: #fff; }
+}

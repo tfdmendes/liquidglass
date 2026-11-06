@@ -116,6 +116,9 @@ document.querySelector('#panel-tint').addEventListener('input', (event) => {
   updateControls();
 });
 
+const navbar = document.querySelector('#sample-navbar');
+navbar.glass.update({ specular: 0.4, specularWidth: 1 });
+
 const views = {
   explore: ['Follow your curiosity.', 'Pick a colour. Find your material.'],
   create: ['Make room for ideas.', 'The controls are yours to compose.'],
