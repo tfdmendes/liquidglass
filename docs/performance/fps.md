@@ -7,6 +7,12 @@ by SHA-256. `previous` is the first optimization pass,
 `current` is rebuilt from `lib/`, and the optional `original` is our earlier
 integrated fork at `862e553`. It is not the original gentpan upstream.
 
+The recorded workloads import the core and WebGL engines directly. Their
+hashes still match the current engines. Components have changed since that
+run; the report keeps their original snapshot hash and does not measure the
+new navbar interaction. The generated manifest describes the files shipped
+today, separately from that historical report.
+
 The new core fills constant spans along straight top and bottom rims using the
 first pixel's already-converted RGBA value. It preserves the existing optical
 calculations and resolution. Wide lenses benefit; circular lenses retain the

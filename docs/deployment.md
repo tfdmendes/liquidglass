@@ -62,6 +62,8 @@ Built pages include content versions in the site CSS and JavaScript URLs. The
 main module also versions its benchmark module import, so a deployment cannot
 combine cached PNG references with the new WebP assets. The canonical library
 files are copied without rewriting, preserving their recorded source hashes.
+The main and docs modules also version their component import so the updated
+navbar is loaded after publication.
 
 ## GitHub Pages workflow
 

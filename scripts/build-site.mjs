@@ -16,7 +16,8 @@ function verifyBenchmarkEvidence() {
       throw Error(`Stale benchmark evidence: ${description}. Update the recorded evidence before publishing`);
     }
   }
-  for (const file of ['liquid-glass.js', 'glass-webgl.js', 'components.js']) {
+  // These workloads import the two engines directly, without the UI components
+  for (const file of ['liquid-glass.js', 'glass-webgl.js']) {
     const actual = createHash('sha256').update(readFileSync(new URL(`lib/${file}`, root))).digest('hex');
     requireHash(animation.sourceSHA256?.current?.[file], actual, `recorded animation hash does not match lib/${file}`);
   }
@@ -38,6 +39,11 @@ function copyPublicTree(source, destination, extensions) {
 function versionSiteAssets() {
   const asset = (name) => new URL(`assets/${name}`, output);
   const version = (name) => createHash('sha256').update(readFileSync(asset(name))).digest('hex').slice(0, 12);
+  const componentVersion = createHash('sha256').update(readFileSync(new URL('lib/components.js', output))).digest('hex').slice(0, 12);
+  for (const name of ['main.js', 'docs.js']) {
+    const module = asset(name);
+    writeFileSync(module, readFileSync(module, 'utf8').replace("'../lib/components.js'", `'../lib/components.js?v=${componentVersion}'`));
+  }
   const main = asset('main.js');
   writeFileSync(main, readFileSync(main, 'utf8').replace("'./benchmarks.js'", `'./benchmarks.js?v=${version('benchmarks.js')}'`));
   const versions = new Map(['site.css', 'docs.css', 'main.js', 'docs.js'].map(name => [name, version(name)]));

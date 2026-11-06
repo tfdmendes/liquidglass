@@ -230,7 +230,7 @@ fetch('./recorded-fps.json').then(response => response.ok ? response.json() : nu
   if (!recorded) return;
   const target = document.querySelector('#recorded-results');
   const title = document.createElement('h3'); title.textContent = 'Recorded on our test machine';
-  const text = document.createElement('p'); text.textContent = `${recorded.environment.browserProduct}, ${recorded.environment.headless ? 'headless' : 'visible browser'}, ${recorded.date.slice(0, 10)}. These saved results are separate from measurements on your device.`;
+  const text = document.createElement('p'); text.textContent = `${recorded.environment.browserProduct}, ${recorded.environment.headless ? 'headless' : 'visible browser'}, ${recorded.date.slice(0, 10)}. These engine-only results are separate from measurements on your device and do not measure navbar gestures.`;
   const link = document.createElement('a'); link.href = './recorded-fps.json'; link.textContent = 'Read the recorded summary and source hashes';
   const table = document.createElement('table'); table.setAttribute('aria-label', 'Recorded headless benchmark medians');
   const labels = ['Scene', 'Previous FPS', 'Current FPS', 'Previous update', 'Current update'];

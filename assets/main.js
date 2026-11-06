@@ -117,20 +117,17 @@ document.querySelector('#panel-tint').addEventListener('input', (event) => {
 });
 
 const navbar = document.querySelector('#sample-navbar');
-navbar.glass.update({ specular: 0.4, specularWidth: 1 });
 
 const views = {
   explore: ['Follow your curiosity.', 'Pick a colour. Find your material.'],
   create: ['Make room for ideas.', 'The controls are yours to compose.'],
   collect: ['Keep what moves you.', 'Four original materials. One optical engine.'],
 };
-for (const button of document.querySelectorAll('#sample-navbar > button')) {
-  button.addEventListener('click', () => {
-    const [title, description] = views[button.dataset.view];
-    document.querySelector('#navigation-title').textContent = title;
-    document.querySelector('#navigation-description').textContent = description;
-  });
-}
+navbar.addEventListener('change', (event) => {
+  const [title, description] = views[event.detail.value];
+  document.querySelector('#navigation-title').textContent = title;
+  document.querySelector('#navigation-description').textContent = description;
+});
 const navigationImage = document.querySelector('#navigation-material');
 navigationImage.addEventListener('load', () => {
   // Surfaces take a copy when attached, so replace it after the source changes

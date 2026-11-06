@@ -1,5 +1,5 @@
 """
-Render current-engine figures from recorded measurements whose library hashes still match
+Render current-engine figures from recorded measurements whose engine hashes still match
 """
 
 from dataclasses import dataclass
@@ -65,7 +65,8 @@ def load_measurements(root):
     raster = json.loads(raster_path.read_text())
     animation = json.loads(animation_path.read_text())
     current = animation["sourceSHA256"]["current"]
-    for filename, recorded_hash in current.items():
+    for filename in ("liquid-glass.js", "glass-webgl.js"):
+        recorded_hash = current[filename]
         if digest(repository / "lib" / filename) != recorded_hash:
             raise ValueError(f"Recorded current-engine data is stale: lib/{filename}")
     if raster["sourceSHA256"]["new"] != current["liquid-glass.js"]:

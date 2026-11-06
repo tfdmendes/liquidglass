@@ -55,7 +55,7 @@ With a marked backdrop every engine refracts (an aligned copy is bent). With non
 
 **`<lg-panel tone="light" radius backdrop>`** — frosted card (default blur 2; `blur="0"` for clear glass). Controls inside it should use `--lg-surface: transparent`.
 
-**`<lg-navbar tone="light">` with `<a>` or `<button>` children** — glass capsule; indicator follows the pointer and rests on `aria-current="page"`. `setCurrent(i)`, `refresh()`.
+**`<lg-navbar tone="light" disabled>` with direct `<a>` or `<button>` children** — indicator previews hover/focus, enlarges and refracts more while pressed, then selects the nearest enabled item on horizontal-drag release. Drag selects without clicking or navigating. Changed selection emits bubbling `change` with `detail: { index, item, value }`. Escape, pointer cancellation, blur, resize and scroll cancel without committing. Native activation remains; `preventDefault()` on a normal click cancels both its native action and selection. Arrows/Home/End only move focus and preview. `disabled` blocks activation, including middle clicks. `setCurrent(i)` is silent unless `{ emit: true }` is supplied; `refresh()` updates copied labels. Live `indicator-*` optics attributes tune the moving lens independently of the body’s unprefixed optics. Initial selection uses `aria-current="page"`.
 
 **`<lg-menubar>` with `<lg-menu label="File">` children** — floating glass-rod bar; menus open as frosted panels with a sliding glass highlight. Items are `<button>` (optional `data-shortcut`, `value`) and `<hr>`. `select` event on `lg-menu` (bubbles; `detail.item`, `detail.value`); `show()`, `close()`; arrow keys, Enter, Escape.
 

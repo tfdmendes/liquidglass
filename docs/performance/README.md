@@ -2,7 +2,7 @@
 
 ## Current engine
 
-These figures use the recorded measurements from 6 November 2026. They compare the previous optimized build at `938df92` with the current engine. The generator checks that the recorded library hashes still match `lib/` before drawing them.
+These figures use the recorded measurements from 6 November 2026. They compare the previous optimized build at `938df92` with the current engine. The generator checks that the recorded core and WebGL hashes still match `lib/` before drawing them. These workloads import the engines directly; they do not measure navbar gestures or other components. The reports preserve the full source snapshot from the recorded run, including the older component hash.
 
 ![Current-engine map generation and unique-lens update times, with medians and min–max ranges](current-map-time.svg)
 

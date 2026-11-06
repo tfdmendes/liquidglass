@@ -16,6 +16,7 @@ On this page, Liquid Glass's displacement maps become a material you can move an
 - The same map geometry supports SVG and an optional WebGL renderer
 - Springs respond to pointer velocity and respect reduced motion
 - Segmented controls support keyboard and press-and-drag selection
+- Navbar indicators enlarge and refract more strongly while pressed, then follow horizontal dragging
 - Current raster measurements show lower map generation costs and byte-identical output
 - Recorded animation trials do not establish a general FPS improvement
 - The fork retains gentpan's original engine/API and its MIT attribution
@@ -53,9 +54,11 @@ The navigation demo uses a 10% white body tint and a 12% indicator tint, replaci
 
 ## Interaction and acceptance
 
+The navbar indicator previews the hovered or keyboard-focused item at rest. A primary press lifts and enlarges it and strengthens the refraction of the copied labels. Horizontal dragging follows the pointer across the row with restrained stretch; release springs to the nearest enabled item and emits a selection change. Drag selection does not activate a link. Native clicks and keyboard activation retain their normal actions, while arrow keys, Home and End only move focus and preview. Cancellation restores the committed selection without an event. Body optics and indicator optics are independent. Reduced motion suppresses press enlargement and spring motion.
+
 The lens can be dragged or moved with arrow keys. Material selection, refraction and frost update the actual lens and copyable code. The component examples change visible state, open a menu and show a real toast. All page controls remain usable on a phone. Page content appears immediately, without load or scroll reveals. The glass controls keep their interactive springs and respect reduced motion.
 
-Check desktop, tablet and phone layouts, keyboard use, pointer dragging, menu dismissal, toast feedback, code copying, reduced motion and GitHub Pages' project prefix. Capture PNG only; native Chromium JPEG captures have produced stale SVG-filter geometry in this project.
+Check desktop, tablet and phone layouts, keyboard use, pointer dragging, navbar press/release and cancellation, native link activation, menu dismissal, toast feedback, code copying, reduced motion and GitHub Pages' project prefix. Capture PNG only; native Chromium JPEG captures have produced stale SVG-filter geometry in this project.
 
 ## Assets and publication
 
