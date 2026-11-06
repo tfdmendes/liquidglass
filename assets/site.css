@@ -115,7 +115,7 @@ code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
 .feedback-scene .lg-menu__panel { left: auto; right: 0; }
 .feedback-content { display: flex; align-items: center; flex-direction: column; gap: 22px; padding: 48px 0 10px; text-align: center; color: #49291e; }
 .feedback-content p { font-size: 32px; font-weight: 500; letter-spacing: -.04em; }
-.feedback-content lg-button { min-height: 48px; padding-inline: 22px; font-size: 14px; --lg-tint-strong: rgb(255 255 255 / .84); --lg-text: #4b281e; }
+.feedback-content lg-button { min-height: 48px; padding-inline: 22px; font-size: 14px; --lg-tint-strong: rgb(255 255 255 / .12); --lg-text: #3a2017; }
 .feedback-content output { font-size: 13px; }
 .feedback-scene .lg-toast-region { top: 100px; width: 100%; }
 .feedback-scene lg-toast { --lg-tint-strong: rgb(255 255 255 / .9); --lg-text: #452c24; max-width: calc(100% - 32px); }
@@ -175,7 +175,8 @@ code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
 .start-example pre { font-size: 14px; line-height: 1.8; padding: 24px; margin: 0; overflow-x: auto; color: #e1eef7; }
 .install-preview { position: relative; isolation: isolate; display: flex; flex-direction: column; gap: 28px; align-items: center; justify-content: center; min-height: 220px; margin: 0 12px; border-radius: 10px; overflow: hidden; }
 .install-preview > img { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; }
-.install-preview lg-button { min-height: 52px; padding-inline: 26px; --lg-tint-strong: rgb(255 255 255 / .85); --lg-text: #163755; }
+.install-preview lg-button { --lg-tint: rgb(8 32 58 / .22); --lg-on-glass: #ffffff; --lg-shadow-2: 0 8px 18px rgb(0 24 60 / .18); }
+.install-preview .lg-button__el { min-height: 56px; padding-inline: 28px; }
 .install-preview output { color: #153b57; font-size: 13px; }
 .download-links { padding: 20px 24px 24px; font-size: 13px; color: #c3d8e7; }
 .site-footer { padding-top: 70px; padding-bottom: 30px; }

@@ -108,16 +108,19 @@
     </section>
     <section class="start-section" id="start" aria-labelledby="start-title">
       <div class="container start-layout">
-        <div class="start-copy"><h2 id="start-title">Add a<br>little glass.</h2><p>Copy two files. Import once.<br>The rest is your HTML.</p><a class="button button--primary" href="./docs/#install">Read the installation guide <span aria-hidden="true">↗</span></a><p class="start-detail">No runtime dependencies.<br>No package manager required.</p></div>
+        <div class="start-copy"><h2 id="start-title">Add a<br> little glass.</h2><p>Copy two files. Import once.<br>The rest is your HTML.</p><a class="button button--primary" href="./docs/#install">Read the installation guide <span aria-hidden="true">↗</span></a><p class="start-detail">No runtime dependencies.<br>No package manager required.</p></div>
         <div class="start-example">
           <div class="snippet-heading"><span>Start with a button</span><button type="button" id="copy-install">Copy HTML</button></div>
           <pre><code id="install-code">&lt;script type="module"
   src="./lib/components.js"&gt;&lt;/script&gt;
 
-&lt;lg-button tone="light"&gt;
+&lt;lg-button radius="14" refraction="18"
+  bezel="0.35" blur="0.5"
+  specular="0.4" specular-width="1"
+  style="--lg-tint: rgb(8 32 58 / .22)"&gt;
   Hello, glass.
 &lt;/lg-button&gt;</code></pre>
-          <div class="install-preview" data-ui data-lg-backdrop="img"><img src="./assets/material-lagoon.png" width="1800" height="1200" alt="" loading="lazy"><lg-button id="hello-button" tone="light" radius="14" refraction="10" bezel="0.2" specular="0.12" specular-width="0.75">Hello, glass. <span aria-hidden="true">↗</span></lg-button><output id="hello-output">A real button. Give it a press.</output></div>
+          <div class="install-preview" data-ui data-lg-backdrop="img"><img src="./assets/material-lagoon.png" width="1800" height="1200" alt="" loading="lazy"><lg-button id="hello-button" radius="14" refraction="18" bezel="0.35" blur="0.5" specular="0.4" specular-width="1">Hello, glass. <span aria-hidden="true">↗</span></lg-button><output id="hello-output">A real button. Give it a press.</output></div>
           <p class="download-links">Download <a href="./lib/components.js" download>components.js</a> + <a href="./lib/liquid-glass.js" download>liquid-glass.js</a></p>
         </div>
       </div>

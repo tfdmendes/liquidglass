@@ -185,7 +185,7 @@ for (const button of tabs) {
 let presses = 0;
 document.querySelector('#hello-button').addEventListener('click', () => {
   presses++;
-  document.querySelector('#hello-output').textContent = presses === 1 ? 'Hello, you. That was a native click event.' : `${presses} native click events. Still feels good.`;
+  document.querySelector('#hello-output').textContent = presses === 1 ? 'Native click received.' : `${presses} native clicks received.`;
 });
 
 if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {

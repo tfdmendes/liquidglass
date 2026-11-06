@@ -47,6 +47,8 @@ The source inspector's remaining warnings are deliberate: this software is demon
 
 Default showcase optics use refraction 10px, bezel 0.2, specular strength 0.12 and highlight width 0.75px. These are page-level design choices. Library defaults remain unchanged.
 
+The installation button uses a clearer material: a 22% navy tint, 18px refraction, 0.35 bezel, 0.5px blur and a 1px specular rim at strength 0.4. Its backdrop stays visible through the body, and the copyable example includes the same material settings. This replaces the rejected 85% white tint.
+
 ## Interaction and acceptance
 
 The lens can be dragged or moved with arrow keys. Material selection, refraction and frost update the actual lens and copyable code. The component examples change visible state, open a menu and show a real toast. All page controls remain usable on a phone. Decorative entrance motion uses opacity and translation, with no hidden content when JavaScript is absent and no entrance animation under reduced motion.
