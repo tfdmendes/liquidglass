@@ -60,6 +60,8 @@ The navbar combines position, press and stretch updates into one paint per frame
 
 The lens can be dragged or moved with arrow keys. Material selection, refraction and frost update the actual lens and copyable code. The component examples change visible state, open a menu and show a real toast. All page controls remain usable on a phone. Page content appears immediately, without load or scroll reveals. The glass controls keep their interactive springs and respect reduced motion.
 
+In the feedback example, Material selects one of the four backdrops. Style changes the toolbar, menus, notification button and toast together: Clear uses 0px blur and 18px refraction, Soft uses 5px and 12px, and Frosted uses 16px and 8px, with matching surface tints. Menus expose the selected choices. Switching backdrops refreshes the image copies inside attached glass surfaces and preserves the selected finish.
+
 Check desktop, tablet and phone layouts, keyboard use, pointer dragging, navbar press/release and cancellation, native link activation, menu dismissal, toast feedback, code copying, reduced motion and GitHub Pages' project prefix. Capture PNG only; native Chromium JPEG captures have produced stale SVG-filter geometry in this project.
 
 ## Assets and publication

@@ -146,20 +146,63 @@ for (const button of document.querySelectorAll('[data-backdrop]')) {
 }
 
 const feedbackScene = document.querySelector('#feedback-scene');
+const feedbackImage = document.querySelector('#feedback-material');
+const styleMenu = document.querySelector('#style-menu');
+const materialMenu = document.querySelector('#material-menu');
 let style = 'clear';
+let feedbackMaterial = 'ember';
 let notification;
-const styles = { clear: ['Clear and present.', 0], soft: ['A softer perspective.', 3], frosted: ['Let the light through.', 7] };
-document.querySelector('#style-menu').addEventListener('select', (event) => {
+const styles = {
+  clear: { title: 'Clear and present.', blur: 0, refraction: 18 },
+  soft: { title: 'A softer perspective.', blur: 5, refraction: 12 },
+  frosted: { title: 'Let the light through.', blur: 16, refraction: 8 },
+};
+const materials = { lagoon: 'Lagoon', aurora: 'Aurora', ember: 'Ember', mono: 'Mono' };
+const feedbackSurfaces = () => [...feedbackScene.querySelectorAll('lg-menubar, lg-menu, lg-button, lg-toast')].map((component) => component.surface);
+const feedbackLabel = () => `${materials[feedbackMaterial]} · ${style[0].toUpperCase() + style.slice(1)} glass`;
+
+function updateFeedback() {
+  feedbackScene.dataset.style = style;
+  feedbackScene.dataset.feedbackMaterial = feedbackMaterial;
+  document.querySelector('#feedback-title').textContent = styles[style].title;
+  document.querySelector('#feedback-status').textContent = feedbackLabel();
+  for (const [menu, value] of [[materialMenu, feedbackMaterial], [styleMenu, style]]) {
+    for (const item of menu.items) {
+      item.setAttribute('role', 'menuitemradio');
+      item.setAttribute('aria-checked', String(item.value === value));
+    }
+  }
+  const { title, ...optics } = styles[style];
+  for (const surface of feedbackSurfaces()) {
+    Object.assign(surface.optics, optics, { bezel: 0.35, chroma: 0, specular: 0.4, specularWidth: 1 });
+    surface.glass?.update(surface.optics);
+  }
+}
+
+styleMenu.addEventListener('select', (event) => {
   style = event.detail.value;
-  document.querySelector('#feedback-title').textContent = styles[style][0];
-  document.querySelector('#feedback-status').textContent = `${style[0].toUpperCase() + style.slice(1)} material selected`;
-  document.querySelector('#notify-button').surface.glass.update({ blur: styles[style][1] });
+  updateFeedback();
+});
+materialMenu.addEventListener('select', (event) => {
+  feedbackMaterial = event.detail.value;
+  feedbackImage.src = new URL(`./material-${feedbackMaterial}.webp`, import.meta.url).href;
+  feedbackImage.alt = `Original ${materials[feedbackMaterial]} contour artwork behind the menu`;
+  updateFeedback();
+});
+feedbackImage.addEventListener('load', () => {
+  // Each surface holds an image copy, so replace it when the backdrop changes
+  for (const surface of feedbackSurfaces()) {
+    if (!surface.mode) continue;
+    surface.detach();
+    surface.attach();
+  }
 });
 document.querySelector('#notify-button').addEventListener('click', () => {
   notification?.close();
-  notification = toast(`${style[0].toUpperCase() + style.slice(1)} material selected`, { container: feedbackScene, tone: 'light', duration: 3200 });
-  notification.element.surface?.glass?.update({ refraction: 10, bezel: 0.2, specular: 0.12, specularWidth: 0.75 });
+  notification = toast(feedbackLabel(), { container: feedbackScene, tone: 'light', duration: 3200 });
+  updateFeedback();
 });
+updateFeedback();
 
 const tabs = [...document.querySelectorAll('.figure-tabs [role="tab"]')];
 function selectFigure(button) {

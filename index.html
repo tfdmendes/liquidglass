@@ -85,10 +85,10 @@
       </div>
       <div class="component-row feedback-row">
         <div class="component-copy"><h3>A clear response.</h3><p>A menu opens where you expect it. A button gives under your hand. A toast confirms that something happened.</p><p class="component-names"><code>lg-menubar</code> <code>lg-menu</code><br><code>lg-button</code> <code>lg-toast</code></p><a class="text-link" href="./docs/#menu">Explore feedback <span aria-hidden="true">↗</span></a></div>
-        <div class="component-scene feedback-scene" id="feedback-scene" data-ui data-lg-backdrop="img">
-          <img src="./assets/material-ember.webp" width="1800" height="1200" alt="Warm contour artwork behind the menu" loading="lazy">
-          <lg-menubar tone="light" radius="16" refraction="10" bezel="0.2" specular="0.12" specular-width="0.75" aria-label="Material settings"><span class="menubar-name">Material</span><lg-menu id="style-menu" label="Style" tone="light" radius="16" refraction="10" bezel="0.2" blur="4" specular="0.12" specular-width="0.75"><button value="clear">Clear</button><button value="soft">Soft</button><button value="frosted">Frosted</button></lg-menu></lg-menubar>
-          <div class="feedback-content"><p id="feedback-title">Clear and present.</p><lg-button id="notify-button" tone="light" radius="14" refraction="10" bezel="0.2" specular="0.12" specular-width="0.75">Show notification <span aria-hidden="true">↗</span></lg-button><output id="feedback-status">Clear material selected</output></div>
+        <div class="component-scene feedback-scene" id="feedback-scene" data-feedback-material="ember" data-style="clear" data-ui data-lg-backdrop="img">
+          <img id="feedback-material" src="./assets/material-ember.webp" width="1800" height="1200" alt="Original Ember contour artwork behind the menu" loading="lazy">
+          <lg-menubar tone="light" radius="16" refraction="18" bezel="0.35" specular="0.4" specular-width="1" aria-label="Material settings"><lg-menu id="material-menu" label="Material" tone="light" radius="16"><button value="lagoon">Lagoon</button><button value="aurora">Aurora</button><button value="ember">Ember</button><button value="mono">Mono</button></lg-menu><lg-menu id="style-menu" label="Style" tone="light" radius="16"><button value="clear">Clear</button><button value="soft">Soft</button><button value="frosted">Frosted</button></lg-menu></lg-menubar>
+          <div class="feedback-content"><p id="feedback-title">Clear and present.</p><lg-button id="notify-button" tone="light" radius="14" refraction="18" bezel="0.35" specular="0.4" specular-width="1">Show notification <span aria-hidden="true">↗</span></lg-button><output id="feedback-status">Ember · Clear glass</output></div>
         </div>
       </div>
       <p class="component-footnote">The lens above is <code>lg-lens</code>. All eleven elements use the same optical engine. <a href="./docs/#api">Or build your own with the core API ↗</a></p>

@@ -110,16 +110,22 @@ code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
 .navigation-scene lg-dock button { padding: 0; border-radius: 12px; background: transparent; }
 .navigation-scene lg-dock button img { width: 44px; height: 44px; object-fit: cover; border-radius: 11px; }
 .navigation-scene lg-dock button[aria-pressed="true"] { outline: 2px solid white; outline-offset: 3px; }
-.feedback-scene { min-height: 360px; align-items: stretch; flex-direction: column; justify-content: space-between; padding: 28px; }
-.feedback-scene lg-menubar { --lg-tint: rgb(255 255 255 / .67); --lg-on-glass: #3f2620; --lg-text: #3f2620; --lg-tint-strong: rgb(255 255 255 / .9); justify-content: space-between; padding: 6px 14px; text-shadow: none; } /* taste-skill-ignore: This removes the component's default text shadow */
-.menubar-name { font-weight: 600; font-size: 14px; padding-right: 40px; }
+.feedback-scene { --feedback-tint: rgb(255 255 255 / .12); --feedback-bar-tint: rgb(18 27 39 / .32); --feedback-menu-tint: rgb(255 255 255 / .6); --feedback-bar-ink: #fff; --feedback-ink: #49291e; min-height: 360px; align-items: stretch; flex-direction: column; justify-content: space-between; padding: 28px; }
+.feedback-scene[data-style="soft"] { --feedback-tint: rgb(255 255 255 / .3); --feedback-bar-tint: rgb(18 27 39 / .42); --feedback-menu-tint: rgb(255 255 255 / .7); }
+.feedback-scene[data-style="frosted"] { --feedback-tint: rgb(255 255 255 / .7); --feedback-bar-tint: rgb(255 255 255 / .78); --feedback-menu-tint: rgb(255 255 255 / .85); --feedback-bar-ink: #14283b; }
+.feedback-scene:not([data-feedback-material="ember"]) { --feedback-ink: #14283b; }
+.feedback-scene lg-menubar { --lg-tint: var(--feedback-bar-tint); --lg-on-glass: var(--feedback-bar-ink); --lg-text: var(--feedback-ink); --lg-focus: var(--feedback-bar-ink); color: var(--feedback-bar-ink); justify-content: space-between; padding: 6px 14px; text-shadow: none; } /* taste-skill-ignore: This removes the component's default text shadow */
 .feedback-scene .lg-menu__panel { left: auto; right: 0; }
-.feedback-content { display: flex; align-items: center; flex-direction: column; gap: 22px; padding: 48px 0 10px; text-align: center; color: #49291e; }
+.feedback-scene #material-menu .lg-menu__panel { left: 0; right: auto; }
+.feedback-scene .lg-menu__panel .lg-surface__tint { background: var(--feedback-menu-tint); }
+.feedback-scene .lg-menu__items > button::after { content: ""; width: 6px; height: 6px; flex: none; border-radius: 50%; background: currentColor; opacity: 0; }
+.feedback-scene .lg-menu__items > button[aria-checked="true"]::after { opacity: 1; }
+.feedback-content { display: flex; align-items: center; flex-direction: column; gap: 22px; padding: 48px 0 10px; text-align: center; color: var(--feedback-ink); }
 .feedback-content p { font-size: 32px; font-weight: 500; letter-spacing: -.04em; }
-.feedback-content lg-button { min-height: 48px; padding-inline: 22px; font-size: 14px; --lg-tint-strong: rgb(255 255 255 / .12); --lg-text: #3a2017; }
+.feedback-content lg-button { min-height: 48px; padding-inline: 22px; font-size: 14px; --lg-tint-strong: var(--feedback-tint); --lg-text: var(--feedback-ink); }
 .feedback-content output { font-size: 13px; }
 .feedback-scene .lg-toast-region { top: 100px; width: 100%; }
-.feedback-scene lg-toast { --lg-tint-strong: rgb(255 255 255 / .9); --lg-text: #452c24; max-width: calc(100% - 32px); }
+.feedback-scene lg-toast { --lg-tint-strong: var(--feedback-menu-tint); --lg-text: var(--feedback-ink); max-width: calc(100% - 32px); }
 .component-footnote { margin-top: 60px; font-size: 14px; color: var(--muted); max-width: 70ch; }
 .component-footnote code { font-size: 13px; }
 .performance-section { background: #e7eff8; padding-block: 100px; }
