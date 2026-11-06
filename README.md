@@ -66,10 +66,15 @@ keyboard selection remain available; `radius="capsule"` gives it a capsule outli
 - **Filter updates:** Chrome and Firefox keep a stable filter between updates. Safari retains the extra refreshes it needs.
 - **Scrolling:** only affected glass copies are realigned, with fewer size and position measurements.
 - **WebGL:** unchanged static image snapshots (`ImageBitmap`) and paused videos sleep between updates. Canvas and animated images stay live.
+- **Map generation:** straight edges avoid corner-distance calculations, and neutral interior spans are filled together.
 
 ## Results
 
-These measurements compare each change separately with upstream revision `068ad22`. The workloads and full results are in [the performance notes](docs/performance/README.md).
+The second raster pass compares the first delivered optimization with the current engine. Median fresh-map times fell by **30–52%** and synchronous unique-lens updates by **12%** across seven paired samples. All 640 raw map comparisons were byte-exact. Headless animation trials recorded **25.3 → 26.0 FPS** for 12 SVG lenses and approximately **60 FPS** for both WebGL builds, with overlapping ranges. The heavier SVG case was slightly slower; these samples do not establish a general FPS gain. See the [measurements and their limits](docs/performance/fps.md).
+
+The [comparison website](showcase/README.md) generates a standalone site with original, previous and current builds. It offers live previews, SVG/WebGL workloads, frame-time charts and downloadable device measurements. It runs locally without opening a browser automatically.
+
+The historical charts below compare each earlier change separately with upstream revision `068ad22`. Their workloads and full results are in [the performance notes](docs/performance/README.md).
 
 ![Rendering operations before and after each optimization](docs/performance/operation-counts.svg)
 

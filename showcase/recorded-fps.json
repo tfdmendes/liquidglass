@@ -1,0 +1,271 @@
+{
+  "sourceRevisions": {
+    "original": "862e553fae1b97968af4206add31539534764919",
+    "previous": "938df92e98d935c5fc61c3c7e0953a216bf831ce",
+    "current": null
+  },
+  "schema": 2,
+  "date": "2026-11-06T14:06:24.888Z",
+  "environment": {
+    "browserProduct": "Installed chromium 157.0.8103.39",
+    "headless": true,
+    "platform": "darwin",
+    "release": "27.2.0",
+    "arch": "arm64",
+    "cpu": "Apple M2"
+  },
+  "method": "Three paired alternating trials per build. Each trial uses a fresh visible page with a 1000x560 scene at DPR 2 and mapScale 2. Idle rAF calibration precedes each workload; the first median calibration is the missed-slot reference for all trials. Each trial warms for 1000 ms and samples rAF intervals for 4000 ms. Update work is synchronous JS/canvas/encoding/driver-submission time, excluding asynchronous decode and GPU completion. Animation FPS describes browser rAF cadence rather than physical frame presentation. Shared-host noise, compositor scheduling and display cadence can affect samples.",
+  "refreshMs": 16.69999999999999,
+  "viewport": {
+    "width": 1000,
+    "height": 560
+  },
+  "mapScale": 2,
+  "warmupMs": 1000,
+  "durationMs": 4000,
+  "sourceSHA256": {
+    "original": {
+      "liquid-glass.js": "136d9c73413636519e27c98860a7090f8edd37eebb13c6b32c0424d77c8d0e30",
+      "glass-webgl.js": "d29fc38125c07d1b0b4cd59ef98f1dd4de5b45726739c0ff2cf4af632df006e0",
+      "components.js": "8e8ae8006d5f05f0bb5899e78a0f092bc53fa32137cda455b13b6ffec780c685"
+    },
+    "previous": {
+      "liquid-glass.js": "bbcffd55f81ea56731ea79f43bf9f87baaec47da6928c282ff13a18b32606ece",
+      "glass-webgl.js": "d29fc38125c07d1b0b4cd59ef98f1dd4de5b45726739c0ff2cf4af632df006e0",
+      "components.js": "8e8ae8006d5f05f0bb5899e78a0f092bc53fa32137cda455b13b6ffec780c685"
+    },
+    "current": {
+      "liquid-glass.js": "cef06f4e3c8b7de035d2268872185af9da4f39391c83ac8a9506ce6eca93cb1d",
+      "glass-webgl.js": "d29fc38125c07d1b0b4cd59ef98f1dd4de5b45726739c0ff2cf4af632df006e0",
+      "components.js": "8e8ae8006d5f05f0bb5899e78a0f092bc53fa32137cda455b13b6ffec780c685"
+    }
+  },
+  "fixtureSHA256": {
+    "showcase/scene.html": "f2ae590e868ad4c53727c1933516d7e3802f35ac8acce2b6a2a6d5d41ad21d9e",
+    "showcase/scene.js": "3dc2c9c076d9d60a37aab3e477e318fbf11077ab14d5f9a63d29f95467add797",
+    "showcase/metrics.js": "78c2959f2eff6555bf8f1d455b53acb3cdeb2b3753f55cd39dee20237549aff6",
+    "review/measure-fps.mjs": "25adb8d4bd0ddda4d7d4d40ed5b63caf0fdd3d7d6fd53572ad044205fdafaccf"
+  },
+  "configurations": [
+    {
+      "settings": {
+        "renderer": "svg",
+        "workload": "reshape",
+        "count": 12,
+        "backdrop": "city"
+      },
+      "trialsPerBuild": 3,
+      "summary": {
+        "previous": {
+          "fps": 25.250631265781642,
+          "fpsRange": [
+            24.60395169591524,
+            26.360715003012654
+          ],
+          "p95FrameMs": 50.099999999999454,
+          "p95FrameMsRange": [
+            50,
+            50.09999999999991
+          ],
+          "meanUpdateMs": 36.52178217809979,
+          "meanUpdateMsRange": [
+            34.99428571405865,
+            37.5204081629612
+          ],
+          "missedSlotPercent": 57.91666666666667,
+          "missedSlotPercentRange": [
+            56.06694560669456,
+            58.995815899581594
+          ]
+        },
+        "current": {
+          "fps": 26.00130006500325,
+          "fpsRange": [
+            25.462612817022137,
+            27.63600149383792
+          ],
+          "p95FrameMs": 50.09999999999991,
+          "p95FrameMsRange": [
+            50,
+            50.09999999999991
+          ],
+          "meanUpdateMs": 35.37307692347811,
+          "meanUpdateMsRange": [
+            33.28198198222362,
+            36.30594059279059
+          ],
+          "missedSlotPercent": 56.666666666666664,
+          "missedSlotPercentRange": [
+            53.941908713692946,
+            57.56302521008403
+          ]
+        }
+      }
+    },
+    {
+      "settings": {
+        "renderer": "svg",
+        "workload": "reshape",
+        "count": 24,
+        "backdrop": "city"
+      },
+      "trialsPerBuild": 3,
+      "summary": {
+        "previous": {
+          "fps": 14.380640682336606,
+          "fpsRange": [
+            13.580917576176603,
+            14.628945476184573
+          ],
+          "p95FrameMs": 83.40000000000009,
+          "p95FrameMsRange": [
+            83.40000000000009,
+            83.40000000000009
+          ],
+          "meanUpdateMs": 64.06206896541447,
+          "meanUpdateMsRange": [
+            62.97627118709734,
+            67.98909090919928
+          ],
+          "missedSlotPercent": 76.03305785123968,
+          "missedSlotPercentRange": [
+            75.6198347107438,
+            77.36625514403292
+          ]
+        },
+        "current": {
+          "fps": 13.942487240134446,
+          "fpsRange": [
+            13.444206542847185,
+            15.063643895458311
+          ],
+          "p95FrameMs": 83.40000000000009,
+          "p95FrameMsRange": [
+            83.39999999999964,
+            83.40000000000055
+          ],
+          "meanUpdateMs": 66.36964285799435,
+          "meanUpdateMsRange": [
+            60.99000000059605,
+            68.44259259187513
+          ],
+          "missedSlotPercent": 76.76348547717843,
+          "missedSlotPercentRange": [
+            74.89539748953975,
+            77.59336099585063
+          ]
+        }
+      }
+    },
+    {
+      "settings": {
+        "renderer": "svg",
+        "workload": "move",
+        "count": 24,
+        "backdrop": "city"
+      },
+      "trialsPerBuild": 3,
+      "summary": {
+        "previous": {
+          "fps": 44.0022001100055,
+          "fpsRange": [
+            42.89397996627988,
+            44.25000000000001
+          ],
+          "p95FrameMs": 33.40000000000009,
+          "p95FrameMsRange": [
+            33.40000000000009,
+            33.40000000000009
+          ],
+          "meanUpdateMs": 0.4630681817335161,
+          "meanUpdateMsRange": [
+            0.43121387262564864,
+            0.4694915253058665
+          ],
+          "missedSlotPercent": 26.666666666666668,
+          "missedSlotPercentRange": [
+            26.25,
+            28.512396694214875
+          ]
+        },
+        "current": {
+          "fps": 44.00110002750069,
+          "fpsRange": [
+            43.683470576420966,
+            47.80281339474668
+          ],
+          "p95FrameMs": 33.40000000000009,
+          "p95FrameMsRange": [
+            33.40000000000009,
+            33.40000000000009
+          ],
+          "meanUpdateMs": 0.45056818112392316,
+          "meanUpdateMsRange": [
+            0.3802083341870457,
+            0.48448275826100645
+          ],
+          "missedSlotPercent": 26.666666666666668,
+          "missedSlotPercentRange": [
+            20.33195020746888,
+            27.19665271966527
+          ]
+        }
+      }
+    },
+    {
+      "settings": {
+        "renderer": "webgl",
+        "workload": "reshape",
+        "count": 24,
+        "backdrop": "city"
+      },
+      "trialsPerBuild": 3,
+      "summary": {
+        "previous": {
+          "fps": 60.002489729864315,
+          "fpsRange": [
+            60.00248972986431,
+            60.00398366696543
+          ],
+          "p95FrameMs": 16.700000000000728,
+          "p95FrameMsRange": [
+            16.700000000000273,
+            16.799999999999727
+          ],
+          "meanUpdateMs": 7.8813278005454555,
+          "meanUpdateMsRange": [
+            7.765560166160595,
+            8.344398340187132
+          ],
+          "missedSlotPercent": 0,
+          "missedSlotPercentRange": [
+            0,
+            0
+          ]
+        },
+        "current": {
+          "fps": 60.003000150007495,
+          "fpsRange": [
+            60.00248972986431,
+            60.0030001500075
+          ],
+          "p95FrameMs": 16.799999999999272,
+          "p95FrameMsRange": [
+            16.700000000000728,
+            16.800000000000182
+          ],
+          "meanUpdateMs": 7.019583333407839,
+          "meanUpdateMsRange": [
+            6.90290456416696,
+            7.128333332948387
+          ],
+          "missedSlotPercent": 0,
+          "missedSlotPercentRange": [
+            0,
+            0
+          ]
+        }
+      }
+    }
+  ]
+}

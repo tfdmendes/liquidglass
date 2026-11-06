@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a84ff">
+  <meta name="description" content="Compare Liquid Glass engines side by side and measure real animation smoothness on your device.">
+  <title>Liquid Glass — Frame by frame</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#measure">Skip to measurement</a>
+  <header class="site-header page-width">
+    <a class="wordmark" href="#compare" aria-label="Liquid Glass home">Liquid Glass<span aria-hidden="true">.</span></a>
+    <nav aria-label="Main navigation">
+      <a href="#compare">Compare</a>
+      <a href="#measure">Measure</a>
+      <a href="#method">Method</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="compare" class="comparison" aria-labelledby="hero-title">
+      <div class="hero-copy page-width">
+        <h1 id="hero-title">Glass,<br>frame by frame.</h1>
+        <div class="hero-intro">
+          <p>Compare two refractive engines, then measure how smoothly each one runs on your device.</p>
+          <button type="button" id="run-benchmark" class="button primary">Measure FPS <span aria-hidden="true">↗</span></button>
+        </div>
+      </div>
+
+      <div class="preview-stage" data-ui>
+        <div class="preview-pair page-width">
+          <figure class="preview-build">
+            <figcaption><span>Previous engine</span><span class="live-fps"><output id="preview-fps-previous">—</output> FPS</span></figcaption>
+            <iframe id="preview-previous" src="./scene.html?build=previous&amp;preview=1" title="Previous Liquid Glass engine, live refractive lens preview" loading="eager"></iframe>
+          </figure>
+          <figure class="preview-build">
+            <figcaption><span>Current engine</span><span class="live-fps"><output id="preview-fps-current">—</output> FPS</span></figcaption>
+            <iframe id="preview-current" src="./scene.html?build=current&amp;preview=1" title="Current Liquid Glass engine, live refractive lens preview" loading="eager"></iframe>
+          </figure>
+        </div>
+      </div>
+
+      <div class="preview-tools page-width">
+        <fieldset class="backdrops">
+          <legend>Look through a different scene</legend>
+          <div class="backdrop-options">
+            <button type="button" data-backdrop="city" aria-pressed="true" aria-label="Use city backdrop"><img src="./media/city.jpg" alt="City architecture" width="128" height="80"><span>City</span></button>
+            <button type="button" data-backdrop="beach" aria-pressed="false" aria-label="Use beach backdrop"><img src="./media/beach.jpg" alt="Beach landscape" width="128" height="80"><span>Beach</span></button>
+            <button type="button" data-backdrop="wave" aria-pressed="false" aria-label="Use colour backdrop"><img src="./media/wave.jpg" alt="Colourful particles against a dark backdrop" width="128" height="80"><span>Colour</span></button>
+            <button type="button" data-backdrop="portrait" aria-pressed="false" aria-label="Use figure backdrop"><img src="./media/portrait.jpg" alt="Figure against a blue landscape" width="128" height="80"><span>Figure</span></button>
+          </div>
+        </fieldset>
+        <div class="preview-note">
+          <button type="button" id="preview-toggle" class="button quiet" aria-pressed="false">Pause preview <span aria-hidden="true">Ⅱ</span></button>
+          <p>Live previews share this page’s resources. The benchmark runs each build on its own.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="measure" class="measurement page-width" aria-labelledby="measure-title">
+      <div class="section-intro">
+        <h2 id="measure-title">Put it in motion.</h2>
+        <p>Same scene. Same workload. Three alternating trials per build, measured here in your browser.</p>
+      </div>
+
+      <div class="benchmark-layout">
+        <form class="benchmark-settings" data-ui aria-label="Benchmark settings">
+          <label for="workload">Animation
+            <select id="workload" name="workload"><option value="reshape">Reshape lenses</option><option value="move">Move cached lenses</option></select>
+          </label>
+          <label for="renderer">Renderer
+            <select id="renderer" name="renderer"><option value="svg">SVG</option><option value="webgl">WebGL</option></select>
+          </label>
+          <div class="setting-pair">
+            <label for="density">Lenses
+              <select id="density" name="density"><option value="4">4</option><option value="12" selected>12</option><option value="24">24</option></select>
+            </label>
+            <label for="duration">Trial duration
+              <select id="duration" name="duration"><option value="3" selected>3 seconds per build</option><option value="6">6 seconds per build</option></select>
+            </label>
+          </div>
+          <label class="checkbox-label" for="include-original"><input id="include-original" type="checkbox" name="include-original"><span>Include original build <small>Earliest version, commit 862e553</small></span></label>
+          <p class="settings-note">Keep this tab visible until the run finishes. Warm-up and three trials take longer than the selected trial duration.</p>
+          <button type="button" id="run-benchmark-inline" class="button primary">Measure these settings</button>
+        </form>
+
+        <div class="benchmark-view">
+          <div id="benchmark-stage" class="benchmark-stage" data-ui aria-label="Isolated benchmark scene">
+            <img class="benchmark-placeholder" src="./media/city.jpg" alt="City scene ready for the isolated lens benchmark" width="1200" height="720">
+            <p class="stage-placeholder-label">One build at a time.<br>Ready when you are.</p>
+          </div>
+          <p id="status" class="benchmark-status" role="status" aria-live="polite">Choose your settings, then select Measure FPS to begin.</p>
+          <button type="button" id="cancel-benchmark" class="button quiet" hidden>Cancel measurement</button>
+        </div>
+      </div>
+
+      <div class="results-heading">
+        <h3>Your device, measured.</h3>
+        <button type="button" id="download-results" class="button quiet" disabled>Download JSON <span aria-hidden="true">↓</span></button>
+      </div>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Benchmark results table">
+        <table id="results" aria-describedby="results-caption">
+          <thead><tr><th scope="col">Build</th><th scope="col">Animation FPS</th><th scope="col">p95 frame</th><th scope="col">Update work</th><th scope="col">Missed slots</th></tr></thead>
+          <tbody id="result-rows"><tr><td colspan="5" class="empty-results">Run the comparison to measure this device.</td></tr></tbody>
+        </table>
+      </div>
+      <p id="results-caption" class="results-caption">Results belong to this device, browser and workload. No scores are prefilled. FPS measures animation cadence; p95 shows the slower end of frame intervals.</p>
+      <div class="chart-area" hidden>
+        <canvas id="frame-chart" width="1000" height="220" role="img" aria-label="Frame interval chart; no measurement has run" aria-describedby="chart-summary"></canvas>
+        <p id="chart-summary">Frame intervals will appear here after a completed run.</p>
+      </div>
+      <section id="recorded-results" class="recorded-results" aria-label="Previously recorded benchmark report" hidden></section>
+    </section>
+
+    <section id="method" class="method" aria-labelledby="method-title">
+      <div class="page-width method-layout">
+        <h2 id="method-title">Read the frames<br>honestly.</h2>
+        <div class="method-copy">
+          <p>These measurements follow <code>requestAnimationFrame</code> callbacks. They describe the cadence the browser delivers, rather than a physical GPU frame counter.</p>
+          <div class="method-details">
+            <div><h3>What we compare</h3><p>Previous is our first optimization pass. Current is our latest bundled engine. The optional original is our earlier fork at commit <code>862e553</code>. Each build receives the same scene, lens count and animation.</p></div>
+            <div><h3>How we measure</h3><p>Builds warm up and run one at a time, across three alternating trials each. The browser and display refresh rate can cap FPS. Switching to a hidden tab invalidates the measurement.</p></div>
+            <div><h3>What to look for</h3><p>Higher FPS and lower frame intervals generally mean smoother animation. Update work is time spent updating the lenses. Missed slots estimate gaps against the measured refresh cadence.</p></div>
+            <div><h3>Keep the evidence</h3><p>Download the JSON to keep trial timings, settings and environment details together. A recorded report, when supplied, is separate from the benchmark you run on this device.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer page-width">
+    <a class="footer-wordmark" href="#compare">Liquid Glass.</a>
+    <div class="footer-links"><span>Demo images retain their owners’ copyright.</span><a href="./builds/manifest.json">Build details</a><a href="./LICENSE">License</a></div>
+  </footer>
+  <noscript><div class="noscript-message">JavaScript is needed to render the lenses and measure FPS. Enable it, then reload this page. The method and build details remain available without it.</div></noscript>
+</body>
+</html>

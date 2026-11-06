@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Liquid Glass engine scene</title>
+<style>
+  * { box-sizing: border-box }
+  html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #183d68 }
+  #world { position: relative; width: 100%; height: 100%; overflow: hidden; background: #183d68 center / cover }
+  #world > canvas { position: absolute; inset: 0; width: 100%; height: 100% }
+  .glass { position: absolute; background-repeat: no-repeat; pointer-events: none }
+  #error { position: absolute; inset: 20px; padding: 20px; background: white; color: #111827; font: 16px/1.5 system-ui }
+  [hidden] { display: none !important }
+</style>
+<div id="world" role="img" aria-label="Refractive glass lenses over the selected photograph"><canvas hidden></canvas></div>
+<p id="error" hidden></p>
+<script type="module" src="./scene.js"></script>
+</html>

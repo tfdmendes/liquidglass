@@ -1,0 +1,84 @@
+{
+  "sourceRevisions": {
+    "previous": "938df92e98d935c5fc61c3c7e0953a216bf831ce",
+    "new": null
+  },
+  "baseline": "git:938df92e98d935c5fc61c3c7e0953a216bf831ce:lib/liquid-glass.js",
+  "sourceSHA256": {
+    "previous": "bbcffd55f81ea56731ea79f43bf9f87baaec47da6928c282ff13a18b32606ece",
+    "new": "cef06f4e3c8b7de035d2268872185af9da4f39391c83ac8a9506ce6eca93cb1d"
+  },
+  "date": "2026-11-06T13:43:02.257Z",
+  "browser": "157.0.8103.39",
+  "engine": "chromium",
+  "method": "Seven alternating paired samples after warmup, elapsed performance.now time in a real headless browser. Map cases include ImageData allocation, pixel generation, canvas creation and putImageData at mapScale 2. Updates start after createGlass setup and initial decode, and include synchronous update, cache lookup, map generation, PNG encoding and SVG attribute writes. Asynchronous replacement decode and browser paint are excluded. Fresh page per pair. No FPS, GPU or energy claim.",
+  "correctness": {
+    "maps": 640,
+    "bytes": 95545228,
+    "changedBytes": 0
+  },
+  "summary": [
+    {
+      "workload": "button map",
+      "previousMs": 0.36666666666666664,
+      "newMs": 0.25833333333333336,
+      "reductionPercent": 29.54545454545453,
+      "speedup": 1.4193548387096773,
+      "previousRangeMs": [
+        0.31083333330849805,
+        0.3866666667163372
+      ],
+      "newRangeMs": [
+        0.2491666667163372,
+        0.3125
+      ]
+    },
+    {
+      "workload": "panel map",
+      "previousMs": 5.762499999875824,
+      "newMs": 2.779166666790843,
+      "reductionPercent": 51.771511204325705,
+      "speedup": 2.0734632682284913,
+      "previousRangeMs": [
+        5.57083333345751,
+        6.75833333345751
+      ],
+      "newRangeMs": [
+        2.6458333333333335,
+        3.529166666790843
+      ]
+    },
+    {
+      "workload": "capsule map",
+      "previousMs": 0.4729999999701977,
+      "newMs": 0.29,
+      "reductionPercent": 38.68921775512219,
+      "speedup": 1.6310344826558543,
+      "previousRangeMs": [
+        0.465,
+        0.485
+      ],
+      "newRangeMs": [
+        0.2779999999701977,
+        0.29599999994039533
+      ]
+    },
+    {
+      "workload": "unique lens updates",
+      "previousMs": 1.375,
+      "newMs": 1.2058333333581686,
+      "reductionPercent": 12.303030301224105,
+      "speedup": 1.140290255677966,
+      "previousRangeMs": [
+        1.298333333308498,
+        1.3991666667163372
+      ],
+      "newRangeMs": [
+        1.1533333332588276,
+        1.384166666616996
+      ]
+    }
+  ],
+  "sampleCount": 56,
+  "samplesPerVariant": 7
+}

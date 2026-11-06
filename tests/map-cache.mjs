@@ -40,12 +40,40 @@ try {
         { width: 103.4999999, height: 39.5000001, radius: Infinity },
         { width: 103.5000001, height: 39.4999999, radius: -1, bezel: 0, specularWidth: 0 },
         { width: 70.125, height: 51.875, radius: 7.625, invert: true, specular: 0 },
+        { width: 640, height: 360, radius: 32 },
+        { width: 399.5, height: 87.5, radius: 43.75, bezel: 0.1, specularWidth: 0.5 },
+        { width: 87.5, height: 399.5, radius: 0, bezel: 0.1, specular: 0 },
+        { width: 101, height: 79, radius: 12, bezel: 0.2, specularWidth: 12 },
+        { width: 401, height: 39, radius: 19.5, invert: true, bezel: 1, specularWidth: 8 },
+        { width: 400.75, height: 40.25, radius: 0, specular: -0.5, lightAngle: 90 },
+        { width: -31.5, height: 13, radius: -2 },
+        { width: 13, height: -15.5, radius: 0 },
+        ...[NaN, Infinity, undefined, Number.MAX_VALUE].map(lightAngle => ({ lightAngle })),
+        ...[NaN, Infinity, -Infinity, undefined, null].flatMap(value =>
+          ['bezel', 'curvature', 'ior', 'specular', 'specularWidth'].map(key => ({ width: 151.25, height: 39.5, [key]: value }))),
       ];
-      return cases.flatMap((p) => [0.75, 1, 1.25, 2, 2.5].map((scale) => mapFixture.runtime.renderLensMap(p, scale).canvas.toDataURL()));
+      let image;
+      const put = CanvasRenderingContext2D.prototype.putImageData;
+      CanvasRenderingContext2D.prototype.putImageData = function (next, ...args) {
+        image = next;
+        return put.call(this, next, ...args);
+      };
+      try {
+        return cases.flatMap((p) => [0.75, 1, 1.25, 2, 2.5].map((scale) => {
+          const png = mapFixture.runtime.renderLensMap(p, scale).canvas.toDataURL();
+          let rgba = '';
+          // Read the original bytes before canvas alpha conversion can hide a channel difference
+          for (let i = 0; i < image.data.length; i += 32768) rgba += String.fromCharCode(...image.data.subarray(i, i + 32768));
+          return { png, rgba: btoa(rgba) };
+        }));
+      } finally {
+        CanvasRenderingContext2D.prototype.putImageData = put;
+      }
     });
-    assert.deepEqual(await maps(candidate.page), await maps(original.page));
+    const candidateMaps = await maps(candidate.page);
+    assert.deepEqual(candidateMaps, await maps(original.page));
     await original.context.close(); await candidate.context.close();
-    return { maps: 20, changedBytes: 0 };
+    return { maps: candidateMaps.length, changedBytes: 0 };
   });
   await check('Near-identical shapes share one exact PNG and decode', async () => {
     const { page, context } = await fixture();
