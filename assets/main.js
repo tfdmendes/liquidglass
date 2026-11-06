@@ -175,6 +175,9 @@ function updateFeedback() {
   const { title, ...optics } = styles[style];
   for (const surface of feedbackSurfaces()) {
     Object.assign(surface.optics, optics, { bezel: 0.35, chroma: 0, specular: 0.4, specularWidth: 1 });
+    if (surface.owner === materialMenu || surface.owner === styleMenu) {
+      Object.assign(surface.optics, { refraction: style === 'clear' ? 32 : style === 'soft' ? 22 : optics.refraction, bezel: 0.6, curvature: 2.5 });
+    }
     surface.glass?.update(surface.optics);
   }
 }

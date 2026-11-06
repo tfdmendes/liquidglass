@@ -62,6 +62,8 @@ The lens can be dragged or moved with arrow keys. Material selection, refraction
 
 In the feedback example, Material selects one of the four backdrops. Style changes the toolbar, menus, notification button and toast together: Clear uses 0px blur and 18px refraction, Soft uses 5px and 12px, and Frosted uses 16px and 8px, with matching surface tints. Menus expose the selected choices. Switching backdrops refreshes the image copies inside attached glass surfaces and preserves the selected finish. Notifications appear at the bottom of the scene so menu choices remain clickable.
 
+The dropdowns use a clearer lens than the surrounding controls: Clear has 32px refraction with no blur, and Soft has 22px refraction. Their 0.6 bezel spreads the bending across the edges while the specular rim stays 1px wide. Clear replaces the old 60% white fill with a transparent navy tint from 26% to 47%, keeping the contour artwork visible and the white labels legible. Frosted remains a separate finish. Reduced transparency or increased contrast restores a near-solid dropdown with dark text.
+
 Check desktop, tablet and phone layouts, keyboard use, pointer dragging, navbar press/release and cancellation, native link activation, menu dismissal, toast feedback, code copying, reduced motion and GitHub Pages' project prefix. Capture PNG only; native Chromium JPEG captures have produced stale SVG-filter geometry in this project.
 
 ## Assets and publication
