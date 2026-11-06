@@ -29,7 +29,7 @@ const W = Number(opt('w', 1280));
 const H = Number(opt('h', 900));
 const dpr = Number(opt('dpr', 2));
 const wait = Number(opt('wait', 2500));
-const chromePath = process.env.CHROME ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+const chromePath = process.env.LG_CHROME_EXECUTABLE || process.env.CHROME_EXECUTABLE || process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const port = 9300 + Math.floor(Math.random() * 600);

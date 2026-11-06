@@ -1,8 +1,11 @@
+import { frameDocument } from './map-cache-fixture.mjs';
+import { baselineSource } from './runtime-sources.mjs';
 import { execFile } from 'node:child_process';
 import { mkdtempSync, readFileSync, writeFileSync, rmSync, mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { promisify } from 'node:util';
-import { baseline, frameDocument } from './build-map-cache.mjs';
+
+const components = baselineSource('components.js');
 
 const run = promisify(execFile);
 const temp = mkdtempSync(`${tmpdir()}/map-cache-native-`);
@@ -67,11 +70,11 @@ try {
   await run('xcrun', ['swiftc', '-O', `${temp}/snap.swift`, '-o', `${temp}/snap`]);
   for (const config of [{ width: 1280, height: 900, state: 'moving' }, { width: 390, height: 844, state: 'pressed' }]) {
     for (const variant of ['original', 'candidate']) {
-      const source = variant === 'original' ? baseline() : readFileSync('lib/liquid-glass.js', 'utf8');
+      const source = variant === 'original' ? baselineSource('liquid-glass.js') : readFileSync('lib/liquid-glass.js', 'utf8');
       const path = `review/.map-native-${process.pid}-${variant}.html`;
       paths.push(path);
-      const app = `(${nativeChecks.toString()})(${JSON.stringify(baseline()).replaceAll('<', '\\u003c')},${JSON.stringify(config.state)},${JSON.stringify(variant)})`;
-      writeFileSync(path, frameDocument(source).replace('</html>', `<script>${app}</script></html>`));
+      const app = `(${nativeChecks.toString()})(${JSON.stringify(baselineSource('liquid-glass.js')).replaceAll('<', '\\u003c')},${JSON.stringify(config.state)},${JSON.stringify(variant)})`;
+      writeFileSync(path, frameDocument(source, components).replace('</html>', `<script>${app}</script></html>`));
       const stem = `webkit-${config.width}-${config.state}-${variant}`;
       const { stdout } = await run(`${temp}/snap`, [`http://127.0.0.1:${process.env.MAP_REVIEW_PORT ?? 4381}/${path}`, `${out}/${stem}.png`, String(config.width), String(config.height), '0', 'JSON.stringify(window.nativeEvidence)'], { timeout: 28000 });
       writeFileSync(`${out}/${stem}.log`, stdout);

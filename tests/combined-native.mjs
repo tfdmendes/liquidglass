@@ -3,7 +3,9 @@ import { execFile } from 'node:child_process';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { promisify } from 'node:util';
-import { combinedDocument, manifest } from '../review/combined-fixture.mjs';
+import { combinedDocument, loadComparison } from '../review/combined-fixture.mjs';
+const comparison = loadComparison();
+const { manifest } = comparison;
 
 assert(process.env.SNAP_WEBKIT, 'Set SNAP_WEBKIT to the existing compiled review/snap-surface-scroll.swift binary');
 const output = process.env.COMBINED_EVIDENCE_DIR || '/tmp/liquidglass-fork-validation/combined';
@@ -43,13 +45,13 @@ async function nativeProbe() {
 }
 
 const documents = Object.fromEntries(['original', 'candidate'].map(variant => [variant,
-  combinedDocument(variant, 3).replace('</html>', `<script>(${nativeProbe.toString()})()</script></html>`)]));
+  combinedDocument(comparison, variant, 3).replace('</html>', `<script>(${nativeProbe.toString()})()</script></html>`)]));
 const server = createServer((request, response) => {
   const html = documents[request.url.slice(1)];
   response.writeHead(html ? 200 : 404, { 'content-type': 'text/html; charset=utf-8' });
   response.end(html || 'Not found');
 });
-await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+await new Promise((resolve, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', resolve); });
 const results = { ...manifest, scope: ['lib/liquid-glass.js', 'lib/components.js'], cases: [] };
 try {
   for (const variant of ['original', 'candidate']) {

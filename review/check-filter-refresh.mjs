@@ -1,13 +1,14 @@
+import { BASE } from './runtime-sources.mjs';
+import { loadPlaywright, launchOptions } from './browser-runtime.mjs';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { appendFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const { chromium, firefox } = await import(process.env.LG_PLAYWRIGHT_MODULE || 'playwright');
+const { chromium, firefox } = await loadPlaywright();
 const url = process.env.LG_REVIEW_URL || 'http://127.0.0.1:4382/review/filter-refresh.html';
 const out = resolve(process.env.LG_EVIDENCE_DIR || '/tmp/liquidglass-filter-evidence');
 const selected = (process.env.LG_ENGINES || 'blink,gecko').split(',');
-const chromePath = process.env.LG_CHROME_EXECUTABLE || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const firefoxUA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:157.0) Gecko/20100101 Firefox/157.0';
 const scenarios = (process.env.LG_SCENARIOS || 'idle,pressed,moving,sequence,hidden,resume,reconnect,fit,sync,backdrop,decode-race,destroy,no-op,flush,offscreen').split(',');
 const matrix = [
@@ -66,7 +67,7 @@ function verify(engine, scenario, snapshots) {
 
 for (const engine of selected.filter((name) => name !== 'webkit')) {
   const type = engine === 'blink' ? chromium : firefox;
-  const browser = await type.launch({ headless: true, executablePath: engine === 'blink' ? chromePath : process.env.LG_FIREFOX_EXECUTABLE });
+  const browser = await type.launch(launchOptions(engine));
   try {
     for (const config of matrix) {
       const context = await browser.newContext({ viewport: { width: config.width, height: config.height }, deviceScaleFactor: config.dpr, reducedMotion: config.reducedMotion || 'no-preference', ...(engine === 'gecko' ? { userAgent: firefoxUA } : {}) });
@@ -113,7 +114,7 @@ for (const engine of selected.filter((name) => name !== 'webkit')) {
 
 if (selected.includes('webkit')) {
   assert.ok(process.env.LG_WEBKIT_SNAPSHOT, 'Set LG_WEBKIT_SNAPSHOT to the compiled review/snap-filter-refresh.swift executable');
-  const reader = await chromium.launch({ headless: true, executablePath: chromePath });
+  const reader = await chromium.launch(launchOptions('chromium'));
   const page = await reader.newPage();
   try {
     for (const width of [1280, 390]) {
@@ -145,7 +146,7 @@ if (selected.includes('webkit')) {
 }
 
 const summary = {
-  baseline: '068ad226f53e1ca62d857f78bdc32f58f3c5fce7',
+  baseline: BASE,
   comparisons: results.length,
   pixelIdentical: results.filter((r) => r.diff.pixels === 0).length,
   differences: results.filter((r) => r.diff.pixels !== 0).map((r) => ({ engine: r.engine, config: r.config, scenario: r.scenario, diff: r.diff })),

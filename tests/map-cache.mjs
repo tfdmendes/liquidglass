@@ -1,14 +1,16 @@
+import { frameDocument } from '../review/map-cache-fixture.mjs';
+import { baselineSource } from '../review/runtime-sources.mjs';
+import { loadPlaywright, launchOptions } from '../review/browser-runtime.mjs';
 import assert from 'node:assert/strict';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { pathToFileURL } from 'node:url';
-import { baseline, comparisonDocument, frameDocument } from '../review/build-map-cache.mjs';
+import { comparisonDocument } from '../review/map-cache-review.mjs';
 
-// Use an isolated Playwright install without adding a production dependency
-if (!process.env.PLAYWRIGHT_MODULE) throw new Error('Set PLAYWRIGHT_MODULE to an isolated Playwright index.mjs path');
-const { chromium, firefox } = await import(pathToFileURL(process.env.PLAYWRIGHT_MODULE).href);
-const isFirefox = process.env.BROWSER === 'firefox';
-const browser = await (isFirefox ? firefox : chromium).launch({ headless: true, executablePath: isFirefox ? process.env.FIREFOX_EXECUTABLE : (process.env.CHROME ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome') });
-const oldSource = baseline();
+const components = baselineSource('components.js');
+
+const { chromium, firefox } = await loadPlaywright();
+const isFirefox = (process.env.LG_BROWSER || process.env.BROWSER) === 'firefox';
+const browser = await (isFirefox ? firefox : chromium).launch(launchOptions(isFirefox ? 'firefox' : 'chromium'));
+const oldSource = baselineSource('liquid-glass.js');
 const source = process.argv.includes('--baseline') ? oldSource : readFileSync('lib/liquid-glass.js', 'utf8');
 const userAgent = isFirefox ? 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:157.0) Gecko/20100101 Firefox/157.0' : undefined;
 const evidence = { browser: await browser.version(), engine: isFirefox ? 'gecko' : 'blink', baseline: process.argv.includes('--baseline'), tests: [], visuals: [] };
@@ -18,7 +20,7 @@ const fixture = async (code = source, extra = {}) => {
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 }, deviceScaleFactor: 2, userAgent, ...extra });
   const page = await context.newPage();
   await page.bringToFront();
-  await page.setContent(frameDocument(code));
+  await page.setContent(frameDocument(code, components));
   assert.equal(await page.evaluate(() => mapFixture.ready), evidence.engine);
   return { page, context };
 };
@@ -161,7 +163,7 @@ try {
         for (const page of pages) {
           await page.bringToFront();
           await page.goto('about:blank');
-          await page.setContent(frameDocument(page === pages[0] ? oldSource : source));
+          await page.setContent(frameDocument(page === pages[0] ? oldSource : source, components));
           await page.evaluate(async (state) => { await mapFixture.ready; await mapFixture.action(state); }, state);
           await page.waitForTimeout(320);
           await page.evaluate(() => mapFixture.flush());

@@ -1,10 +1,11 @@
+import { loadPlaywright, launchOptions } from '../review/browser-runtime.mjs';
 import assert from 'node:assert/strict';
 import { readFileSync, mkdirSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { resolve, sep } from 'node:path';
 import { after, before, test } from 'node:test';
 
-const playwright = await import(process.env.LG_PLAYWRIGHT_MODULE || 'playwright');
+const playwright = await loadPlaywright();
 const engine = process.env.LG_BROWSER || 'chromium';
 const root = resolve(new URL('..', import.meta.url).pathname);
 const server = createServer((request, response) => {
@@ -19,10 +20,9 @@ let browser;
 let url;
 
 before(async () => {
-  await new Promise((done) => server.listen(0, '127.0.0.1', done));
+  await new Promise((done, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', done); });
   url = `http://127.0.0.1:${server.address().port}/tests/fixtures/segmented.html`;
-  browser = await playwright[engine].launch({ headless: true, executablePath: engine === 'firefox'
-    ? process.env.LG_FIREFOX_EXECUTABLE : process.env.LG_CHROME_EXECUTABLE || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' });
+  browser = await playwright[engine].launch(launchOptions(engine));
 });
 after(async () => {
   await browser?.close();

@@ -1,17 +1,15 @@
-import { execFileSync } from 'node:child_process';
+import { baselineSource as original, candidateSource, BASE as base } from '../review/runtime-sources.mjs';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { frameFixture, reviewFixture } from '../review/webgl-demand-fixture.mjs';
-import { runChecks } from '../tests/webgl-demand-checks.mjs';
+import { runChecks } from '../review/webgl-demand-checks.mjs';
 
-const base = '068ad226f53e1ca62d857f78bdc32f58f3c5fce7';
 const dataURL = (code) => `data:text/javascript;base64,${Buffer.from(code).toString('base64')}`;
-const original = (name) => execFileSync('git', ['show', `${base}:lib/${name}`], { encoding: 'utf8' });
 const baselineCore = dataURL(original('liquid-glass.js'));
-const candidateCore = dataURL(readFileSync('lib/liquid-glass.js', 'utf8'));
+const candidateCore = dataURL(candidateSource('liquid-glass.js'));
 const runtime = (code, core) => dataURL(code.replace("'./liquid-glass.js'", JSON.stringify(core)));
 const payload = {
   cores: [baselineCore, candidateCore],
-  runtimes: [runtime(original('glass-webgl.js'), baselineCore), runtime(readFileSync('lib/glass-webgl.js', 'utf8'), candidateCore)],
+  runtimes: [runtime(original('glass-webgl.js'), baselineCore), runtime(candidateSource('glass-webgl.js'), candidateCore)],
   clip: `data:video/mp4;base64,${readFileSync('review/webgl-demand-video.mp4').toString('base64')}`,
   animated: Object.fromEntries([['gif', 'image/gif'], ['apng', 'image/png']].map(([key, mime]) => [key, `data:${mime};base64,${readFileSync(`review/webgl-demand-${key}.${key === 'gif' ? 'gif' : 'png'}`).toString('base64')}`])),
 };

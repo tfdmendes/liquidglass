@@ -9,34 +9,45 @@
 # the glass has rendered. Firefox headless screenshots also leave WebGL canvases blank — check
 # WebGL there by reading pixels back instead. Chrome here uses --virtual-time-budget, which can
 # freeze springs mid-animation; check hover/press/open states with chrome-shot.mjs (real time).
-set -u
+set -eu
+if (( $# < 2 || $# > 4 )); then
+  echo "Usage: $0 <url> <out-dir> [width=1100] [height=2300]" >&2
+  exit 2
+fi
 URL=$1; OUT=$2; W=${3:-1100}; H=${4:-2300}
 HERE=${0:A:h}
 mkdir -p "$OUT"
 
-CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-FIREFOX="/Applications/Firefox.app/Contents/MacOS/firefox"
+CHROME=${LG_CHROME_EXECUTABLE:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}
+FIREFOX=${LG_FIREFOX_EXECUTABLE:-/Applications/Firefox.app/Contents/MacOS/firefox}
 CACHE="${TMPDIR:-/tmp}/liquid-glass-shoot"
 mkdir -p "$CACHE"
 
 if [[ -x "$CHROME" ]]; then
   "$CHROME" --headless=new --hide-scrollbars --force-device-scale-factor=2 --window-size=$W,$H \
     --virtual-time-budget=3000 --user-data-dir="$CACHE/chrome" --screenshot="$OUT/chrome.png" "$URL" >/dev/null 2>&1 \
-    && echo "chrome  -> $OUT/chrome.png"
+  echo "chrome  -> $OUT/chrome.png"
 else
   echo "chrome  skipped (not installed)"
 fi
 
 if [[ ! -x "$CACHE/snap-webkit" || "$HERE/snap-webkit.swift" -nt "$CACHE/snap-webkit" ]]; then
-  xcrun swiftc -O "$HERE/snap-webkit.swift" -o "$CACHE/snap-webkit" 2>/dev/null || echo "webkit  could not compile snap-webkit.swift"
+  xcrun swiftc -O "$HERE/snap-webkit.swift" -o "$CACHE/snap-webkit"
 fi
-[[ -x "$CACHE/snap-webkit" ]] && "$CACHE/snap-webkit" "$URL" "$OUT/webkit.png" $W $H 3 >/dev/null 2>&1 && echo "webkit  -> $OUT/webkit.png"
+"$CACHE/snap-webkit" "$URL" "$OUT/webkit.png" "$W" "$H" 3
+echo "webkit  -> $OUT/webkit.png"
 
 if [[ -x "$FIREFOX" ]]; then
   mkdir -p "$CACHE/firefox"
   print 'user_pref("browser.shell.checkDefaultBrowser", false);' > "$CACHE/firefox/user.js"
-  timeout 60 "$FIREFOX" --headless --no-remote --profile "$CACHE/firefox" --window-size=$W,$H \
-    --screenshot "$OUT/firefox.png" "$URL" >/dev/null 2>&1 && echo "firefox -> $OUT/firefox.png"
+  python3 - "$FIREFOX" --headless --no-remote --profile "$CACHE/firefox" --window-size=$W,$H \
+    --screenshot "$OUT/firefox.png" "$URL" <<'PY'
+import subprocess
+import sys
+
+subprocess.run(sys.argv[1:], check=True, timeout=60)
+PY
+  echo "firefox -> $OUT/firefox.png"
 else
   echo "firefox skipped (not installed)"
 fi

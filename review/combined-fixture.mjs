@@ -1,21 +1,23 @@
-import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { fixture as surfaceFixture } from './build-surface-scroll.mjs';
+import { fixture as surfaceFixture } from './surface-scroll-fixture.mjs';
 
-const root = fileURLToPath(new URL('../', import.meta.url));
-export const base = '068ad226f53e1ca62d857f78bdc32f58f3c5fce7';
-const names = ['liquid-glass.js', 'components.js', 'glass-webgl.js'];
-const original = Object.fromEntries(names.map(name => [name, execFileSync('git', ['show', `${base}:lib/${name}`], { cwd: root, encoding: 'utf8' })]));
-const candidate = Object.fromEntries(names.map(name => [name, readFileSync(new URL(`../lib/${name}`, import.meta.url), 'utf8')]));
-export const manifest = {
-  base,
-  head: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(),
-  sha256: Object.fromEntries(Object.entries({ original, candidate }).map(([variant, sources]) => [variant,
-    Object.fromEntries(names.map(name => [name, createHash('sha256').update(sources[name]).digest('hex')]))])),
-  scope: ['lib/liquid-glass.js', 'lib/components.js'],
-};
+import { baselineSource, candidateSource, headRevision, BASE as base } from './runtime-sources.mjs';
+export { base };
+
+export function loadComparison() {
+  const names = ['liquid-glass.js', 'components.js', 'glass-webgl.js'];
+  const original = Object.fromEntries(names.map(name => [name, baselineSource(name)]));
+  const candidate = Object.fromEntries(names.map(name => [name, candidateSource(name)]));
+  const manifest = {
+    base, head: headRevision(),
+    sha256: Object.fromEntries(Object.entries({ original, candidate }).map(([variant, sources]) => [variant,
+      Object.fromEntries(names.map(name => [name, createHash('sha256').update(sources[name]).digest('hex')]))])),
+    scope: ['lib/liquid-glass.js', 'lib/components.js'],
+  };
+  return { original, candidate, manifest };
+}
 
 function counters() {
   const stats = { encodes: 0, decodes: 0, retryTimers: 0 };
@@ -42,23 +44,22 @@ function counters() {
   };
 }
 
-export function combinedDocument(variant = 'candidate', count = 32) {
+export function combinedDocument(comparison, variant = 'candidate', count = 32) {
   if (!['original', 'candidate'].includes(variant)) throw new Error('Expected original or candidate');
-  const sources = variant === 'original' ? original : candidate;
-  let html = surfaceFixture(sources['liquid-glass.js'], sources['components.js'], count);
-  const anchor = 'await frames(6);window.fixtureReady=true;';
-  if (!html.includes(anchor)) throw new Error('The Surface fixture readiness hook changed');
-  html = html.replace('<script type="module">', `<script>(${counters.toString()})()</script><script type="module">`);
-  return html.replace(anchor, `
-window.combined={runtime,variant:${JSON.stringify(variant)},manifest:${JSON.stringify(manifest)},counters:combinedCounters,
-  async settle(){for(let i=0;i<3;i++){await frames(2);await combinedCounters.settle()}},
-  ids(){return [...document.querySelectorAll('lg-panel,lg-button')].flatMap(n=>n.surface?.glass?[{id:n.id,filterId:n.surface.glass.filterId}]:[])}
-};
-await frames(6);await combined.settle();window.fixtureReady=true;`);
+  const sources = comparison[variant];
+  return surfaceFixture(sources['liquid-glass.js'], sources['components.js'], count, {
+    beforeScript: `<script>(${counters.toString()})()</script>`,
+    beforeReady: `window.combined={runtime,variant:${JSON.stringify(variant)},manifest:${JSON.stringify(comparison.manifest)},counters:combinedCounters,
+      async settle(){for(let i=0;i<3;i++){await frames(2);await combinedCounters.settle()}},
+      ids(){return [...document.querySelectorAll('lg-panel,lg-button')].flatMap(n=>n.surface?.glass?[{id:n.id,filterId:n.surface.glass.filterId}]:[])}
+    };
+await combined.settle();`,
+  });
 }
 
-export function reviewDocument() {
-  const documents = ['original', 'candidate'].map(variant => combinedDocument(variant));
+export function reviewDocument(comparison) {
+  const { manifest } = comparison;
+  const documents = ['original', 'candidate'].map(variant => combinedDocument(comparison, variant));
   return `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Combined core and components</title><style>
 *{box-sizing:border-box}body{margin:16px;font:15px/1.5 system-ui;color:#193347}h1{font-size:24px;margin:0}p{max-width:90ch}button,select{font:inherit;padding:6px 10px}nav{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}.pane{min-width:0}h2{font-size:16px}.viewport{overflow:hidden;background:#17364b}iframe{display:block;border:0;transform-origin:top left}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}button:focus-visible,select:focus-visible{outline:3px solid #147ca8;outline-offset:2px}@media(max-width:600px){body{margin:10px}.pair{gap:6px}}
@@ -81,6 +82,6 @@ new ResizeObserver(fit).observe(document.querySelector('.pair'));
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  writeFileSync(new URL('./combined.html', import.meta.url), reviewDocument());
+  writeFileSync(new URL('./combined.html', import.meta.url), reviewDocument(loadComparison()));
   console.log('Wrote review/combined.html with the actual upstream and current core/component pair');
 }

@@ -1,14 +1,16 @@
+import { frameDocument } from './map-cache-fixture.mjs';
+import { baselineSource } from './runtime-sources.mjs';
+import { loadPlaywright, launchOptions } from './browser-runtime.mjs';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
-import { pathToFileURL } from 'node:url';
-import { baseline, frameDocument } from './build-map-cache.mjs';
 
-if (!process.env.PLAYWRIGHT_MODULE) throw new Error('Set PLAYWRIGHT_MODULE to an isolated Playwright index.mjs path');
-const { chromium, firefox } = await import(pathToFileURL(process.env.PLAYWRIGHT_MODULE).href);
-const gecko = process.env.BROWSER === 'firefox';
+const components = baselineSource('components.js');
+
+const { chromium, firefox } = await loadPlaywright();
+const gecko = (process.env.LG_BROWSER || process.env.BROWSER) === 'firefox';
 const type = gecko ? firefox : chromium;
-const executablePath = gecko ? process.env.FIREFOX_EXECUTABLE : (process.env.CHROME ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome');
+const browserOptions = launchOptions(gecko ? 'firefox' : 'chromium');
 const userAgent = gecko ? 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:157.0) Gecko/20100101 Firefox/157.0' : undefined;
 const repeats = Number(process.env.MAP_BENCH_REPEATS ?? 3);
 const cycles = Number(process.env.MAP_BENCH_CYCLES ?? 12);
@@ -28,19 +30,19 @@ function processCPU(rootPid) {
   return rows.filter((row) => owned.has(row.pid));
 }
 
-const sourceByVariant = { original: baseline(), candidate: readFileSync('lib/liquid-glass.js', 'utf8') };
+const sourceByVariant = { original: baselineSource('liquid-glass.js'), candidate: readFileSync('lib/liquid-glass.js', 'utf8') };
 const hashes = Object.fromEntries(Object.entries(sourceByVariant).map(([variant, source]) => [variant, createHash('sha256').update(source).digest('hex')]));
 const results = [];
 for (const workload of ['button', 'segmented', 'mostly-unique']) {
   for (let repeat = 0; repeat < repeats; repeat++) {
     for (const variant of (repeat % 2 ? ['candidate', 'original'] : ['original', 'candidate'])) {
       const source = sourceByVariant[variant];
-      const server = await type.launchServer({ headless: true, executablePath });
+      const server = await type.launchServer(browserOptions);
       const browser = await type.connect(server.wsEndpoint());
       try {
         const context = await browser.newContext({ viewport: { width: 1280, height: 900 }, deviceScaleFactor: 2, userAgent });
         const page = await context.newPage();
-        await page.setContent(frameDocument(source));
+        await page.setContent(frameDocument(source, components));
         const engine = await page.evaluate(() => mapFixture.ready);
         if (engine !== (gecko ? 'gecko' : 'blink')) throw new Error(`Wrong engine: ${engine}`);
         await page.evaluate(async (workload) => {

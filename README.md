@@ -31,7 +31,7 @@ The engine refracts an element's own content and background. Give the element a 
 
 `fit` tracks the element's size, `clip` rounds its outline, and `radius` and `blur` are in CSS pixels. Change settings with `glass.update({ blur: 4 })`. Call `glass.destroy()` when the element is no longer used to remove its filters and observers.
 
-The [core API reference](docs/index.html#api) covers lens position, size, refraction and other options. For video or canvas, also copy `lib/glass-webgl.js` and import its `createGlassRenderer` factory.
+The [core API reference](docs/index.html#api) covers lens position, size, refraction and other options. For video or canvas, also copy `lib/glass-webgl.js` and import its `createGlassRenderer` factory. Update the core and WebGL files together so their shared optical model stays consistent.
 
 ### Web components
 
@@ -93,7 +93,11 @@ Checks cover Chrome, Firefox and native macOS WebKit, including desktop and phon
 The source files live in `lib/`. Their copies in `skill/liquid-glass-web/assets/` must stay in sync:
 
 ```sh
+# Update the bundled library copies
 sh scripts/sync-skill.sh
+
+# Report drift without writing files
+sh scripts/sync-skill.sh --check
 ```
 
 This copies the three library files into the bundled skill. Browser regression tests live in `tests/`; comparison builders and measurement records live in `review/`. They use Node.js and a separate Playwright installation; neither is required to use the library.
@@ -103,6 +107,21 @@ Set `LG_PLAYWRIGHT_MODULE` to an existing Playwright `index.mjs` when it is inst
 outside this repository. `LG_BROWSER=firefox` selects Firefox; use
 `LG_FIREFOX_EXECUTABLE` or `LG_CHROME_EXECUTABLE` to select an existing browser binary.
 The suite serves a temporary loopback page and closes it after the checks.
+All Playwright runners share this configuration. Without an executable override,
+they use the browser installed by Playwright. Existing `PLAYWRIGHT_MODULE`,
+`CHROME_EXECUTABLE` (or `CHROME`) and `FIREFOX_EXECUTABLE` overrides remain accepted;
+the `LG_` variables take precedence. No runner installs browser software.
+
+Fixtures live in `review/*-fixture.mjs`; `review/runtime-sources.mjs` reads Git
+history only when a comparison explicitly requests its baseline. The combined
+fixture extends the surface scene through preparation and readiness hooks.
+Screenshot comparisons decode browser PNGs through a local Node.js helper,
+without importing Playwright internals. Historical HTML and measurement files
+are retained; builders regenerate comparisons only when invoked explicitly.
+
+The site entry point is `assets/site.js`; language, code blocks, demonstrations,
+navigation and playground behavior live beside it in separate modules.
+[Refactor decisions](docs/refactor-decisions.md) record the boundaries and validation.
 
 See [the combined regression checks](review/combined-validation.md) for reproduction commands and the tested source hashes.
 

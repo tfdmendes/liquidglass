@@ -209,7 +209,7 @@ lg-panel.brand-chip .lg-panel__body { display: flex; align-items: center; }
 .scene-game .hud__mode { position: absolute; right: var(--space-6); bottom: var(--space-6); padding: var(--space-3) var(--space-4); font-size: var(--text-sm); }
 .scene-game .hud__mode b { display: block; font-size: var(--text-base); font-weight: 600; }
 .scene-game .hud__mode span { opacity: 0.8; font-size: var(--text-xs); }
-@media (max-width: 800px) { .scene-game .hud__mode { display: none; } .scene-game lg-navbar > a:nth-of-type(n + 4) { display: none; } }
+@media (max-width: 800px) { .scene-game .hud__mode { display: none; } }
 
 /* lens scene */
 .scene-lens lg-lens { position: absolute; inset: 0; }

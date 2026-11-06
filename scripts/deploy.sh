@@ -6,10 +6,13 @@ set -eu
 cd "$(dirname "$0")/.."
 SERVER=${SERVER:-root@51.38.126.148}
 KEY=${KEY:-$HOME/Desktop/gentpan.pem}
-SSH="ssh -i $KEY -o IdentitiesOnly=yes"
+ssh_server() { ssh -i "$KEY" -o IdentitiesOnly=yes "$SERVER" "$@"; }
+# rsync parses its remote-shell string itself, so quote embedded key apostrophes too
+quoted_key=$(printf '%s' "$KEY" | sed "s/'/'\\\\''/g")
+SSH="ssh -i '$quoted_key' -o IdentitiesOnly=yes"
 DEST=/var/www/liquidglass.dev
 
-$SSH "$SERVER" "mkdir -p $DEST"
+ssh_server "mkdir -p $DEST"
 rsync -rlptz --delete --no-owner --no-group -e "$SSH" \
   --include='/index.html' --include='/robots.txt' --include='/sitemap.xml' --include='/install-skill.sh' \
   --include='/docs/***' --include='/lib/***' --include='/assets/***' --include='/images/***' \
@@ -17,9 +20,9 @@ rsync -rlptz --delete --no-owner --no-group -e "$SSH" \
   ./ "$SERVER:$DEST/"
 
 # Install the Caddy site only when it differs; an invalid config is rolled back, never reloaded.
-if ! $SSH "$SERVER" "cmp -s - /etc/caddy/sites/liquidglass.dev.caddy" < deploy/liquidglass.dev.caddy; then
-  $SSH "$SERVER" "cat > /tmp/liquidglass.dev.caddy" < deploy/liquidglass.dev.caddy
-  $SSH "$SERVER" 'set -e
+if ! ssh_server "cmp -s - /etc/caddy/sites/liquidglass.dev.caddy" < deploy/liquidglass.dev.caddy; then
+  ssh_server "cat > /tmp/liquidglass.dev.caddy" < deploy/liquidglass.dev.caddy
+  ssh_server 'set -e
     f=/etc/caddy/sites/liquidglass.dev.caddy
     if [ -f "$f" ]; then cp "$f" "$f.bak"; fi
     cp /tmp/liquidglass.dev.caddy "$f"

@@ -1,9 +1,10 @@
+import { loadPlaywright, executablePath } from '../review/browser-runtime.mjs';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
-import { holdImageDecodes } from './helpers/hold-image-decodes.mjs';
+import { holdImageDecodes } from '../review/hold-image-decodes.mjs';
 
-const { chromium, firefox } = await import(process.env.LG_PLAYWRIGHT_MODULE || 'playwright');
+const { chromium, firefox } = await loadPlaywright();
 const source = readFileSync(process.env.LG_LIBRARY_FILE || new URL('../lib/liquid-glass.js', import.meta.url), 'utf8');
 const moduleURL = `data:text/javascript;base64,${Buffer.from(source).toString('base64')}`;
 const firefoxUA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:157.0) Gecko/20100101 Firefox/157.0';
@@ -35,8 +36,8 @@ async function open(t, type, executablePath, userAgent) {
 }
 
 for (const [engine, type, path, ua] of [
-  ['blink', chromium, process.env.LG_CHROME_EXECUTABLE || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'],
-  ['gecko', firefox, process.env.LG_FIREFOX_EXECUTABLE, firefoxUA],
+  ['blink', chromium, executablePath('chromium')],
+  ['gecko', firefox, executablePath('firefox'), firefoxUA],
 ]) {
   test(`${engine}: reuse the filter through updates, graph rebuilds and re-show`, async (t) => {
     const page = await open(t, type, path, ua);
@@ -98,7 +99,7 @@ for (const [engine, type, path, ua] of [
 }
 
 test('unknown engines retain settling and cancel it on destroy', async (t) => {
-  const page = await open(t, chromium, process.env.LG_CHROME_EXECUTABLE || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', 'UnknownValidation/1.0');
+  const page = await open(t, chromium, executablePath('chromium'), 'UnknownValidation/1.0');
   assert.equal(await page.evaluate(() => library.engine), 'unknown');
   assert.equal(await page.evaluate(() => retryCount), 2);
   const id = await page.evaluate(() => glass.filterId);

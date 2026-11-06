@@ -1,17 +1,18 @@
+import { readPNG } from './helpers/read-png.mjs';
+import { loadPlaywright, launchOptions } from '../review/browser-runtime.mjs';
 import assert from 'node:assert/strict';
 import { mkdirSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
-import { createRequire } from 'node:module';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { fileURLToPath, pathToFileURL } from 'node:url';
-import { fixture as renderFixture, runtime } from '../review/build-surface-scroll.mjs';
+import { reviewDocument } from '../review/surface-scroll-review.mjs';
+import { fixture as renderFixture } from '../review/surface-scroll-fixture.mjs';
+import { baselineSource, candidateSource } from '../review/runtime-sources.mjs';
+const runtime = { core: baselineSource('liquid-glass.js'), original: baselineSource('components.js'), candidate: candidateSource('components.js') };
 import { comparePixels } from './helpers/compare-pixels.mjs';
 
-const playwright = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
-const modulePath = process.env.PLAYWRIGHT_MODULE || createRequire(import.meta.url).resolve('playwright');
-const { PNG } = await import(new URL('../playwright-core/lib/utilsBundle.js', pathToFileURL(modulePath)));
+const playwright = await loadPlaywright();
 function difference(a, b) {
-  return comparePixels(PNG.sync.read(a), PNG.sync.read(b));
+  return comparePixels(readPNG(a), readPNG(b));
 }
 const engine = process.argv[2] || 'chromium';
 const output = process.env.EVIDENCE_DIR || '/tmp/liquidglass-surface-scroll';
@@ -21,10 +22,7 @@ if (engine === 'webkit') {
   runNativeWebKit();
   process.exit(0);
 }
-const browser = await playwright[engine].launch({
-  headless: true,
-  executablePath: engine === 'firefox' ? process.env.FIREFOX_EXECUTABLE : process.env.CHROME_EXECUTABLE || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-});
+const browser = await playwright[engine].launch(launchOptions(engine));
 const results = [];
 try {
   for (const config of [
@@ -40,7 +38,7 @@ try {
     page.setDefaultTimeout(15000);
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
-    await page.goto(pathToFileURL(fileURLToPath(new URL('../review/surface-scroll.html', import.meta.url))).href);
+    await page.setContent(reviewDocument().html);
     await page.waitForFunction(() => window.reviewReady);
     if (config.width !== 1280) await page.selectOption('#viewport', `${config.width},${config.height}`);
     await page.waitForFunction(() => window.reviewReady);

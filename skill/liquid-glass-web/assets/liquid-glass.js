@@ -27,7 +27,6 @@ export const DEFAULTS = Object.freeze({
   width: 120,
   height: 64,
   radius: 32,
-  // Optics.
   refraction: 18, // maximum bend at the rim, CSS px
   bezel: 0.6, // curved rim width as a fraction of the lens half-size (min side); 1 = full dome
   curvature: 4, // rim profile exponent: 2 = circular, 4 = squircle-like, higher = steeper rim
@@ -41,9 +40,12 @@ export const DEFAULTS = Object.freeze({
   mapScale: 0, // map pixels per CSS px; 0 = devicePixelRatio capped at 2
 });
 
-// Keys that change the displacement map itself. Everything else (position, strength) is a cheap
-// attribute update on an existing filter.
 const MAP_KEYS = ['width', 'height', 'radius', 'bezel', 'curvature', 'ior', 'invert', 'specular', 'specularWidth', 'lightAngle'];
+
+// Shared by the SVG cache and WebGL textures; position and bend strength do not change map pixels
+export function lensMapKey(params, scale) {
+  return MAP_KEYS.map((key) => params[key]).join('|') + '|' + scale;
+}
 
 export const engine = detectEngine();
 const needsFilterRefresh = engine !== 'blink' && engine !== 'gecko';
@@ -201,84 +203,86 @@ function write(px, o, r, g, b, a) {
   px[o + 3] = a;
 }
 
-const mapCache = new Map();
-let mapCacheBytes = 0;
-
-function mapKeyOf(p, scale) {
-  return MAP_KEYS.map((k) => p[k]).join('|') + '|' + scale;
-}
-
 function samePixels(a, b) {
   if (!b || a.length !== b.length) return false;
   for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false;
   return true;
 }
 
-function rememberMap(entry, key) {
-  mapCache.delete(entry.key);
-  // Remember a few exact shapes so replaying a spring can skip the pixel calculation too
-  if (!entry.keys.includes(key)) {
-    if (entry.keys.length === MAP_CACHE_KEYS) entry.keys.shift();
-    entry.keys.push(key);
-  }
-  mapCache.set(entry.key, entry);
-  return entry;
-}
+class LensMapCache {
+  entries = new Map();
+  bytes = 0;
 
-// Returns { key, url, decoded, ready }. The PNG is decoded through an <img> before the filter uses
-// it: feImage loads data URLs asynchronously, and WebKit caches whatever the filter produced while
-// the image was still missing (an empty result) until the filter id changes.
-function lensMap(p, scale, key) {
-  let entry = mapCache.get(key);
-  if (!entry) {
-    for (const cached of mapCache.values()) {
-      if (cached.keys.includes(key)) {
-        entry = cached;
-        break;
+  remember(entry, key) {
+    this.entries.delete(entry.key);
+    if (!entry.keys.includes(key)) {
+      if (entry.keys.length === MAP_CACHE_KEYS) entry.keys.shift();
+      entry.keys.push(key);
+    }
+    this.entries.set(entry.key, entry);
+    return entry;
+  }
+
+  get(p, scale, key) {
+    let entry = this.entries.get(key);
+    if (!entry) {
+      for (const cached of this.entries.values()) {
+        if (cached.keys.includes(key)) {
+          entry = cached;
+          break;
+        }
       }
     }
-  }
-  if (entry) {
-    return rememberMap(entry, key);
-  } else {
+    if (entry) return this.remember(entry, key);
     const image = lensPixels(p, scale);
     const pixels = new Uint32Array(image.data.buffer);
     // Small spring steps can produce the same 8-bit map even when their geometry keys differ
-    for (const cached of mapCache.values()) {
+    for (const cached of this.entries.values()) {
       if (cached.width === image.width && cached.height === image.height && samePixels(pixels, cached.pixels)) {
-        return rememberMap(cached, key);
+        return this.remember(cached, key);
       }
     }
     const url = mapCanvas(image, scale).canvas.toDataURL('image/png');
     // Large panels still cache their PNG without keeping another large copy of its pixels
     const retained = pixels.byteLength <= MAP_CACHE_BYTES ? pixels : null;
-    entry = { key, keys: [key], url, pixels: retained, width: image.width, height: image.height, decoded: false, ready: null };
+    const created = { key, keys: [key], url, pixels: retained, width: image.width, height: image.height, decoded: false, ready: null };
+    // WebKit can cache an empty filter result if feImage receives a PNG before it decodes
     const img = new Image();
     img.src = url;
-    entry.ready = img
+    created.ready = img
       .decode()
+      // A rejected eager decode still leaves feImage's own image loader available
       .catch(() => {})
       .then(() => {
-        entry.decoded = true;
+        created.decoded = true;
       });
-    const bytes = retained?.byteLength ?? 0;
-    if (mapCache.size >= MAP_CACHE_SIZE) {
-      const oldest = mapCache.keys().next().value;
-      const evicted = mapCache.get(oldest);
-      mapCacheBytes -= evicted.pixels?.byteLength ?? 0;
-      evicted.pixels = null;
-      mapCache.delete(oldest);
-    }
-    for (const cached of mapCache.values()) {
-      if (mapCacheBytes + bytes <= MAP_CACHE_BYTES) break;
-      mapCacheBytes -= cached.pixels?.byteLength ?? 0;
-      cached.pixels = null;
-    }
-    mapCacheBytes += bytes;
+    this.retain(created);
+    return created;
   }
-  mapCache.set(key, entry);
-  return entry;
+
+  releasePixels(entry) {
+    this.bytes -= entry.pixels?.byteLength ?? 0;
+    entry.pixels = null;
+  }
+
+  retain(entry) {
+    const retained = entry.pixels;
+    const bytes = retained?.byteLength ?? 0;
+    if (this.entries.size >= MAP_CACHE_SIZE) {
+      const oldest = this.entries.keys().next().value;
+      this.releasePixels(this.entries.get(oldest));
+      this.entries.delete(oldest);
+    }
+    for (const cached of this.entries.values()) {
+      if (this.bytes + bytes <= MAP_CACHE_BYTES) break;
+      this.releasePixels(cached);
+    }
+    this.bytes += bytes;
+    this.entries.set(entry.key, entry);
+  }
 }
+
+const mapCache = new LensMapCache();
 
 /* ------------------------------------------------------------------------------------------------ */
 /* SVG filter                                                                                         */
@@ -445,9 +449,9 @@ export function createGlass(target, options = {}) {
 
   let graph = null;
   let structure = '';
-  let wanted = ''; // key of the newest map requested
+  let wanted = '';
   let requested = 0; // request counter, so a slow decode never replaces a newer map
-  let shown = { key: '', seq: -1 }; // map currently referenced by feImage
+  let shown = { key: '', seq: -1 };
   let version = 0;
   let frame = 0;
   let settleTimers = [];
@@ -517,10 +521,10 @@ export function createGlass(target, options = {}) {
     const w = snap(p.width);
     const h = snap(p.height);
 
-    const key = mapKeyOf(p, scale);
+    const key = lensMapKey(p, scale);
     if (wanted !== key) {
       wanted = key;
-      const entry = lensMap(p, scale, key);
+      const entry = mapCache.get(p, scale, key);
       const seq = ++requested;
       if (entry.decoded) show(entry, seq);
       // While a squish animation requests a new map every frame, show the newest map that has

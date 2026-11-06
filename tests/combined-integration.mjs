@@ -1,16 +1,16 @@
+import { readPNG } from './helpers/read-png.mjs';
+import { loadPlaywright, launchOptions } from '../review/browser-runtime.mjs';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { mkdirSync, writeFileSync } from 'node:fs';
-import { resolve } from 'node:path';
-import { pathToFileURL } from 'node:url';
-import { combinedDocument, manifest, reviewDocument } from '../review/combined-fixture.mjs';
-import { holdImageDecodes } from './helpers/hold-image-decodes.mjs';
+import { combinedDocument, loadComparison, reviewDocument } from '../review/combined-fixture.mjs';
+import { holdImageDecodes } from '../review/hold-image-decodes.mjs';
 import { comparePixels } from './helpers/compare-pixels.mjs';
 
-if (!process.env.PLAYWRIGHT_MODULE) throw new Error('Set PLAYWRIGHT_MODULE to the existing Playwright index.mjs; this runner installs nothing');
-const moduleURL = pathToFileURL(resolve(process.env.PLAYWRIGHT_MODULE));
-const playwright = await import(moduleURL.href);
-const { PNG } = await import(new URL('../playwright-core/lib/utilsBundle.js', moduleURL));
+const comparison = loadComparison();
+const { manifest } = comparison;
+
+const playwright = await loadPlaywright();
 const engine = process.argv[2] || 'chromium';
 assert(['chromium', 'firefox'].includes(engine));
 const output = process.env.COMBINED_EVIDENCE_DIR || '/tmp/liquidglass-fork-validation/combined';
@@ -25,14 +25,13 @@ let assertions = 0;
 const check = (condition, message) => { assert.ok(condition, message); assertions++; };
 const digest = value => createHash('sha256').update(value).digest('hex');
 const difference = (left, right) => {
-  const result = comparePixels(PNG.sync.read(left), PNG.sync.read(right));
+  const result = comparePixels(readPNG(left), readPNG(right));
   assertions++;
   return result;
 };
-const browser = await playwright[engine].launch({ headless: true, executablePath: engine === 'firefox'
-  ? process.env.FIREFOX_EXECUTABLE : process.env.CHROME_EXECUTABLE || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' });
+const browser = await playwright[engine].launch(launchOptions(engine));
 report.browser = browser.version();
-const documents = ['original', 'candidate'].map(variant => combinedDocument(variant));
+const documents = ['original', 'candidate'].map(variant => combinedDocument(comparison, variant));
 const align = async (page, label) => {
   const geometry = await page.evaluate(() => fixture.geometry(true));
   check(geometry.length > 0, `${label}: no visible copy surfaces`);
@@ -199,7 +198,7 @@ try {
     }
   }
   const page = await browser.newPage({ ...(engine === 'firefox' ? { userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:157.0) Gecko/20100101 Firefox/157.0' } : {}) });
-  await page.setContent(reviewDocument()); await page.waitForFunction(() => window.reviewReady);
+  await page.setContent(reviewDocument(comparison)); await page.waitForFunction(() => window.reviewReady);
   check(await page.locator('iframe').count() === 2, 'Standalone combined review did not initialize both actual runtimes');
   await page.close();
 } finally {

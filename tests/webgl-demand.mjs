@@ -1,15 +1,15 @@
+import { loadPlaywright, launchOptions } from '../review/browser-runtime.mjs';
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { BASE } from '../review/runtime-sources.mjs';
 
 const option = (name, fallback) => {
   const index = process.argv.indexOf(`--${name}`);
   return index < 0 ? fallback : process.argv[index + 1];
 };
-const modulePath = process.env.PLAYWRIGHT_MODULE;
-if (!modulePath) throw new Error('Set PLAYWRIGHT_MODULE to the existing Playwright index.mjs; no package is installed by this runner');
-const playwright = await import(pathToFileURL(resolve(modulePath)).href);
+const playwright = await loadPlaywright();
 const output = resolve(option('output', 'output/playwright/webgl-demand'));
 await mkdir(output, { recursive: true });
 const cases = process.argv.includes('--quick') ? [{ width: 1280, height: 900, dpr: 1, motion: 'no-preference' }] : [
@@ -20,10 +20,9 @@ const cases = process.argv.includes('--quick') ? [{ width: 1280, height: 900, dp
   { width: 390, height: 844, dpr: 2, motion: 'reduce' },
   { width: 390, height: 844, dpr: 1.5, motion: 'no-preference' },
 ];
-const report = { base: '068ad226f53e1ca62d857f78bdc32f58f3c5fce7', date: new Date().toISOString(), cases: [] };
+const report = { base: BASE, date: new Date().toISOString(), cases: [] };
 for (const engine of option('engine', 'chromium,firefox').split(',')) {
-  const executablePath = engine === 'firefox' ? process.env.FIREFOX_EXECUTABLE : process.env.CHROME_EXECUTABLE || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-  const browser = await playwright[engine].launch({ headless: true, ...(executablePath ? { executablePath } : {}) });
+  const browser = await playwright[engine].launch(launchOptions(engine));
   try {
     for (const size of cases) {
       const name = `${engine}-${size.width}-${size.dpr}-${size.motion}`;

@@ -1,11 +1,10 @@
-import { execFileSync } from 'node:child_process';
+import { baselineSource, candidateSource, BASE as base } from './runtime-sources.mjs';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { holdImageDecodes } from '../tests/helpers/hold-image-decodes.mjs';
+import { holdImageDecodes } from './hold-image-decodes.mjs';
 
-const base = '068ad226f53e1ca62d857f78bdc32f58f3c5fce7';
-const original = execFileSync('git', ['show', `${base}:lib/liquid-glass.js`], { encoding: 'utf8' });
-const candidate = readFileSync(new URL('../lib/liquid-glass.js', import.meta.url), 'utf8');
+const original = baselineSource('liquid-glass.js');
+const candidate = candidateSource('liquid-glass.js');
 const moduleURL = (source) => `data:text/javascript;base64,${Buffer.from(source).toString('base64')}`;
 const fixture = `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="600"><defs><pattern id="p" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="#d0e4f2"/><path d="M0 0H40V40H0Z" fill="none" stroke="#345169" stroke-width="2"/><path d="M0 20H40M20 0V40" stroke="#a4bcd5"/></pattern></defs><rect width="1280" height="600" fill="url(#p)"/><path d="M0 420L400 0L850 580L1280 80" stroke="#f25c46" stroke-width="28" fill="none"/><circle cx="220" cy="170" r="100" fill="#f7cf46"/><path d="M0 140H1280M0 280H1280" stroke="#213944" stroke-width="5"/><text x="22" y="65" font-family="sans-serif" font-size="30" fill="#142c40">REFRACTION · 0123456789</text></svg>`;
 
