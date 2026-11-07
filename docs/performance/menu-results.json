@@ -1,0 +1,357 @@
+{
+  "baseline": "a863784486ff2a812a55e6bfa66587ffdc9dff17",
+  "date": "2026-11-07T01:16:24.299Z",
+  "engine": "chromium",
+  "cpuRate": 4,
+  "configuration": {
+    "builds": [
+      "previous",
+      "current"
+    ],
+    "trials": 3,
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "dpr": 2
+  },
+  "trials": [
+    {
+      "workload": "open",
+      "build": "previous",
+      "trial": 0,
+      "frames": 353,
+      "fps": 58.672960574429894,
+      "p95FrameMs": 16.799999999999955,
+      "encodes": 527,
+      "encodedPixels": 52313800,
+      "metrics": {
+        "TaskDuration": 4.691706,
+        "ScriptDuration": 3.582035,
+        "LayoutDuration": 0.101751,
+        "LayoutCount": 952,
+        "RecalcStyleCount": 1176
+      },
+      "errors": []
+    },
+    {
+      "workload": "open",
+      "build": "current",
+      "trial": 0,
+      "frames": 360,
+      "fps": 59.83545250560958,
+      "p95FrameMs": 16.700000000000728,
+      "encodes": 3,
+      "encodedPixels": 357280,
+      "metrics": {
+        "TaskDuration": 0.333796,
+        "ScriptDuration": 0.072086,
+        "LayoutDuration": 0.026483,
+        "LayoutCount": 62,
+        "RecalcStyleCount": 398
+      },
+      "errors": []
+    },
+    {
+      "workload": "open",
+      "build": "current",
+      "trial": 1,
+      "frames": 360,
+      "fps": 59.83545250560958,
+      "p95FrameMs": 16.700000000000728,
+      "encodes": 3,
+      "encodedPixels": 357280,
+      "metrics": {
+        "TaskDuration": 0.28773099999999996,
+        "ScriptDuration": 0.064683,
+        "LayoutDuration": 0.023435,
+        "LayoutCount": 62,
+        "RecalcStyleCount": 398
+      },
+      "errors": []
+    },
+    {
+      "workload": "open",
+      "build": "previous",
+      "trial": 1,
+      "frames": 347,
+      "fps": 57.67472783179589,
+      "p95FrameMs": 16.800000000000182,
+      "encodes": 516,
+      "encodedPixels": 51399480,
+      "metrics": {
+        "TaskDuration": 4.628384,
+        "ScriptDuration": 3.590237,
+        "LayoutDuration": 0.111812,
+        "LayoutCount": 937,
+        "RecalcStyleCount": 1159
+      },
+      "errors": []
+    },
+    {
+      "workload": "open",
+      "build": "previous",
+      "trial": 2,
+      "frames": 357,
+      "fps": 59.33780998603817,
+      "p95FrameMs": 16.799999999999727,
+      "encodes": 535,
+      "encodedPixels": 53187640,
+      "metrics": {
+        "TaskDuration": 4.243481,
+        "ScriptDuration": 3.357827,
+        "LayoutDuration": 0.09118,
+        "LayoutCount": 966,
+        "RecalcStyleCount": 1193
+      },
+      "errors": []
+    },
+    {
+      "workload": "open",
+      "build": "current",
+      "trial": 2,
+      "frames": 361,
+      "fps": 60.00265939764644,
+      "p95FrameMs": 16.799999999999727,
+      "encodes": 3,
+      "encodedPixels": 357280,
+      "metrics": {
+        "TaskDuration": 0.250006,
+        "ScriptDuration": 0.053345,
+        "LayoutDuration": 0.018879,
+        "LayoutCount": 62,
+        "RecalcStyleCount": 399
+      },
+      "errors": []
+    },
+    {
+      "workload": "rows",
+      "build": "previous",
+      "trial": 0,
+      "frames": 361,
+      "fps": 60.00166209590294,
+      "p95FrameMs": 16.799999999999272,
+      "encodes": 230,
+      "encodedPixels": 6406165,
+      "metrics": {
+        "TaskDuration": 1.192356,
+        "ScriptDuration": 0.646249,
+        "LayoutDuration": 0.043417,
+        "LayoutCount": 638,
+        "RecalcStyleCount": 702
+      },
+      "errors": []
+    },
+    {
+      "workload": "rows",
+      "build": "current",
+      "trial": 0,
+      "frames": 361,
+      "fps": 60.00265939764644,
+      "p95FrameMs": 16.700000000000728,
+      "encodes": 14,
+      "encodedPixels": 390360,
+      "metrics": {
+        "TaskDuration": 0.412966,
+        "ScriptDuration": 0.119258,
+        "LayoutDuration": 0.022146,
+        "LayoutCount": 314,
+        "RecalcStyleCount": 353
+      },
+      "errors": []
+    },
+    {
+      "workload": "rows",
+      "build": "current",
+      "trial": 1,
+      "frames": 361,
+      "fps": 60.003656732543256,
+      "p95FrameMs": 16.700000000000728,
+      "encodes": 14,
+      "encodedPixels": 390360,
+      "metrics": {
+        "TaskDuration": 0.451489,
+        "ScriptDuration": 0.133987,
+        "LayoutDuration": 0.032332,
+        "LayoutCount": 314,
+        "RecalcStyleCount": 353
+      },
+      "errors": []
+    },
+    {
+      "workload": "rows",
+      "build": "previous",
+      "trial": 1,
+      "frames": 361,
+      "fps": 60.00253971968676,
+      "p95FrameMs": 16.700000000000728,
+      "encodes": 219,
+      "encodedPixels": 6098824,
+      "metrics": {
+        "TaskDuration": 1.2456099999999999,
+        "ScriptDuration": 0.671409,
+        "LayoutDuration": 0.048933,
+        "LayoutCount": 637,
+        "RecalcStyleCount": 702
+      },
+      "errors": []
+    },
+    {
+      "workload": "rows",
+      "build": "previous",
+      "trial": 2,
+      "frames": 361,
+      "fps": 60.00188149944203,
+      "p95FrameMs": 16.700000000000728,
+      "encodes": 221,
+      "encodedPixels": 6152479,
+      "metrics": {
+        "TaskDuration": 1.305492,
+        "ScriptDuration": 0.717265,
+        "LayoutDuration": 0.053287,
+        "LayoutCount": 638,
+        "RecalcStyleCount": 702
+      },
+      "errors": []
+    },
+    {
+      "workload": "rows",
+      "build": "current",
+      "trial": 2,
+      "frames": 361,
+      "fps": 60.00265939764644,
+      "p95FrameMs": 16.700000000000728,
+      "encodes": 14,
+      "encodedPixels": 390360,
+      "metrics": {
+        "TaskDuration": 0.6932349999999999,
+        "ScriptDuration": 0.19035,
+        "LayoutDuration": 0.053408,
+        "LayoutCount": 314,
+        "RecalcStyleCount": 353
+      },
+      "errors": []
+    },
+    {
+      "workload": "navbar",
+      "build": "previous",
+      "trial": 0,
+      "frames": 361,
+      "fps": 60.00166209590294,
+      "p95FrameMs": 16.700000000000728,
+      "encodes": 338,
+      "encodedPixels": 5499987,
+      "metrics": {
+        "TaskDuration": 1.657702,
+        "ScriptDuration": 0.963289,
+        "LayoutDuration": 0.066946,
+        "LayoutCount": 690,
+        "RecalcStyleCount": 699
+      },
+      "errors": []
+    },
+    {
+      "workload": "navbar",
+      "build": "current",
+      "trial": 0,
+      "frames": 361,
+      "fps": 60.00166209590294,
+      "p95FrameMs": 16.799999999999727,
+      "encodes": 104,
+      "encodedPixels": 1624448,
+      "metrics": {
+        "TaskDuration": 0.872898,
+        "ScriptDuration": 0.401215,
+        "LayoutDuration": 0.050073,
+        "LayoutCount": 343,
+        "RecalcStyleCount": 349
+      },
+      "errors": []
+    },
+    {
+      "workload": "navbar",
+      "build": "current",
+      "trial": 1,
+      "frames": 361,
+      "fps": 60.001662095902944,
+      "p95FrameMs": 16.700000000000728,
+      "encodes": 103,
+      "encodedPixels": 1615563,
+      "metrics": {
+        "TaskDuration": 0.848047,
+        "ScriptDuration": 0.395194,
+        "LayoutDuration": 0.049383,
+        "LayoutCount": 343,
+        "RecalcStyleCount": 349
+      },
+      "errors": []
+    },
+    {
+      "workload": "navbar",
+      "build": "previous",
+      "trial": 1,
+      "frames": 361,
+      "fps": 60.00265939764644,
+      "p95FrameMs": 16.700000000000728,
+      "encodes": 343,
+      "encodedPixels": 5588789,
+      "metrics": {
+        "TaskDuration": 1.160632,
+        "ScriptDuration": 0.732179,
+        "LayoutDuration": 0.033991,
+        "LayoutCount": 693,
+        "RecalcStyleCount": 699
+      },
+      "errors": []
+    },
+    {
+      "workload": "navbar",
+      "build": "previous",
+      "trial": 2,
+      "frames": 361,
+      "fps": 60.00265939764644,
+      "p95FrameMs": 16.700000000000728,
+      "encodes": 342,
+      "encodedPixels": 5575338,
+      "metrics": {
+        "TaskDuration": 1.747805,
+        "ScriptDuration": 1.322187,
+        "LayoutDuration": 0.038412,
+        "LayoutCount": 691,
+        "RecalcStyleCount": 699
+      },
+      "errors": []
+    },
+    {
+      "workload": "navbar",
+      "build": "current",
+      "trial": 2,
+      "frames": 361,
+      "fps": 60.00265939764644,
+      "p95FrameMs": 16.700000000000728,
+      "encodes": 90,
+      "encodedPixels": 1407183,
+      "metrics": {
+        "TaskDuration": 0.9036299999999999,
+        "ScriptDuration": 0.517142,
+        "LayoutDuration": 0.038964,
+        "LayoutCount": 343,
+        "RecalcStyleCount": 349
+      },
+      "errors": []
+    }
+  ],
+  "fixtureSHA256": "7acd3229d7d48fd538cb221acbf1db8a6c6f145d91baf491409a16e209daf29e",
+  "sources": {
+    "previous": {
+      "components.js": "8e8ae8006d5f05f0bb5899e78a0f092bc53fa32137cda455b13b6ffec780c685",
+      "liquid-glass.js": "cef06f4e3c8b7de035d2268872185af9da4f39391c83ac8a9506ce6eca93cb1d"
+    },
+    "current": {
+      "components.js": "b76e103086f5b58d831c0caa06482e0631ea64db42156556bc948886abf8fcad",
+      "liquid-glass.js": "cef06f4e3c8b7de035d2268872185af9da4f39391c83ac8a9506ce6eca93cb1d"
+    }
+  },
+  "method": "Alternating paired trials per workload, fresh page at 1280x800 DPR 2. Each six-second rAF replay opens/switches/closes menus or moves a navbar highlight every 180 ms through synthetic input events. PNG counts include only the replay, after page setup. FPS measures rAF cadence, not physical presentation. Browser task/layout metrics and optional CPU throttling are available in Chromium only. Shared-host timing is not a universal speedup claim.",
+  "browser": "157.0.8103.39"
+}

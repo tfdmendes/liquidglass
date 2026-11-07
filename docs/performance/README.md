@@ -1,5 +1,8 @@
 # Performance evidence
 
+The [menu and navigation measurements](menus.md) cover the later component
+animation changes, separately from the engine comparisons below.
+
 The [second raster pass and FPS measurements](fps.md) compare the first delivered optimization with the current engine and include a runnable comparison website. The [first raster pass](raster.md) compares the earlier integrated fork at `862e553` with the retained `previous` build. Both remain separate from the historical upstream comparisons below.
 
 These figures use measurements from the 26 October 2026 review. Each of the four

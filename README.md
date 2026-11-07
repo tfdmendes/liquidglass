@@ -67,6 +67,7 @@ keyboard selection remain available; `radius="capsule"` gives it a capsule outli
 - **Scrolling:** only affected glass copies are realigned, with fewer size and position measurements.
 - **WebGL:** unchanged static image snapshots (`ImageBitmap`) and paused videos sleep between updates. Canvas and animated images stay live.
 - **Map generation:** straight edges avoid corner-distance calculations, and neutral interior spans are filled together.
+- **Menus and navigation:** opening panels reuse a full-size optical map, while moving highlights reuse device-pixel sizes and measured item positions. See the [menu measurements](docs/performance/menus.md).
 
 ## Results
 
@@ -108,6 +109,7 @@ sh scripts/sync-skill.sh --check
 This copies the three library files into the bundled skill. Browser regression tests live in `tests/`; comparison builders and measurement records live in `review/`. They use Node.js and a separate Playwright installation; neither is required to use the library.
 
 Run segmented-control regression tests with `node --test tests/segmented.test.mjs`.
+Run menu and navbar regression tests with `node --test tests/menus.test.mjs`.
 Set `LG_PLAYWRIGHT_MODULE` to an existing Playwright `index.mjs` when it is installed
 outside this repository. `LG_BROWSER=firefox` selects Firefox; use
 `LG_FIREFOX_EXECUTABLE` or `LG_CHROME_EXECUTABLE` to select an existing browser binary.

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glass menus</title>
+<style>
+  body { margin: 0; background: #eef1f5; font: 14px system-ui, sans-serif; }
+  .scene { position: relative; height: 480px; margin: 24px; }
+  .scene > img { position: absolute; width: 100%; height: 100%; object-fit: cover; }
+  lg-navbar { position: absolute; bottom: 24px; left: 16px; }
+  #plain { margin: 0 24px 240px; }
+</style>
+<div class="scene" data-lg-backdrop="img">
+  <img src="../../images/city-1200.jpg" alt="">
+  <lg-menubar>
+    <lg-menu label="File" id="file">
+      <button value="new" data-shortcut="⌘N">New Window</button>
+      <button value="open" data-shortcut="⌘O">Open…</button>
+      <button value="save" data-shortcut="⇧⌘S">Save As…</button>
+      <hr>
+      <button value="close" data-shortcut="⌘W">Close Window</button>
+    </lg-menu>
+    <lg-menu label="Edit" id="edit">
+      <button>Undo</button><button>Redo</button><hr>
+      <button>Cut</button><button>Copy</button><button>Paste</button>
+    </lg-menu>
+    <lg-menu label="View" id="view">
+      <button>Show Sidebar</button><button>Enter Full Screen</button>
+    </lg-menu>
+  </lg-menubar>
+  <lg-navbar id="nav">
+    <button aria-current="page">Home</button><button>Collections</button>
+    <button>About this project</button><button>Contact</button>
+  </lg-navbar>
+</div>
+<lg-menu id="plain" label="Actions"><button>Continue</button><button>Cancel</button></lg-menu>
+<script type="module" src="../../lib/components.js"></script>
+</html>
