@@ -44,6 +44,8 @@ The four procedural backdrops are original optical test artwork, not photographs
 
 The performance section uses native HTML charts inside a light glass panel. A visitor chooses the workload, then compares two absolute values on a zero-based scale. Recorded ranges remain visible. The downloadable figures use light editorial small multiples. The rejected dense dark chart frame and automatic dark-mode graphic have been removed.
 
+Each chart's workload selector combines `lg-segmented` with a clear refractive `lg-panel` aligned to the chart's artwork. Its image copy uses the chart's light tint, keeping its contours consistent with the surrounding panel. Its neutral glass indicator supports clicks, keyboard selection and selection on drag release. The backdrop is realigned when chart content changes height. Axis labels use the scale's precision instead of exposing floating-point tails; recorded values and bar proportions stay unchanged.
+
 The source inspector's remaining warnings are deliberate: this software is demonstrated through real working interfaces and original optical materials rather than stock photographs or an unrelated video. Display, section headings, the measured figure, and the footer wordmark have distinct scales; code and native control text retain their functional sizes.
 
 Default showcase optics use refraction 10px, bezel 0.2, specular strength 0.12 and highlight width 0.75px. These are page-level design choices. Library defaults remain unchanged.

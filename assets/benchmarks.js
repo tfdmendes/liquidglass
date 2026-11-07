@@ -29,24 +29,25 @@ function renderMetric(mount, rows, { unit, note, initial = 0, higher = false }) 
   const panel = document.createElement('lg-panel');
   panel.className = 'benchmark-panel';
   for (const [name, value] of Object.entries({ tone: 'light', radius: 24, refraction: 8, bezel: 0.15, blur: 2, specular: 0.1, 'specular-width': 0.6 })) panel.setAttribute(name, value);
-  const picker = element('div', 'benchmark-picker');
-  picker.setAttribute('role', 'group');
-  picker.setAttribute('aria-label', 'Benchmark workload');
+  const pickerPanel = element('lg-panel', 'benchmark-picker-shell');
+  for (const [name, value] of Object.entries({ tone: 'light', radius: 'capsule', refraction: 24, bezel: 0.5, chroma: 0, blur: 0, specular: 0.4, 'specular-width': 1 })) pickerPanel.setAttribute(name, value);
+  const picker = element('lg-segmented', 'benchmark-picker');
+  for (const [name, value] of Object.entries({ label: 'Benchmark workload', value: initial, radius: 'capsule', refraction: 5, chroma: 0, specular: 0.4, 'specular-width': 1 })) picker.setAttribute(name, value);
   const chart = element('div', 'benchmark-chart');
-  const buttons = rows.map((row, index) => {
+  rows.forEach((row, index) => {
     const button = element('button', '', row.short);
     button.type = 'button';
-    button.addEventListener('click', () => select(index));
+    button.value = String(index);
     picker.append(button);
-    return button;
   });
+  picker.addEventListener('change', (event) => select(event.detail.index));
 
   function select(index) {
     const row = rows[index];
-    for (const [i, button] of buttons.entries()) button.setAttribute('aria-pressed', String(i === index));
     const largest = Math.max(row.previousRange[1], row.currentRange[1]) * 1.08;
     const step = 10 ** Math.floor(Math.log10(largest));
     const maximum = Math.ceil(largest / step) * step;
+    const ticks = new Intl.NumberFormat('en-US', { maximumFractionDigits: Math.max(0, 1 - Math.floor(Math.log10(step))) });
     chart.replaceChildren();
     const heading = element('div', 'benchmark-heading');
     heading.append(element('h3', '', row.name), element('p', '', row.description));
@@ -60,7 +61,7 @@ function renderMetric(mount, rows, { unit, note, initial = 0, higher = false }) 
       label.append(element('span', '', variant === 'previous' ? 'Previous' : 'Current'), number);
       const track = element('div', 'benchmark-track');
       track.setAttribute('role', 'img');
-      track.setAttribute('aria-label', `${variant}: median ${format(value)} ${unit}, range ${format(bounds[0])} to ${format(bounds[1])} ${unit}, zero-based scale to ${maximum} ${unit}`);
+      track.setAttribute('aria-label', `${variant}: median ${format(value)} ${unit}, range ${format(bounds[0])} to ${format(bounds[1])} ${unit}, zero-based scale to ${ticks.format(maximum)} ${unit}`);
       const fill = element('span', 'benchmark-fill');
       fill.style.width = `${value / maximum * 100}%`;
       const range = element('span', 'benchmark-range');
@@ -72,7 +73,7 @@ function renderMetric(mount, rows, { unit, note, initial = 0, higher = false }) 
     }
     const axis = element('div', 'benchmark-axis');
     axis.setAttribute('aria-hidden', 'true');
-    axis.append(element('span', '', '0'), element('span', '', `${maximum / 2}`), element('span', '', `${maximum} ${unit}`));
+    axis.append(element('span', '', '0'), element('span', '', ticks.format(maximum / 2)), element('span', '', `${ticks.format(maximum)} ${unit}`));
     const difference = row.current - row.previous;
     const result = higher
       ? `${Math.abs(difference).toFixed(2)} ${unit} ${difference >= 0 ? 'higher' : 'lower'}`
@@ -80,10 +81,13 @@ function renderMetric(mount, rows, { unit, note, initial = 0, higher = false }) 
     const outcome = element('div', 'benchmark-outcome');
     outcome.append(element('strong', '', result), element('span', '', higher ? 'Higher cadence is better' : 'Lower time is better'));
     chart.append(axis, outcome);
+    // A longer chart can resize the backdrop without resizing this control
+    pickerPanel.surface?.update();
   }
 
   const caption = element('p', 'benchmark-note', note);
-  panel.append(picker, chart, caption);
+  pickerPanel.append(picker);
+  panel.append(pickerPanel, chart, caption);
   shell.append(backdrop, panel);
   mount.replaceChildren(shell);
   select(initial);

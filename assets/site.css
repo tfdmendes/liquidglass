@@ -145,10 +145,15 @@ code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
 .figure-tabs button[aria-selected="true"] { color: var(--blue); font-weight: 600; text-decoration: underline; text-underline-offset: 7px; text-decoration-thickness: 2px; }
 .benchmark-shell { position: relative; isolation: isolate; border-radius: 24px; overflow: hidden; background: #f4f8fd; }
 .benchmark-backdrop { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; opacity: .11; }
-.benchmark-panel { padding: 28px; --lg-tint-strong: rgb(255 255 255 / .66); --lg-text: var(--ink); --lg-shadow-2: none; }
-.benchmark-picker { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 4px; background: #dfebf4; border-radius: 10px; }
-.benchmark-picker button { padding: 9px 6px; background: transparent; border-radius: 7px; font-size: 14px; color: #476176; }
-.benchmark-picker button[aria-pressed="true"] { background: white; color: var(--blue); font-weight: 600; }
+.benchmark-panel { padding: 28px; --benchmark-panel-tint: .66; --lg-tint-strong: rgb(255 255 255 / var(--benchmark-panel-tint)); --lg-text: var(--ink); --lg-shadow-2: none; }
+.benchmark-picker-shell { display: block; padding: 0; --lg-tint-strong: rgb(255 255 255 / .08); --lg-text: #14283b; --lg-shadow-2: 0 3px 8px rgb(8 26 46 / .12); }
+.benchmark-picker-shell > .lg-panel__body { padding: 0; }
+/* Match the chart's tint before refracting its image inside the selector */
+.benchmark-picker-shell .lg-surface__glass { background: #fff; }
+.benchmark-picker-shell .lg-surface__copy { opacity: calc(1 - var(--benchmark-panel-tint)); }
+.benchmark-picker { display: flex; width: 100%; --lg-track: transparent; --lg-surface: rgb(255 255 255 / .14); --lg-accent: #14283b; --lg-text-muted: #14283b; --lg-focus: #14283b; }
+.benchmark-picker > button, .benchmark-picker .lg-refract .lg-seg__option { height: 44px; padding: 0 8px; font-size: 14px; line-height: 44px; }
+.benchmark-picker > button { flex: 1; min-width: 0; }
 .benchmark-heading { margin-block: 32px 30px; }
 .benchmark-heading h3 { font-size: 28px; letter-spacing: -.035em; }
 .benchmark-heading p { margin-top: 8px; font-size: 14px; color: var(--muted); }
@@ -283,7 +288,7 @@ code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
   .figure-tabs { gap: 24px; justify-content: space-between; }
   .figure-tabs button { font-size: 13px; }
   .benchmark-panel { padding: 22px; }
-  .benchmark-picker button { padding-inline: 3px; font-size: 13px; }
+  .benchmark-picker > button, .benchmark-picker .lg-refract .lg-seg__option { padding-inline: 3px; font-size: 13px; }
   .benchmark-heading h3 { font-size: 26px; }
   .benchmark-outcome { display: block; }
   .benchmark-outcome span { display: block; margin-top: 7px; }
@@ -299,6 +304,8 @@ code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .benchmark-picker-shell { --lg-tint-strong: rgb(255 255 255 / .96); --lg-text: #14283b; }
+  .benchmark-picker { --lg-text-muted: #14283b; --lg-accent: #fff; --lg-surface: rgb(20 40 59 / .95); --lg-focus: #14283b; }
   .feedback-scene[data-style] { --feedback-menu-tint: rgb(255 255 255 / .96); --feedback-menu-ink: #14283b; }
   .navigation-scene lg-navbar { --lg-tint: rgb(255 255 255 / .95); --lg-indicator: rgb(20 40 59 / .95); --lg-text: #14283b; --lg-on-glass: #14283b; --lg-focus: #14283b; }
   .navigation-scene .lg-nav__copy > span { color: #fff; }
