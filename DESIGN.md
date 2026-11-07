@@ -64,6 +64,8 @@ In the feedback example, Material selects one of the four backdrops. Style chang
 
 The dropdowns use a clearer lens than the surrounding controls: Clear has 32px refraction with no blur, and Soft has 22px refraction. Their 0.6 bezel spreads the bending across the edges while the specular rim stays 1px wide. Clear replaces the old 60% white fill with a transparent navy tint from 26% to 47%, keeping the contour artwork visible and the white labels legible. Frosted remains a separate finish. Reduced transparency or increased contrast restores a near-solid dropdown with dark text.
 
+Hovered and focused menu rows use a neutral translucent lens instead of the library's solid accent fill. The copied labels follow the dropdown's text colour, and keyboard focus retains a thin outline. The selected option remains marked by its dot.
+
 Check desktop, tablet and phone layouts, keyboard use, pointer dragging, navbar press/release and cancellation, native link activation, menu dismissal, toast feedback, code copying, reduced motion and GitHub Pages' project prefix. Capture PNG only; native Chromium JPEG captures have produced stale SVG-filter geometry in this project.
 
 ## Assets and publication

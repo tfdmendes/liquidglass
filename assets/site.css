@@ -118,6 +118,8 @@ code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
 .feedback-scene .lg-menu__panel { left: auto; right: 0; color: var(--feedback-menu-ink); }
 .feedback-scene #material-menu .lg-menu__panel { left: 0; right: auto; }
 .feedback-scene .lg-menu__panel .lg-surface__tint { background: var(--feedback-menu-tint); }
+.feedback-scene .lg-menu__copy { background: rgb(8 20 30 / .14); color: var(--feedback-menu-ink); }
+.feedback-scene .lg-menu__items > button:focus-visible { outline: 1px solid currentColor; outline-offset: -2px; }
 .feedback-scene .lg-menu__items > button::after { content: ""; width: 6px; height: 6px; flex: none; border-radius: 50%; background: currentColor; opacity: 0; }
 .feedback-scene .lg-menu__items > button[aria-checked="true"]::after { opacity: 1; }
 .feedback-content { display: flex; align-items: center; flex-direction: column; gap: 22px; padding: 48px 0 10px; text-align: center; color: var(--feedback-ink); }
