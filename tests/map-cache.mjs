@@ -4,6 +4,26 @@ import { loadPlaywright, launchOptions } from '../review/browser-runtime.mjs';
 import assert from 'node:assert/strict';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { comparisonDocument } from '../review/map-cache-review.mjs';
+import { readPNG } from './helpers/read-png.mjs';
+
+function compareEncodedMap(actualURL, expectedURL) {
+  const [actual, expected] = [actualURL, expectedURL].map(url => readPNG(Buffer.from(url.split(',')[1], 'base64')));
+  assert.equal(actual.width, expected.width);
+  assert.equal(actual.height, expected.height);
+  let changedBytes = 0;
+  let maxChannelDelta = 0;
+  for (let i = 0; i < actual.data.length; i++) {
+    if (actual.data[i] === expected.data[i]) continue;
+    const alpha = expected.data[(i & ~3) + 3];
+    assert.notEqual(i % 4, 3, 'Encoded coverage must remain exact');
+    assert(alpha > 0 && alpha < 255, 'Opaque and transparent map pixels must remain exact');
+    // Canvas backing stores can round unpremultiplied edge colours one byte apart
+    assert(Math.abs(actual.data[i] - expected.data[i]) <= 1, 'Encoded edge rounding exceeded one channel value');
+    changedBytes++;
+    maxChannelDelta = Math.max(maxChannelDelta, Math.abs(actual.data[i] - expected.data[i]));
+  }
+  return { changedBytes, maxChannelDelta };
+}
 
 const components = baselineSource('components.js');
 
@@ -86,15 +106,54 @@ try {
       f.resetStats();
       const glass = f.runtime.createGlass(target, { ...p, sync: true });
       await f.settle();
+      const initialURL = document.querySelector(`#${glass.filterId} feImage`).getAttribute('href');
       glass.update({ width: p.width + 1e-10 }); await f.settle();
+      const aliasURL = document.querySelector(`#${glass.filterId} feImage`).getAttribute('href');
       glass.update({ width: p.width }); await f.settle();
       const stats = { ...f.stats }, href = document.querySelector(`#${glass.filterId} feImage`).getAttribute('href');
       glass.destroy(); target.remove();
-      return { pixelsEqual: before === after, correctURL: href === after, ...stats };
+      return { pixelsEqual: before === after, reusedURL: initialURL === aliasURL && aliasURL === href, href, expectedURL: after, ...stats };
     });
-    assert.equal(result.pixelsEqual, true); assert.equal(result.correctURL, true);
+    assert.equal(result.pixelsEqual, true);
+    assert.equal(result.reusedURL, true);
+    const pixels = compareEncodedMap(result.href, result.expectedURL);
     assert.equal(result.encodes, 1); assert.equal(result.decodes, 1); assert.equal(result.rasterizations, 2);
-    await context.close(); return result;
+    delete result.href; delete result.expectedURL;
+    await context.close(); return { ...result, ...pixels };
+  });
+  await check('Cached PNGs preserve coverage and opaque pixels across canvas backing stores', async () => {
+    const { page, context } = await fixture();
+    const maps = await page.evaluate(async () => {
+      const cases = [
+        { width: 123.456, height: 45.678, radius: 21.987, bezel: 0.373, ior: 1.47, specularWidth: 1.375 },
+        { width: 103.125, height: 43.875, radius: 20.1 },
+        { width: 87.5, height: 199.5, radius: 0, specular: 0 },
+        { width: 70.125, height: 51.875, radius: 7.625, invert: true, specular: 0 },
+        { width: 240, height: 120, radius: 32 },
+        { width: 101, height: 79, radius: 12, bezel: 0.2, specularWidth: 12 },
+      ];
+      const result = [];
+      for (const options of cases) for (const scale of [1, 1.25, 2]) {
+        const expected = mapFixture.runtime.renderLensMap(options, scale).canvas.toDataURL('image/png');
+        const target = document.body.appendChild(document.createElement('div'));
+        target.style.cssText = 'width:360px;height:240px;background:white';
+        const glass = mapFixture.runtime.createGlass(target, { ...options, mapScale: scale, sync: true });
+        await mapFixture.settle();
+        const actual = document.querySelector(`#${glass.filterId} feImage`).getAttribute('href');
+        result.push({ actual, expected });
+        glass.destroy(); target.remove();
+      }
+      return result;
+    });
+    let changedBytes = 0;
+    let maxEdgeChannelDelta = 0;
+    for (const map of maps) {
+      const difference = compareEncodedMap(map.actual, map.expected);
+      changedBytes += difference.changedBytes;
+      maxEdgeChannelDelta = Math.max(maxEdgeChannelDelta, difference.maxChannelDelta);
+    }
+    await context.close();
+    return { maps: maps.length, changedBytes, maxEdgeChannelDelta, changedCoverageBytes: 0, changedOpaqueBytes: 0 };
   });
   await check('LRU retains recent maps and evicts at 48 entries', async () => {
     const { page, context } = await fixture();
