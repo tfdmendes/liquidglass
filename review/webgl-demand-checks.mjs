@@ -32,6 +32,18 @@ export async function runChecks(review) {
     track(false);
   }
 
+  await setup('bitmap', { start: false });
+  reset();
+  equalPixels('initial stopped bitmap', apis.map((api) => api.capture()));
+  assert(candidate.counts().sourceUploads === 1, 'First explicit bitmap render must upload the source');
+  reset();
+  for (let i = 0; i < 3; i++) equalPixels(`repeated stopped bitmap ${i}`, apis.map((api) => api.capture()));
+  assert(candidate.counts().sourceUploads === 0, 'Repeated explicit bitmap renders must reuse the source texture');
+  apis.forEach((api) => api.renderer.start());
+  await wait(100);
+  assert(candidate.counts().sourceUploads === 0, 'Restarting must reuse an uploaded bitmap');
+  apis.forEach((api) => api.renderer.stop());
+
   await setup('bitmap');
   result.runtime.engines = apis.map((api) => api.info().engine);
   assert(result.runtime.engines[0] === result.runtime.engines[1] && result.runtime.engines[0] !== 'unknown', 'Expected the same recognized engine for both runtimes');
@@ -176,9 +188,23 @@ export async function runChecks(review) {
   await setup('bitmap');
   await automatic('CSS resize', () => frames.forEach((frame) => { frame.style.width = '90%'; }));
   assert(candidate.info().width === Math.round(candidate.canvas.clientWidth * Math.min(devicePixelRatio, 2)), 'Backing size does not follow CSS size and DPR');
+  assert(candidate.counts().sourceUploads === 0, 'CSS resize must reuse the bitmap texture');
   await automatic('canvas attribute resize', () => apis.forEach((api) => { api.canvas.width += 10; }));
+  assert(candidate.counts().sourceUploads === 0, 'Canvas attribute resize must reuse the bitmap texture');
   frames.forEach((frame) => { frame.style.width = ''; });
   await wait(150);
+  for (const frame of frames) frame.style.transform = 'translateY(2400px)';
+  await wait(200);
+  await automatic('bitmap offscreen resume', () => frames.forEach((frame) => { frame.style.transform = ''; }));
+  assert(candidate.counts().sourceUploads === 0, 'Returning onscreen must reuse the bitmap texture');
+  for (const frame of frames) {
+    Object.defineProperty(frame.contentDocument, 'hidden', { configurable: true, value: true });
+    frame.contentDocument.dispatchEvent(new frame.contentWindow.Event('visibilitychange'));
+  }
+  await automatic('bitmap visibility resume', () => {
+    for (const frame of frames) { delete frame.contentDocument.hidden; frame.contentDocument.dispatchEvent(new frame.contentWindow.Event('visibilitychange')); }
+  });
+  assert(candidate.counts().sourceUploads === 0, 'Resuming visibility must reuse the bitmap texture');
   const loss = candidate.gl.getExtension('WEBGL_lose_context');
   if (loss) {
     const lost = new Promise((resolve) => candidate.canvas.addEventListener('webglcontextlost', resolve, { once: true }));

@@ -68,8 +68,21 @@ keyboard selection remain available; `radius="capsule"` gives it a capsule outli
 - **WebGL:** unchanged static image snapshots (`ImageBitmap`) and paused videos sleep between updates. Canvas and animated images stay live.
 - **Map generation:** straight edges avoid corner-distance calculations, and neutral interior spans are filled together.
 - **Menus and navigation:** opening panels reuse a full-size optical map, while moving highlights reuse device-pixel sizes and measured item positions. See the [menu measurements](docs/performance/menus.md).
+- **Animation updates:** SVG filters write only changed geometry and optical values. Explicit WebGL renders reuse an uploaded immutable bitmap, including across resize and restart; context restoration uploads it again.
 
 ## Results
+
+The latest FPS comparison reached **27.0 → 60.0 FPS (+122.2%)** with 12 reshaping
+SVG lenses and **15.8 → 38.5 FPS (+143.4%)** with 24. Five alternating paired
+trials used the same scene, animation, optics and resolution. SVG PNG canvases
+now favor pixel readback; WebGL keeps its existing canvas path. See the
+[FPS measurements and rendering limits](docs/performance/fps-cpu-canvas.md).
+
+The earlier comparison against the starting checkout reduced synchronous update
+time for 24 moving SVG lenses by **53.5%**, from **0.430 to 0.200 ms per frame**.
+Animation cadence rose from 43.8 to 45.4 FPS. The [animation update report](docs/performance/updates.md)
+includes all five workloads, source hashes, ranges and validation boundaries;
+this is a measured update-time gain, not a universal FPS improvement.
 
 The second raster pass compares the first delivered optimization with the current engine. Median fresh-map times fell by **30–52%** and synchronous unique-lens updates by **12%** across seven paired samples. All 640 raw map comparisons were byte-exact. Headless animation trials recorded **25.3 → 26.0 FPS** for 12 SVG lenses and approximately **60 FPS** for both WebGL builds, with overlapping ranges. The heavier SVG case was slightly slower; these samples do not establish a general FPS gain. See the [measurements and their limits](docs/performance/fps.md).
 

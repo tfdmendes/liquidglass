@@ -1,5 +1,17 @@
 # Performance evidence
 
+The [12 November FPS comparison](fps-cpu-canvas.md) measured
+**27.0 → 60.0 FPS (+122.2%)** for 12 reshaping SVG lenses and
+**15.8 → 38.5 FPS (+143.4%)** for 24. Five paired trials compare against the
+preceding update-work optimization, with exact baseline reconstruction and
+source hashes. Cached movement and WebGL are retained as controls.
+
+The [animation update measurements](updates.md) compare the checkout at the start
+of the 11 November 2026 task with the optimized library. Moving 24 SVG lenses
+took **0.430 → 0.200 ms** of synchronous update work per frame (**53.5% less**),
+while animation cadence changed from 43.8 to 45.4 FPS. The report retains all
+five workloads, including overlapping and slower results.
+
 The [menu and navigation measurements](menus.md) cover the later component
 animation changes, separately from the engine comparisons below.
 

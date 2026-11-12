@@ -96,6 +96,63 @@ for (const [engine, type, path, ua] of [
     assert.equal(await page.evaluate(() => target.style.filter), '');
     assert.equal(await page.evaluate(() => target.style.clipPath), '');
   });
+
+  test(`${engine}: cached movement updates only changed filter values`, async (t) => {
+    const page = await open(t, type, path, ua);
+    await page.evaluate(() => {
+      glass.update({ blur: 2 });
+      window.writes = [];
+      window.watch = new MutationObserver((records) => writes.push(...records.map(record => record.attributeName)));
+      watch.observe(document.querySelector('filter'), { attributes: true, subtree: true });
+      glass.flush();
+      glass.update({ x: 0.2, y: 0.2 });
+    });
+    assert.deepEqual(await page.evaluate(() => writes), []);
+    await page.evaluate(() => glass.update({ x: 2.2, y: 1.2 }));
+    assert.deepEqual(await page.evaluate(() => [...new Set(writes)].sort()), ['x', 'y']);
+    const moved = await page.locator('feImage').evaluate(node => ({
+      x: Number(node.getAttribute('x')), y: Number(node.getAttribute('y')),
+      width: Number(node.getAttribute('width')), height: Number(node.getAttribute('height')),
+    }));
+    assert.deepEqual(moved, { x: 2 / 480, y: 1 / 280, width: 160 / 480, height: 90 / 280 });
+
+    await page.evaluate(() => {
+      writes.length = 0;
+      glass.update({ refraction: 30, chroma: 0.25, blur: 4 });
+    });
+    assert(await page.evaluate(() => writes.includes('scale') && writes.includes('stdDeviation')));
+    const expectedScale = engine === 'gecko' ? 60 / Math.sqrt((480 ** 2 + 280 ** 2) / 2) : 60 / 480;
+    assert.deepEqual(await page.locator('feDisplacementMap').evaluateAll(nodes => nodes.map(node => Number(node.getAttribute('scale')))),
+      [expectedScale, expectedScale * 1.125, expectedScale * 1.25]);
+    assert.equal(await page.locator('feGaussianBlur').getAttribute('stdDeviation'), `${4 / 480} ${4 / 280}`);
+
+    await page.evaluate(() => { target.style.width = '360px'; target.style.height = '240px'; });
+    await page.waitForFunction(() => Number(document.querySelector('feImage').getAttribute('width')) === 160 / 360);
+    assert.equal(Number(await page.locator('feImage').getAttribute('height')), 90 / 240);
+    assert.equal(await page.locator('feGaussianBlur').getAttribute('stdDeviation'), `${4 / 360} ${4 / 240}`);
+
+    await page.evaluate(() => {
+      glass.update({ chroma: 0, specular: 0, blur: 0 });
+      glass.update({ hidden: true });
+      glass.update({ hidden: false });
+    });
+    await page.waitForFunction(() => document.querySelector('feImage')?.getAttribute('href'));
+    assert.equal(await page.locator('feDisplacementMap').count(), 1);
+    assert.equal(await page.locator('feGaussianBlur').count(), 0);
+    assert.equal(Number(await page.locator('feImage').getAttribute('x')), 2 / 360);
+    assert.equal(Number(await page.locator('feImage').getAttribute('width')), 160 / 360);
+    const restoredScale = engine === 'gecko' ? 60 / Math.sqrt((360 ** 2 + 240 ** 2) / 2) : 60 / 360;
+    assert.equal(Number(await page.locator('feDisplacementMap').getAttribute('scale')), restoredScale);
+    assert(await page.evaluate(() => target.style.filter.includes(`#${glass.filterId}`)));
+    assert.notEqual(await page.evaluate(() => target.style.clipPath), 'inset(50%)');
+    await page.evaluate(async () => {
+      writes.length = 0;
+      glass.flush();
+      await Promise.resolve();
+      watch.disconnect();
+    });
+    assert.deepEqual(await page.evaluate(() => writes), []);
+  });
 }
 
 test('unknown engines retain settling and cancel it on destroy', async (t) => {

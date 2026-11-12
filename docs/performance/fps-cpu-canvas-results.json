@@ -1,0 +1,2303 @@
+{
+  "schema": 1,
+  "date": "2026-11-12T09:25:20.393Z",
+  "manifest": {
+    "description": "Original and previous are recovered from Git; current is built from lib/",
+    "builds": {
+      "original": {
+        "revision": "862e553fae1b97968af4206add31539534764919",
+        "directory": "lib",
+        "sha256": {
+          "liquid-glass.js": "136d9c73413636519e27c98860a7090f8edd37eebb13c6b32c0424d77c8d0e30",
+          "glass-webgl.js": "d29fc38125c07d1b0b4cd59ef98f1dd4de5b45726739c0ff2cf4af632df006e0",
+          "components.js": "8e8ae8006d5f05f0bb5899e78a0f092bc53fa32137cda455b13b6ffec780c685"
+        }
+      },
+      "previous": {
+        "revision": null,
+        "directory": "/tmp/liquidglass-fps-20261112/before",
+        "sha256": {
+          "liquid-glass.js": "2c26f1c24daeaf8e66603699ba5b7a0de9e99c5aff8f23e4b5088ad2db1d929b",
+          "glass-webgl.js": "59d4fb5fe3e791bbb5e18a39821a45410f2d12e7b9111ec58a168cbbf3e36fc4",
+          "components.js": "b76e103086f5b58d831c0caa06482e0631ea64db42156556bc948886abf8fcad"
+        }
+      },
+      "current": {
+        "revision": null,
+        "directory": "lib",
+        "sha256": {
+          "liquid-glass.js": "3ed61b63b13c22545656728f84c4d52d11b6104ea95ad31182e453b1e2768220",
+          "glass-webgl.js": "59d4fb5fe3e791bbb5e18a39821a45410f2d12e7b9111ec58a168cbbf3e36fc4",
+          "components.js": "b76e103086f5b58d831c0caa06482e0631ea64db42156556bc948886abf8fcad"
+        }
+      }
+    }
+  },
+  "fixtureSHA256": {
+    "showcase/scene.html": "f2ae590e868ad4c53727c1933516d7e3802f35ac8acce2b6a2a6d5d41ad21d9e",
+    "showcase/scene.js": "3dc2c9c076d9d60a37aab3e477e318fbf11077ab14d5f9a63d29f95467add797",
+    "showcase/metrics.js": "78c2959f2eff6555bf8f1d455b53acb3cdeb2b3753f55cd39dee20237549aff6",
+    "review/measure-fps.mjs": "6096cfc0a0c27c52acc884d7540bad1ad0ed6962714f707c25239eb49a77f291"
+  },
+  "environment": {
+    "browserProduct": "Installed chromium 157.0.8103.50",
+    "headless": true,
+    "platform": "darwin",
+    "release": "27.2.0",
+    "arch": "arm64",
+    "cpu": "Apple M2"
+  },
+  "method": "5 paired alternating trials per build. Each trial uses a fresh visible page with a 1000x560 scene at DPR 2 and mapScale 2. Idle rAF calibration precedes each workload; the first median calibration is the missed-slot reference for all trials. Each trial warms for 1000 ms and samples rAF intervals for 4000 ms. Update work is synchronous JS/canvas/encoding/driver-submission time, excluding asynchronous decode and GPU completion. Animation FPS describes browser rAF cadence rather than physical frame presentation. Shared-host noise, compositor scheduling and display cadence can affect samples.",
+  "configurations": [
+    {
+      "settings": {
+        "renderer": "svg",
+        "workload": "reshape",
+        "count": 12,
+        "backdrop": "city"
+      },
+      "builds": [
+        "previous",
+        "current"
+      ],
+      "trials": [
+        {
+          "frames": 109,
+          "elapsedMs": 3999.7999999999997,
+          "fps": 27.251362568128407,
+          "p95FrameMs": 50,
+          "medianFrameMs": 33.30000000000018,
+          "meanUpdateMs": 33.87706422423004,
+          "p95UpdateMs": 38.700000047683716,
+          "missedSlots": 131,
+          "missedSlotPercent": 54.58333333333333,
+          "settings": {
+            "count": 12,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 0
+        },
+        {
+          "frames": 241,
+          "elapsedMs": 4016.5,
+          "fps": 60.00248972986431,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 10.7854771762468,
+          "p95UpdateMs": 11.600000023841858,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 12,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 0
+        },
+        {
+          "frames": 240,
+          "elapsedMs": 3999.7999999999997,
+          "fps": 60.0030001500075,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 11.053749998658896,
+          "p95UpdateMs": 12.099999964237213,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 12,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 1
+        },
+        {
+          "frames": 104,
+          "elapsedMs": 4033.2000000000003,
+          "fps": 25.785976395913913,
+          "p95FrameMs": 50.099999999999454,
+          "medianFrameMs": 33.399999999999636,
+          "meanUpdateMs": 35.99134615522165,
+          "p95UpdateMs": 41.40000003576279,
+          "missedSlots": 138,
+          "missedSlotPercent": 57.02479338842975,
+          "settings": {
+            "count": 12,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 1
+        },
+        {
+          "frames": 107,
+          "elapsedMs": 3983.2,
+          "fps": 26.862823860212895,
+          "p95FrameMs": 50,
+          "medianFrameMs": 33.399999999999636,
+          "meanUpdateMs": 34.33271027781139,
+          "p95UpdateMs": 39.299999952316284,
+          "missedSlots": 132,
+          "missedSlotPercent": 55.23012552301255,
+          "settings": {
+            "count": 12,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 2
+        },
+        {
+          "frames": 240,
+          "elapsedMs": 3999.8,
+          "fps": 60.003000150007495,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 10.682499999304612,
+          "p95UpdateMs": 11.599999964237213,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 12,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 2
+        },
+        {
+          "frames": 240,
+          "elapsedMs": 3999.9,
+          "fps": 60.00150003750094,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 10.789166665822268,
+          "p95UpdateMs": 11.5,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 12,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 3
+        },
+        {
+          "frames": 108,
+          "elapsedMs": 3999.8,
+          "fps": 27.001350067503374,
+          "p95FrameMs": 50,
+          "medianFrameMs": 33.30000000000018,
+          "meanUpdateMs": 34.23333333543054,
+          "p95UpdateMs": 38.40000003576279,
+          "missedSlots": 132,
+          "missedSlotPercent": 55.00000000000001,
+          "settings": {
+            "count": 12,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 3
+        },
+        {
+          "frames": 110,
+          "elapsedMs": 4033.1000000000004,
+          "fps": 27.274305125089878,
+          "p95FrameMs": 50,
+          "medianFrameMs": 33.30000000000018,
+          "meanUpdateMs": 33.93454545573755,
+          "p95UpdateMs": 40.200000047683716,
+          "missedSlots": 132,
+          "missedSlotPercent": 54.54545454545454,
+          "settings": {
+            "count": 12,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 4
+        },
+        {
+          "frames": 240,
+          "elapsedMs": 3999.9,
+          "fps": 60.00150003750094,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 10.713749999552965,
+          "p95UpdateMs": 11.5,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 12,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 4
+        }
+      ],
+      "summary": {
+        "previous": {
+          "fps": 27.001350067503374,
+          "fpsRange": [
+            25.785976395913913,
+            27.274305125089878
+          ],
+          "p95FrameMs": 50,
+          "p95FrameMsRange": [
+            50,
+            50.099999999999454
+          ],
+          "meanUpdateMs": 34.23333333543054,
+          "meanUpdateMsRange": [
+            33.87706422423004,
+            35.99134615522165
+          ],
+          "missedSlotPercent": 55.00000000000001,
+          "missedSlotPercentRange": [
+            54.54545454545454,
+            57.02479338842975
+          ]
+        },
+        "current": {
+          "fps": 60.00248972986431,
+          "fpsRange": [
+            60.00150003750094,
+            60.0030001500075
+          ],
+          "p95FrameMs": 16.700000000000728,
+          "p95FrameMsRange": [
+            16.700000000000728,
+            16.700000000000728
+          ],
+          "meanUpdateMs": 10.7854771762468,
+          "meanUpdateMsRange": [
+            10.682499999304612,
+            11.053749998658896
+          ],
+          "missedSlotPercent": 0,
+          "missedSlotPercentRange": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "settings": {
+        "renderer": "svg",
+        "workload": "reshape",
+        "count": 24,
+        "backdrop": "city"
+      },
+      "builds": [
+        "previous",
+        "current"
+      ],
+      "trials": [
+        {
+          "frames": 64,
+          "elapsedMs": 4049.8,
+          "fps": 15.803249543187317,
+          "p95FrameMs": 66.70000000000073,
+          "medianFrameMs": 66.60000000000036,
+          "meanUpdateMs": 58.29218750447035,
+          "p95UpdateMs": 65,
+          "missedSlots": 179,
+          "missedSlotPercent": 73.66255144032921,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 0
+        },
+        {
+          "frames": 153,
+          "elapsedMs": 3983.2,
+          "fps": 38.41132757581844,
+          "p95FrameMs": 33.400000000000546,
+          "medianFrameMs": 33.29999999999973,
+          "meanUpdateMs": 21.08627451167387,
+          "p95UpdateMs": 23.30000001192093,
+          "missedSlots": 86,
+          "missedSlotPercent": 35.98326359832636,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 0
+        },
+        {
+          "frames": 154,
+          "elapsedMs": 3983.3,
+          "fps": 38.661411392563956,
+          "p95FrameMs": 33.40000000000009,
+          "medianFrameMs": 33.29999999999927,
+          "meanUpdateMs": 21.07792208101842,
+          "p95UpdateMs": 22.69999998807907,
+          "missedSlots": 85,
+          "missedSlotPercent": 35.56485355648535,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 1
+        },
+        {
+          "frames": 63,
+          "elapsedMs": 3983.3000000000006,
+          "fps": 15.816031933321614,
+          "p95FrameMs": 66.70000000000073,
+          "medianFrameMs": 66.60000000000036,
+          "meanUpdateMs": 58.51904762264282,
+          "p95UpdateMs": 63.30000001192093,
+          "missedSlots": 176,
+          "missedSlotPercent": 73.64016736401673,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 1
+        },
+        {
+          "frames": 63,
+          "elapsedMs": 3983.1,
+          "fps": 15.816826090231228,
+          "p95FrameMs": 66.70000000000027,
+          "medianFrameMs": 66.60000000000036,
+          "meanUpdateMs": 58.26825396219889,
+          "p95UpdateMs": 62.19999998807907,
+          "missedSlots": 176,
+          "missedSlotPercent": 73.64016736401673,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 2
+        },
+        {
+          "frames": 153,
+          "elapsedMs": 4016.5,
+          "fps": 38.09286692393875,
+          "p95FrameMs": 33.400000000000546,
+          "medianFrameMs": 33.29999999999927,
+          "meanUpdateMs": 21.241830066917768,
+          "p95UpdateMs": 23.899999976158142,
+          "missedSlots": 88,
+          "missedSlotPercent": 36.51452282157676,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 2
+        },
+        {
+          "frames": 155,
+          "elapsedMs": 4016.4,
+          "fps": 38.591773727716365,
+          "p95FrameMs": 33.40000000000009,
+          "medianFrameMs": 33.29999999999973,
+          "meanUpdateMs": 21.085806453227995,
+          "p95UpdateMs": 23.19999998807907,
+          "missedSlots": 86,
+          "missedSlotPercent": 35.684647302904565,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 3
+        },
+        {
+          "frames": 63,
+          "elapsedMs": 3983.3,
+          "fps": 15.816031933321616,
+          "p95FrameMs": 66.70000000000027,
+          "medianFrameMs": 66.69999999999982,
+          "meanUpdateMs": 58.31111111338176,
+          "p95UpdateMs": 63.39999997615814,
+          "missedSlots": 176,
+          "missedSlotPercent": 73.64016736401673,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 3
+        },
+        {
+          "frames": 62,
+          "elapsedMs": 3999.8,
+          "fps": 15.500775038751938,
+          "p95FrameMs": 66.70000000000027,
+          "medianFrameMs": 66.69999999999982,
+          "meanUpdateMs": 59.28870967511208,
+          "p95UpdateMs": 64.69999998807907,
+          "missedSlots": 178,
+          "missedSlotPercent": 74.16666666666667,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 4
+        },
+        {
+          "frames": 154,
+          "elapsedMs": 3999.8999999999996,
+          "fps": 38.500962524063105,
+          "p95FrameMs": 33.40000000000009,
+          "medianFrameMs": 33.29999999999927,
+          "meanUpdateMs": 21.17467532490755,
+          "p95UpdateMs": 23.399999976158142,
+          "missedSlots": 86,
+          "missedSlotPercent": 35.833333333333336,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 4
+        }
+      ],
+      "summary": {
+        "previous": {
+          "fps": 15.816031933321614,
+          "fpsRange": [
+            15.500775038751938,
+            15.816826090231228
+          ],
+          "p95FrameMs": 66.70000000000027,
+          "p95FrameMsRange": [
+            66.70000000000027,
+            66.70000000000073
+          ],
+          "meanUpdateMs": 58.31111111338176,
+          "meanUpdateMsRange": [
+            58.26825396219889,
+            59.28870967511208
+          ],
+          "missedSlotPercent": 73.64016736401673,
+          "missedSlotPercentRange": [
+            73.64016736401673,
+            74.16666666666667
+          ]
+        },
+        "current": {
+          "fps": 38.500962524063105,
+          "fpsRange": [
+            38.09286692393875,
+            38.661411392563956
+          ],
+          "p95FrameMs": 33.40000000000009,
+          "p95FrameMsRange": [
+            33.40000000000009,
+            33.400000000000546
+          ],
+          "meanUpdateMs": 21.08627451167387,
+          "meanUpdateMsRange": [
+            21.07792208101842,
+            21.241830066917768
+          ],
+          "missedSlotPercent": 35.833333333333336,
+          "missedSlotPercentRange": [
+            35.56485355648535,
+            36.51452282157676
+          ]
+        }
+      }
+    },
+    {
+      "settings": {
+        "renderer": "svg",
+        "workload": "move",
+        "count": 24,
+        "backdrop": "city"
+      },
+      "builds": [
+        "previous",
+        "current"
+      ],
+      "trials": [
+        {
+          "frames": 176,
+          "elapsedMs": 4016.5,
+          "fps": 43.819245611851116,
+          "p95FrameMs": 33.40000000000009,
+          "medianFrameMs": 16.700000000000273,
+          "meanUpdateMs": 0.1840909096327695,
+          "p95UpdateMs": 0.30000001192092896,
+          "missedSlots": 65,
+          "missedSlotPercent": 26.970954356846473,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 0
+        },
+        {
+          "frames": 175,
+          "elapsedMs": 3999.7999999999997,
+          "fps": 43.75218760938047,
+          "p95FrameMs": 33.40000000000009,
+          "medianFrameMs": 16.700000000000273,
+          "meanUpdateMs": 0.19142857108797345,
+          "p95UpdateMs": 0.30000001192092896,
+          "missedSlots": 65,
+          "missedSlotPercent": 27.083333333333332,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 0
+        },
+        {
+          "frames": 177,
+          "elapsedMs": 4016.3999999999996,
+          "fps": 44.06931580519869,
+          "p95FrameMs": 33.40000000000009,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 0.18644067695585348,
+          "p95UpdateMs": 0.30000001192092896,
+          "missedSlots": 64,
+          "missedSlotPercent": 26.556016597510375,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 1
+        },
+        {
+          "frames": 177,
+          "elapsedMs": 4033.1000000000004,
+          "fps": 43.886836428553714,
+          "p95FrameMs": 33.399999999999864,
+          "medianFrameMs": 16.700000000000273,
+          "meanUpdateMs": 0.17740112980880307,
+          "p95UpdateMs": 0.30000001192092896,
+          "missedSlots": 65,
+          "missedSlotPercent": 26.859504132231404,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 1
+        },
+        {
+          "frames": 176,
+          "elapsedMs": 3999.9,
+          "fps": 44.001100027500684,
+          "p95FrameMs": 33.40000000000009,
+          "medianFrameMs": 16.700000000000273,
+          "meanUpdateMs": 0.18522726913744753,
+          "p95UpdateMs": 0.30000001192092896,
+          "missedSlots": 64,
+          "missedSlotPercent": 26.666666666666668,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 2
+        },
+        {
+          "frames": 178,
+          "elapsedMs": 4016.3999999999996,
+          "fps": 44.318294990538796,
+          "p95FrameMs": 33.40000000000009,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 0.19606741626610916,
+          "p95UpdateMs": 0.30000001192092896,
+          "missedSlots": 63,
+          "missedSlotPercent": 26.141078838174277,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 2
+        },
+        {
+          "frames": 176,
+          "elapsedMs": 4016.6,
+          "fps": 43.8181546581686,
+          "p95FrameMs": 33.40000000000009,
+          "medianFrameMs": 16.700000000000045,
+          "meanUpdateMs": 0.18579545684836127,
+          "p95UpdateMs": 0.30000001192092896,
+          "missedSlots": 65,
+          "missedSlotPercent": 26.970954356846473,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 3
+        },
+        {
+          "frames": 175,
+          "elapsedMs": 4016.5000000000005,
+          "fps": 43.57027262542014,
+          "p95FrameMs": 33.40000000000009,
+          "medianFrameMs": 16.700000000000273,
+          "meanUpdateMs": 0.17371428421565466,
+          "p95UpdateMs": 0.30000001192092896,
+          "missedSlots": 66,
+          "missedSlotPercent": 27.385892116182575,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 3
+        },
+        {
+          "frames": 176,
+          "elapsedMs": 4033.1000000000004,
+          "fps": 43.6388882001438,
+          "p95FrameMs": 33.40000000000009,
+          "medianFrameMs": 16.700000000000273,
+          "meanUpdateMs": 0.19659090888771144,
+          "p95UpdateMs": 0.30000001192092896,
+          "missedSlots": 66,
+          "missedSlotPercent": 27.27272727272727,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 4
+        },
+        {
+          "frames": 176,
+          "elapsedMs": 4016.5,
+          "fps": 43.819245611851116,
+          "p95FrameMs": 33.40000000000009,
+          "medianFrameMs": 16.700000000000273,
+          "meanUpdateMs": 0.18636363846334544,
+          "p95UpdateMs": 0.30000001192092896,
+          "missedSlots": 65,
+          "missedSlotPercent": 26.970954356846473,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 4
+        }
+      ],
+      "summary": {
+        "previous": {
+          "fps": 43.819245611851116,
+          "fpsRange": [
+            43.57027262542014,
+            44.001100027500684
+          ],
+          "p95FrameMs": 33.40000000000009,
+          "p95FrameMsRange": [
+            33.399999999999864,
+            33.40000000000009
+          ],
+          "meanUpdateMs": 0.1840909096327695,
+          "meanUpdateMsRange": [
+            0.17371428421565466,
+            0.19659090888771144
+          ],
+          "missedSlotPercent": 26.970954356846473,
+          "missedSlotPercentRange": [
+            26.666666666666668,
+            27.385892116182575
+          ]
+        },
+        "current": {
+          "fps": 43.819245611851116,
+          "fpsRange": [
+            43.75218760938047,
+            44.318294990538796
+          ],
+          "p95FrameMs": 33.40000000000009,
+          "p95FrameMsRange": [
+            33.40000000000009,
+            33.40000000000009
+          ],
+          "meanUpdateMs": 0.18644067695585348,
+          "meanUpdateMsRange": [
+            0.18579545684836127,
+            0.19606741626610916
+          ],
+          "missedSlotPercent": 26.970954356846473,
+          "missedSlotPercentRange": [
+            26.141078838174277,
+            27.083333333333332
+          ]
+        }
+      }
+    },
+    {
+      "settings": {
+        "renderer": "webgl",
+        "workload": "reshape",
+        "count": 24,
+        "backdrop": "city"
+      },
+      "builds": [
+        "previous",
+        "current"
+      ],
+      "trials": [
+        {
+          "frames": 240,
+          "elapsedMs": 3999.8,
+          "fps": 60.003000150007495,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 6.592083330949148,
+          "p95UpdateMs": 6.800000011920929,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 0
+        },
+        {
+          "frames": 241,
+          "elapsedMs": 4016.3999999999996,
+          "fps": 60.003983666965446,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 6.666804980934903,
+          "p95UpdateMs": 7,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 0
+        },
+        {
+          "frames": 240,
+          "elapsedMs": 3999.9,
+          "fps": 60.00150003750094,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 6.57624999905626,
+          "p95UpdateMs": 6.900000035762787,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 1
+        },
+        {
+          "frames": 241,
+          "elapsedMs": 4016.5,
+          "fps": 60.00248972986431,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 6.408298757808337,
+          "p95UpdateMs": 6.800000011920929,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 1
+        },
+        {
+          "frames": 241,
+          "elapsedMs": 4016.3999999999996,
+          "fps": 60.003983666965446,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 6.67842323503059,
+          "p95UpdateMs": 7.099999964237213,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 2
+        },
+        {
+          "frames": 241,
+          "elapsedMs": 4016.4,
+          "fps": 60.00398366696544,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 6.5431535286032805,
+          "p95UpdateMs": 6.899999976158142,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 2
+        },
+        {
+          "frames": 241,
+          "elapsedMs": 4016.4999999999995,
+          "fps": 60.002489729864315,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 6.480497925360668,
+          "p95UpdateMs": 6.900000035762787,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 3
+        },
+        {
+          "frames": 239,
+          "elapsedMs": 4016.3999999999996,
+          "fps": 59.50602529628524,
+          "p95FrameMs": 16.799999999999727,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 7.254393305987993,
+          "p95UpdateMs": 14.100000023841858,
+          "missedSlots": 2,
+          "missedSlotPercent": 0.8298755186721992,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 3
+        },
+        {
+          "frames": 240,
+          "elapsedMs": 3999.7999999999997,
+          "fps": 60.0030001500075,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 6.50333333214124,
+          "p95UpdateMs": 7,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 4
+        },
+        {
+          "frames": 240,
+          "elapsedMs": 3999.8999999999996,
+          "fps": 60.001500037500946,
+          "p95FrameMs": 16.800000000000182,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 6.457083334525426,
+          "p95UpdateMs": 6.900000035762787,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 4
+        }
+      ],
+      "summary": {
+        "previous": {
+          "fps": 60.003000150007495,
+          "fpsRange": [
+            59.50602529628524,
+            60.003983666965446
+          ],
+          "p95FrameMs": 16.700000000000728,
+          "p95FrameMsRange": [
+            16.700000000000728,
+            16.799999999999727
+          ],
+          "meanUpdateMs": 6.592083330949148,
+          "meanUpdateMsRange": [
+            6.408298757808337,
+            7.254393305987993
+          ],
+          "missedSlotPercent": 0,
+          "missedSlotPercentRange": [
+            0,
+            0.8298755186721992
+          ]
+        },
+        "current": {
+          "fps": 60.002489729864315,
+          "fpsRange": [
+            60.00150003750094,
+            60.003983666965446
+          ],
+          "p95FrameMs": 16.700000000000728,
+          "p95FrameMsRange": [
+            16.700000000000728,
+            16.800000000000182
+          ],
+          "meanUpdateMs": 6.5431535286032805,
+          "meanUpdateMsRange": [
+            6.457083334525426,
+            6.666804980934903
+          ],
+          "missedSlotPercent": 0,
+          "missedSlotPercentRange": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "settings": {
+        "renderer": "webgl",
+        "workload": "move",
+        "count": 24,
+        "backdrop": "city"
+      },
+      "builds": [
+        "previous",
+        "current"
+      ],
+      "trials": [
+        {
+          "frames": 240,
+          "elapsedMs": 3999.9,
+          "fps": 60.00150003750094,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 0.2745833354691664,
+          "p95UpdateMs": 0.5,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 0
+        },
+        {
+          "frames": 240,
+          "elapsedMs": 3999.9,
+          "fps": 60.00150003750094,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 0.2979166639347871,
+          "p95UpdateMs": 0.5,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 0
+        },
+        {
+          "frames": 241,
+          "elapsedMs": 4016.3999999999996,
+          "fps": 60.003983666965446,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 0.2809128625264306,
+          "p95UpdateMs": 0.40000003576278687,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 1
+        },
+        {
+          "frames": 240,
+          "elapsedMs": 3999.7999999999997,
+          "fps": 60.0030001500075,
+          "p95FrameMs": 16.799999999999727,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 0.28124999925494193,
+          "p95UpdateMs": 0.5,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 1
+        },
+        {
+          "frames": 240,
+          "elapsedMs": 3999.9,
+          "fps": 60.00150003750094,
+          "p95FrameMs": 16.799999999999727,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 0.28333333258827526,
+          "p95UpdateMs": 0.5,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 2
+        },
+        {
+          "frames": 241,
+          "elapsedMs": 4016.5,
+          "fps": 60.00248972986431,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 0.27800829924983106,
+          "p95UpdateMs": 0.40000003576278687,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 2
+        },
+        {
+          "frames": 240,
+          "elapsedMs": 3999.8000000000006,
+          "fps": 60.00300015000749,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 0.30541666597127914,
+          "p95UpdateMs": 0.5,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 3
+        },
+        {
+          "frames": 241,
+          "elapsedMs": 4016.4999999999995,
+          "fps": 60.002489729864315,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 0.2850622403671138,
+          "p95UpdateMs": 0.5,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 3
+        },
+        {
+          "frames": 241,
+          "elapsedMs": 4016.4999999999995,
+          "fps": 60.002489729864315,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 0.2726141100602526,
+          "p95UpdateMs": 0.40000003576278687,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 4
+        },
+        {
+          "frames": 241,
+          "elapsedMs": 4016.5,
+          "fps": 60.00248972986431,
+          "p95FrameMs": 16.799999999999272,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 0.2647302922371512,
+          "p95UpdateMs": 0.40000003576278687,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 4
+        }
+      ],
+      "summary": {
+        "previous": {
+          "fps": 60.002489729864315,
+          "fpsRange": [
+            60.00150003750094,
+            60.0030001500075
+          ],
+          "p95FrameMs": 16.700000000000728,
+          "p95FrameMsRange": [
+            16.700000000000728,
+            16.799999999999727
+          ],
+          "meanUpdateMs": 0.28124999925494193,
+          "meanUpdateMsRange": [
+            0.2726141100602526,
+            0.2850622403671138
+          ],
+          "missedSlotPercent": 0,
+          "missedSlotPercentRange": [
+            0,
+            0
+          ]
+        },
+        "current": {
+          "fps": 60.00248972986431,
+          "fpsRange": [
+            60.00150003750094,
+            60.003983666965446
+          ],
+          "p95FrameMs": 16.700000000000728,
+          "p95FrameMsRange": [
+            16.700000000000728,
+            16.799999999999272
+          ],
+          "meanUpdateMs": 0.2809128625264306,
+          "meanUpdateMsRange": [
+            0.2647302922371512,
+            0.30541666597127914
+          ],
+          "missedSlotPercent": 0,
+          "missedSlotPercentRange": [
+            0,
+            0
+          ]
+        }
+      }
+    }
+  ],
+  "refreshMs": 16.699999999999932,
+  "retainedData": "All 50 trial aggregates retained; per-frame and idle interval arrays omitted. Full traces can be regenerated with the runner.",
+  "validation": {
+    "encoding": {
+      "maps": 640,
+      "changedMaps": 436,
+      "changedBytes": 7699,
+      "maxDelta": 1,
+      "changedOpaqueBytes": 0,
+      "changedAlphaBytes": 0,
+      "samples": [
+        {
+          "options": {
+            "width": 640,
+            "height": 360,
+            "radius": 32
+          },
+          "scale": 0.75,
+          "changed": 26,
+          "maxDelta": 1,
+          "opaque": 0,
+          "alpha": 0
+        },
+        {
+          "options": {
+            "width": 640,
+            "height": 360,
+            "radius": 32
+          },
+          "scale": 1,
+          "changed": 12,
+          "maxDelta": 1,
+          "opaque": 0,
+          "alpha": 0
+        },
+        {
+          "options": {
+            "width": 640,
+            "height": 360,
+            "radius": 32
+          },
+          "scale": 1.25,
+          "changed": 20,
+          "maxDelta": 1,
+          "opaque": 0,
+          "alpha": 0
+        },
+        {
+          "options": {
+            "width": 640,
+            "height": 360,
+            "radius": 32
+          },
+          "scale": 2,
+          "changed": 7,
+          "maxDelta": 1,
+          "opaque": 0,
+          "alpha": 0
+        },
+        {
+          "options": {
+            "width": 640,
+            "height": 360,
+            "radius": 32
+          },
+          "scale": 2.5,
+          "changed": 11,
+          "maxDelta": 1,
+          "opaque": 0,
+          "alpha": 0
+        },
+        {
+          "options": {
+            "width": 103.4999999,
+            "height": 39.5000001,
+            "radius": null
+          },
+          "scale": 1,
+          "changed": 9,
+          "maxDelta": 1,
+          "opaque": 0,
+          "alpha": 0
+        },
+        {
+          "options": {
+            "width": 103.4999999,
+            "height": 39.5000001,
+            "radius": null
+          },
+          "scale": 1.25,
+          "changed": 22,
+          "maxDelta": 1,
+          "opaque": 0,
+          "alpha": 0
+        },
+        {
+          "options": {
+            "width": 103.4999999,
+            "height": 39.5000001,
+            "radius": null
+          },
+          "scale": 2,
+          "changed": 3,
+          "maxDelta": 1,
+          "opaque": 0,
+          "alpha": 0
+        },
+        {
+          "options": {
+            "width": 103.4999999,
+            "height": 39.5000001,
+            "radius": null
+          },
+          "scale": 2.5,
+          "changed": 15,
+          "maxDelta": 1,
+          "opaque": 0,
+          "alpha": 0
+        },
+        {
+          "options": {
+            "lightAngle": null
+          },
+          "scale": 0.75,
+          "changed": 20,
+          "maxDelta": 1,
+          "opaque": 0,
+          "alpha": 0
+        }
+      ]
+    },
+    "renderedStress": [
+      {
+        "name": "fractional",
+        "state": 0,
+        "difference": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "beforeRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "afterRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        }
+      },
+      {
+        "name": "fractional",
+        "state": 0.5,
+        "difference": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "beforeRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "afterRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        }
+      },
+      {
+        "name": "fractional",
+        "state": 1,
+        "difference": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "beforeRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "afterRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        }
+      },
+      {
+        "name": "high-refraction",
+        "state": 0,
+        "difference": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "beforeRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "afterRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        }
+      },
+      {
+        "name": "high-refraction",
+        "state": 0.5,
+        "difference": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "beforeRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "afterRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        }
+      },
+      {
+        "name": "high-refraction",
+        "state": 1,
+        "difference": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "beforeRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "afterRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        }
+      },
+      {
+        "name": "transparent",
+        "state": 0,
+        "difference": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "beforeRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "afterRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        }
+      },
+      {
+        "name": "transparent",
+        "state": 0.5,
+        "difference": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "beforeRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "afterRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        }
+      },
+      {
+        "name": "transparent",
+        "state": 1,
+        "difference": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "beforeRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "afterRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        }
+      },
+      {
+        "name": "panel",
+        "state": 0,
+        "difference": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "beforeRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "afterRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        }
+      },
+      {
+        "name": "panel",
+        "state": 0.5,
+        "difference": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "beforeRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "afterRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        }
+      },
+      {
+        "name": "panel",
+        "state": 1,
+        "difference": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "beforeRepeat": {
+          "pixels": 5,
+          "maxChannelDelta": 7,
+          "totalPixels": 864000
+        },
+        "afterRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        }
+      },
+      {
+        "name": "unclipped",
+        "state": 0,
+        "difference": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "beforeRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "afterRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        }
+      },
+      {
+        "name": "unclipped",
+        "state": 0.5,
+        "difference": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "beforeRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "afterRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        }
+      },
+      {
+        "name": "unclipped",
+        "state": 1,
+        "difference": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "beforeRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        },
+        "afterRepeat": {
+          "pixels": 0,
+          "maxChannelDelta": 0,
+          "totalPixels": 864000
+        }
+      }
+    ],
+    "freshness": [
+      {
+        "build": "previous",
+        "count": 12,
+        "requested": 1584,
+        "completed": 1584,
+        "maxPending": 19,
+        "pendingAtEnd": 7,
+        "pendingAfter250ms": 0,
+        "publicationCount": 1295,
+        "publicationAgeP50Ms": 39.5,
+        "publicationAgeP95Ms": 50.69999998807907,
+        "publicationAgeMaxMs": 58.19999998807907,
+        "encodeP50Ms": 1.0999999642372131,
+        "decodeP95Ms": 50.299999952316284,
+        "note": "Separate instrumented freshness run; DOM publication age starts before PNG serialization; no physical presentation claim"
+      },
+      {
+        "build": "current",
+        "count": 12,
+        "requested": 3600,
+        "completed": 3600,
+        "maxPending": 20,
+        "pendingAtEnd": 0,
+        "pendingAfter250ms": 0,
+        "publicationCount": 2904,
+        "publicationAgeP50Ms": 8,
+        "publicationAgeP95Ms": 12.699999988079071,
+        "publicationAgeMaxMs": 22.19999998807907,
+        "encodeP50Ms": 0.5,
+        "decodeP95Ms": 12.5,
+        "note": "Separate instrumented freshness run; DOM publication age starts before PNG serialization; no physical presentation claim"
+      },
+      {
+        "build": "previous",
+        "count": 24,
+        "requested": 1896,
+        "completed": 1896,
+        "maxPending": 38,
+        "pendingAtEnd": 12,
+        "pendingAfter250ms": 0,
+        "publicationCount": 1535,
+        "publicationAgeP50Ms": 61.10000002384186,
+        "publicationAgeP95Ms": 84.89999997615814,
+        "publicationAgeMaxMs": 101.29999995231628,
+        "encodeP50Ms": 1,
+        "decodeP95Ms": 83.5,
+        "note": "Separate instrumented freshness run; DOM publication age starts before PNG serialization; no physical presentation claim"
+      },
+      {
+        "build": "current",
+        "count": 24,
+        "requested": 4560,
+        "completed": 4560,
+        "maxPending": 38,
+        "pendingAtEnd": 12,
+        "pendingAfter250ms": 0,
+        "publicationCount": 3719,
+        "publicationAgeP50Ms": 26.600000023841858,
+        "publicationAgeP95Ms": 40,
+        "publicationAgeMaxMs": 45.5,
+        "encodeP50Ms": 0.40000003576278687,
+        "decodeP95Ms": 39.89999997615814,
+        "note": "Separate instrumented freshness run; DOM publication age starts before PNG serialization; no physical presentation claim"
+      }
+    ],
+    "regressions": {
+      "publicExactMaps": 205,
+      "mapCacheChecks": 7,
+      "cachedEncodingMaps": 18,
+      "selectedFilterLifecycleTests": 4,
+      "menuAndSegmentedTests": 26,
+      "webglAssertions": 189,
+      "coreComponentAssertions": 1486
+    },
+    "limits": [
+      "Native WebKit animation callbacks unavailable in the earlier full helper checks",
+      "Firefox and physical iPhone FPS not measured",
+      "Rendering captures do not establish every intermediate frame",
+      "PNG edge RGB may differ by one value while alpha and opaque pixels remain exact"
+    ]
+  }
+}

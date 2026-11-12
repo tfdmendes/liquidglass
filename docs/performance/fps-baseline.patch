@@ -1,0 +1,69 @@
+diff --git a/lib/liquid-glass.js b/lib/liquid-glass.js
+--- a/lib/liquid-glass.js
++++ b/lib/liquid-glass.js
+@@ -392 +392 @@
+-  return { image, aspect, blur, displace, lensRect };
++  return { image, aspect, blur, displace, lensRect, applied: { rect: {}, blurRect: {}, scales: [] } };
+@@ -412,5 +412,17 @@
+-function setRect(n, x, y, w, h) {
+-  n.setAttribute('x', x);
+-  n.setAttribute('y', y);
+-  n.setAttribute('width', w);
+-  n.setAttribute('height', h);
++function setRect(nodes, previous, x, y, w, h) {
++  if (previous.x !== x) {
++    for (const n of nodes) n.setAttribute('x', x);
++    previous.x = x;
++  }
++  if (previous.y !== y) {
++    for (const n of nodes) n.setAttribute('y', y);
++    previous.y = y;
++  }
++  if (previous.width !== w) {
++    for (const n of nodes) n.setAttribute('width', w);
++    previous.width = w;
++  }
++  if (previous.height !== h) {
++    for (const n of nodes) n.setAttribute('height', h);
++    previous.height = h;
++  }
+@@ -560 +572,2 @@
+-    for (const n of graph.lensRect) setRect(n, x / W, y / H, w / W, h / H);
++    const applied = graph.applied;
++    setRect(graph.lensRect, applied.rect, x / W, y / H, w / W, h / H);
+@@ -563 +576,6 @@
+-    graph.displace.forEach((n, i) => n.setAttribute('scale', scales[i]));
++    graph.displace.forEach((n, i) => {
++      if (applied.scales[i] !== scales[i]) {
++        n.setAttribute('scale', scales[i]);
++        applied.scales[i] = scales[i];
++      }
++    });
+@@ -565 +583,5 @@
+-      graph.aspect.setAttribute('values', `${kx} 0 0 0 ${(1 - kx) / 2}  0 ${ky} 0 0 ${(1 - ky) / 2}  0 0 1 0 0  0 0 0 1 0`);
++      const values = `${kx} 0 0 0 ${(1 - kx) / 2}  0 ${ky} 0 0 ${(1 - ky) / 2}  0 0 1 0 0  0 0 0 1 0`;
++      if (applied.aspect !== values) {
++        graph.aspect.setAttribute('values', values);
++        applied.aspect = values;
++      }
+@@ -568 +590,5 @@
+-      graph.blur.setAttribute('stdDeviation', `${p.blur / W} ${p.blur / H}`);
++      const deviation = `${p.blur / W} ${p.blur / H}`;
++      if (applied.blur !== deviation) {
++        graph.blur.setAttribute('stdDeviation', deviation);
++        applied.blur = deviation;
++      }
+@@ -570 +596 @@
+-      setRect(graph.blur, (x - pad) / W, (y - pad) / H, (w + 2 * pad) / W, (h + 2 * pad) / H);
++      setRect([graph.blur], applied.blurRect, (x - pad) / W, (y - pad) / H, (w + 2 * pad) / W, (h + 2 * pad) / H);
+diff --git a/lib/glass-webgl.js b/lib/glass-webgl.js
+--- a/lib/glass-webgl.js
++++ b/lib/glass-webgl.js
+@@ -157 +157,4 @@
+-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
++      if (!bitmap || !hasSource) {
++        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
++        hasSource = true;
++      }
+@@ -159 +161,0 @@
+-      hasSource = true;

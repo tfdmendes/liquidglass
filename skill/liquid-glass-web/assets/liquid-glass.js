@@ -202,11 +202,11 @@ function lensPixels(p, scale) {
   return image;
 }
 
-function mapCanvas(image, scale) {
+function mapCanvas(image, scale, contextAttributes) {
   const canvas = document.createElement('canvas');
   canvas.width = image.width;
   canvas.height = image.height;
-  canvas.getContext('2d').putImageData(image, 0, 0);
+  canvas.getContext('2d', contextAttributes).putImageData(image, 0, 0);
   return { canvas, width: image.width, height: image.height, scale };
 }
 
@@ -262,7 +262,8 @@ class LensMapCache {
         return this.remember(cached, key);
       }
     }
-    const url = mapCanvas(image, scale).canvas.toDataURL('image/png');
+    // PNG encoding immediately reads the pixels back, so avoid a GPU readback for SVG maps
+    const url = mapCanvas(image, scale, { willReadFrequently: true }).canvas.toDataURL('image/png');
     // Large panels still cache their PNG without keeping another large copy of its pixels
     const retained = pixels.byteLength <= MAP_CACHE_BYTES ? pixels : null;
     const created = { key, keys: [key], url, pixels: retained, width: image.width, height: image.height, decoded: false, ready: null };
@@ -389,7 +390,7 @@ function buildGraph(filter, p) {
   add('feComposite', { in: lit, in2: 'lensShape', operator: 'in', result: 'lens' }, true);
   add('feComposite', { in: 'SourceGraphic', in2: 'lensShape', operator: 'out', result: 'outside' });
   add('feComposite', { in: 'lens', in2: 'outside', operator: 'over' });
-  return { image, aspect, blur, displace, lensRect };
+  return { image, aspect, blur, displace, lensRect, applied: { rect: {}, blurRect: {}, scales: [] } };
 }
 
 // With primitiveUnits="objectBoundingBox" (the only units WebKit renders — userSpaceOnUse turns the
@@ -409,11 +410,23 @@ function bendScale(px, w, h) {
   return { scale: (2 * px) / w, kx: 1, ky: 1 };
 }
 
-function setRect(n, x, y, w, h) {
-  n.setAttribute('x', x);
-  n.setAttribute('y', y);
-  n.setAttribute('width', w);
-  n.setAttribute('height', h);
+function setRect(nodes, previous, x, y, w, h) {
+  if (previous.x !== x) {
+    for (const n of nodes) n.setAttribute('x', x);
+    previous.x = x;
+  }
+  if (previous.y !== y) {
+    for (const n of nodes) n.setAttribute('y', y);
+    previous.y = y;
+  }
+  if (previous.width !== w) {
+    for (const n of nodes) n.setAttribute('width', w);
+    previous.width = w;
+  }
+  if (previous.height !== h) {
+    for (const n of nodes) n.setAttribute('height', h);
+    previous.height = h;
+  }
 }
 
 /* ------------------------------------------------------------------------------------------------ */
@@ -557,17 +570,31 @@ export function createGlass(target, options = {}) {
     }
     if (!shown.key) return; // first map not ready yet: leave the element unfiltered
 
-    for (const n of graph.lensRect) setRect(n, x / W, y / H, w / W, h / H);
+    const applied = graph.applied;
+    setRect(graph.lensRect, applied.rect, x / W, y / H, w / W, h / H);
     const { scale: k, kx, ky } = bendScale(p.refraction, W, H);
     const scales = graph.displace.length === 3 ? [k, k * (1 + p.chroma / 2), k * (1 + p.chroma)] : [k];
-    graph.displace.forEach((n, i) => n.setAttribute('scale', scales[i]));
+    graph.displace.forEach((n, i) => {
+      if (applied.scales[i] !== scales[i]) {
+        n.setAttribute('scale', scales[i]);
+        applied.scales[i] = scales[i];
+      }
+    });
     if (graph.aspect) {
-      graph.aspect.setAttribute('values', `${kx} 0 0 0 ${(1 - kx) / 2}  0 ${ky} 0 0 ${(1 - ky) / 2}  0 0 1 0 0  0 0 0 1 0`);
+      const values = `${kx} 0 0 0 ${(1 - kx) / 2}  0 ${ky} 0 0 ${(1 - ky) / 2}  0 0 1 0 0  0 0 0 1 0`;
+      if (applied.aspect !== values) {
+        graph.aspect.setAttribute('values', values);
+        applied.aspect = values;
+      }
     }
     if (graph.blur) {
-      graph.blur.setAttribute('stdDeviation', `${p.blur / W} ${p.blur / H}`);
+      const deviation = `${p.blur / W} ${p.blur / H}`;
+      if (applied.blur !== deviation) {
+        graph.blur.setAttribute('stdDeviation', deviation);
+        applied.blur = deviation;
+      }
       const pad = Math.ceil(p.refraction * (1 + p.chroma) + 3 * p.blur);
-      setRect(graph.blur, (x - pad) / W, (y - pad) / H, (w + 2 * pad) / W, (h + 2 * pad) / H);
+      setRect([graph.blur], applied.blurRect, (x - pad) / W, (y - pad) / H, (w + 2 * pad) / W, (h + 2 * pad) / H);
     }
 
     // WebKit caches filter output per filter id and keeps serving it after the graph changes;
