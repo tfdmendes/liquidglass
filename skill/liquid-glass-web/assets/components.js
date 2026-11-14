@@ -133,6 +133,7 @@ lg-navbar > a:hover { text-decoration: none; }
 lg-navbar > :is(a, button):focus-visible { outline: 2px solid var(--lg-focus); outline-offset: 2px; }
 .lg-nav__copy { position: absolute; inset: -16px; z-index: 3; pointer-events: none; background: var(--lg-indicator); }
 .lg-nav__copy > span { position: absolute; left: 0; top: 0; color: var(--lg-text); }
+.lg-nav__label { display: inline-flex; align-items: center; gap: inherit; clip-path: var(--lg-nav-label-clip, none); }
 lg-navbar[tone="light"] { color: var(--lg-text); }
 lg-navbar[tone="light"] .lg-surface__tint { background: var(--lg-tint-strong); }
 lg-navbar .lg-lens-shadow { opacity: 1; box-shadow: var(--lg-shadow-1), 0 calc(5px * var(--lg-nav-press, 0)) calc(14px * var(--lg-nav-press, 0)) rgb(0 0 0 / calc(0.18 * var(--lg-nav-press, 0))); z-index: 1; }
@@ -143,6 +144,7 @@ lg-navbar[disabled] > :is(a, button), lg-navbar > :is(:disabled, [aria-disabled=
 lg-navbar > :is(:disabled, [aria-disabled="true"]), .lg-nav__copy > .lg-nav__disabled { opacity: 0.5; }
 @media (forced-colors: active) {
   lg-navbar .lg-nav__copy, lg-navbar .lg-lens-shadow { display: none; }
+  lg-navbar .lg-nav__label { clip-path: none; }
   lg-navbar > [aria-current="page"] { outline: 2px solid Highlight; outline-offset: -2px; }
 }
 
@@ -235,6 +237,13 @@ function place(node, x, y, w, h, r) {
 function snapSize(value) {
   const dpr = window.devicePixelRatio || 1;
   return Math.round(value * dpr) / dpr;
+}
+
+function outsideCapsule(x, y, width, height, bounds) {
+  const r = Math.min(width, height) / 2;
+  const right = x + width;
+  const bottom = y + height;
+  return `path(evenodd, "M -16 -16 H ${bounds.labelW + 16} V ${bounds.labelH + 16} H -16 Z M ${x + r} ${y} H ${right - r} A ${r} ${r} 0 0 1 ${right} ${y + r} V ${bottom - r} A ${r} ${r} 0 0 1 ${right - r} ${bottom} H ${x + r} A ${r} ${r} 0 0 1 ${x} ${bottom - r} V ${y + r} A ${r} ${r} 0 0 1 ${x + r} ${y} Z")`;
 }
 
 const OPTIC_ATTRS = { refraction: 'refraction', bezel: 'bezel', curvature: 'curvature', ior: 'ior', chroma: 'chroma', blur: 'blur', specular: 'specular', 'specular-width': 'specularWidth', 'light-angle': 'lightAngle' };
@@ -1210,7 +1219,16 @@ class LgNavbar extends LgElement {
   }
 
   fillCopy() {
-    this.copy.replaceChildren(...this.links.map((link) => labelCopy(link)));
+    this.labels?.forEach((label, i) => {
+      if (label.parentElement === this.links[i]) label.replaceWith(...label.childNodes);
+    });
+    this.labels = this.links.map((link) => {
+      const label = el('span', 'lg-nav__label');
+      label.append(...link.childNodes);
+      link.append(label);
+      return label;
+    });
+    this.copy.replaceChildren(...this.labels.map((label) => labelCopy(label)));
   }
 
   refresh() {
@@ -1222,7 +1240,14 @@ class LgNavbar extends LgElement {
   }
 
   measure() {
-    this.metrics = this.links.map((link) => ({ x: link.offsetLeft, y: link.offsetTop, w: link.offsetWidth, h: link.offsetHeight }));
+    const rect = this.getBoundingClientRect();
+    const scale = rect.width / (parseFloat(getComputedStyle(this).width) || this.offsetWidth) || 1;
+    this.metrics = this.links.map((link, i) => {
+      const item = link.getBoundingClientRect();
+      const label = this.labels[i].getBoundingClientRect();
+      this.copy.children[i].style.justifyContent = getComputedStyle(link).justifyContent;
+      return { x: (item.left - rect.left) / scale, y: (item.top - rect.top) / scale, w: item.width / scale, h: item.height / scale, labelX: (label.left - rect.left) / scale, labelY: (label.top - rect.top) / scale, labelW: label.width / scale, labelH: label.height / scale };
+    });
     this.metrics.forEach((m, i) => place(this.copy.children[i], m.x + 16, m.y + 16, m.w, m.h, m.h / 2));
     this.ordered = [...this.metrics].sort((a, b) => a.x - b.x);
   }
@@ -1389,6 +1414,13 @@ class LgNavbar extends LgElement {
     const h = snapSize(g.h);
     this.glass.update({ hidden: false, x: g.x + 16, y: g.y + 16, width: w, height: h, radius: h / 2, refraction: this.optics.refraction * (1 + 1.8 * g.p) });
     this.glass.flush();
+    // The glass copy replaces the original text inside the moving indicator
+    this.labels.forEach((label, i) => {
+      const m = this.metrics[i];
+      const overlaps = g.x < m.labelX + m.labelW && g.x + w > m.labelX && g.y < m.labelY + m.labelH && g.y + h > m.labelY;
+      const clip = overlaps ? outsideCapsule(g.x - m.labelX, g.y - m.labelY, w, h, m) : 'none';
+      if (label.style.getPropertyValue('--lg-nav-label-clip') !== clip) label.style.setProperty('--lg-nav-label-clip', clip);
+    });
     this.style.setProperty('--lg-nav-press', String(g.p));
     this.shadow.style.opacity = '1';
     place(this.shadow, g.x, g.y, w, h, h / 2);

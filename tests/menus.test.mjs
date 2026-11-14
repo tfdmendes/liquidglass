@@ -149,7 +149,7 @@ test('navbar and row springs avoid layout reads on every frame and refresh resiz
     c.moveTo(3);
   });
   await page.waitForFunction(() => { const c = document.querySelector('#nav'); return c.xs.value === c.xs.target; });
-  assert.equal(await page.locator('#nav').evaluate(c => c.x), await page.locator('#nav > button').last().evaluate(n => n.offsetLeft));
+  assert(await page.locator('#nav').evaluate(c => Math.abs(c.x - (c.links.at(-1).getBoundingClientRect().left - c.getBoundingClientRect().left)) < 0.02));
 });
 
 test('navbar keeps the committed section through hover and focus until activation', async t => {
