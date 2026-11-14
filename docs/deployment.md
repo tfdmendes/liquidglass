@@ -71,15 +71,13 @@ navbar is loaded after publication.
 
 ## GitHub Pages workflow
 
-`.github/workflows/pages.yml` builds and deploys on pushes to
-`feat/liquidglass-showcase`, and supports manual dispatch once GitHub exposes
-the workflow for the repository. The initial branch push is the automatic
-publication trigger. Configure the repository's Pages source as **GitHub
-Actions** before relying on this workflow. The `github-pages` environment must
-allow deployment from this feature branch. Repository settings and environment
-protection can require an administrator or a separate approval.
-Publication uses the dedicated feature branch directly and does not require
-merging it into the default `main` branch.
+`.github/workflows/pages.yml` builds and deploys on pushes to `main` and
+supports manual dispatch. Merging a reviewed change into `main` triggers
+publication. Configure the repository's Pages source as **GitHub Actions**
+before relying on this workflow. The `github-pages` environment must allow
+only the `main` branch, so older workflows on feature branches cannot replace
+the published site. Repository settings and environment protection can require
+an administrator or a separate approval.
 
 The build job has read-only source and Pages metadata access and uploads only
 `dist/` using the official Pages artifact action. The deploy job alone receives `pages: write`
@@ -96,6 +94,8 @@ successful deployment or browser compatibility.
 
 To replace the published site, push a reviewed source change to the configured
 branch or dispatch the workflow for the intended revision. To restore an earlier
-release, dispatch it for a branch containing that source revision. Generated
-`dist/` is not committed. Changing the publishing branch requires updating the
-workflow trigger and the environment's deployment branch policy together.
+release, revert the relevant source change on `main` and push the revert.
+The automatic workflow then publishes that revision without changing the
+allowed deployment branch. Generated `dist/` is not committed. Changing the
+publishing branch requires updating the workflow trigger and the environment's
+deployment branch policy together.
