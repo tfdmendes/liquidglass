@@ -94,8 +94,10 @@ successful deployment or browser compatibility.
 
 To replace the published site, push a reviewed source change to the configured
 branch or dispatch the workflow for the intended revision. To restore an earlier
-release, revert the relevant source change on `main` and push the revert.
-The automatic workflow then publishes that revision without changing the
-allowed deployment branch. Generated `dist/` is not committed. Changing the
-publishing branch requires updating the workflow trigger and the environment's
-deployment branch policy together.
+release, restore its matching source, recorded benchmark evidence and build
+files on `main`. Keep the current Pages workflow and deployment branch policy.
+An engine-only revert can fail the evidence checks. Run `node
+scripts/build-site.mjs` successfully before pushing the recovery commit; the
+automatic workflow then publishes it from `main`. Generated `dist/` is not
+committed. Changing the publishing branch requires updating the workflow
+trigger and the environment's deployment branch policy together.
