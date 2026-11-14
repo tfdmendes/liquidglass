@@ -88,7 +88,11 @@ test('drag follows the grab offset, refracts fixed labels and commits once on re
   const before = await page.locator('#library').evaluate((c) => ({ x: c.x, copies: [...c.refract.children].map((n) => n.getBoundingClientRect().x), width: c.glass.params.width }));
   await page.mouse.move(start.x + 65, start.y, { steps: 8 });
   await page.waitForFunction(() => document.querySelector('#library').press > 0.95);
-  const during = await page.locator('#library').evaluate((c) => ({ x: c.x, value: c.value, copies: [...c.refract.children].map((n) => n.getBoundingClientRect().x), p: c.glass.params, g: c.geometry(), offset: c.copyOffset.x }));
+  const during = await page.locator('#library').evaluate((c) => {
+    const transform = new DOMMatrixReadOnly(c.shadow.style.transform);
+    return { x: c.x, value: c.value, copies: [...c.refract.children].map((n) => n.getBoundingClientRect().x), p: c.glass.params,
+      g: { x: transform.e, h: parseFloat(c.shadow.style.height) }, offset: c.renderer.origin.x, dpr: devicePixelRatio };
+  });
   assert.equal(during.x, before.x + 65);
   assert.deepEqual(during.copies, before.copies);
   assert.equal(during.value, 'library');
@@ -96,7 +100,7 @@ test('drag follows the grab offset, refracts fixed labels and commits once on re
   assert(during.p.refraction > 5);
   assert(during.g.h > 64);
   assert(during.p.width > before.width);
-  assert.equal(during.p.x, during.g.x - during.offset);
+  assert(Math.abs(Math.round(during.p.x * during.dpr) / during.dpr - (during.g.x - during.offset)) < .02);
   await page.mouse.move(start.x + 132, start.y, { steps: 6 });
   await page.mouse.up();
   await settle(page);

@@ -250,24 +250,25 @@ test('navbar glass and shadow share each painted frame and stop work when idle o
   assert(frames.mismatch <= 0.51, `Glass and shadow differed by ${frames.mismatch}px`);
   await page.waitForFunction(() => {
     const nav = document.querySelector('#nav');
-    return nav.xs.value === nav.xs.target && !nav.paintFrame && !nav.paintQueued;
+    return nav.xs.value === nav.xs.target && !nav.renderer.frame && !nav.renderer.queued;
   });
   await page.evaluate(() => {
     const nav = document.querySelector('#nav');
     window.paints = 0;
-    const update = nav.glass.update;
-    nav.glass.update = (...args) => { paints++; return update(...args); };
+    const paint = nav.renderer.paint;
+    nav.renderer.paint = (...args) => { paints++; return paint(...args); };
   });
   await page.waitForTimeout(100);
   assert.equal(await page.evaluate(() => paints), 0);
   await page.evaluate(() => {
     window.detachedNav = document.querySelector('#nav');
+    window.detachedRenderer = detachedNav.renderer;
     detachedNav.moveTo(3);
     detachedNav.remove();
   });
   await page.waitForTimeout(150);
   assert.equal(await page.evaluate(() => paints), 0);
-  assert.equal(await page.evaluate(() => detachedNav.paintFrame), 0);
+  assert.equal(await page.evaluate(() => detachedRenderer.frame), 0);
 });
 
 test('backdrop coordinates stay stable through scaled frames, reversal, scroll and resize', async t => {

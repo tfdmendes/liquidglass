@@ -170,12 +170,16 @@ test('press lifts the lens, drag keeps the grab offset and fixed labels, release
   const page = await open(t);
   const start = await grab(page);
   await page.waitForFunction(() => document.querySelector('#navigation').press > 0.95);
-  const pressed = await page.locator('#navigation').evaluate((c) => ({ p: c.glass.params, g: c.geometry(), labels: [...c.copy.children].map((n) => n.getBoundingClientRect().x), original: c.metrics[0] }));
+  const pressed = await page.locator('#navigation').evaluate((c) => {
+    const transform = new DOMMatrixReadOnly(c.shadow.style.transform);
+    return { p: c.glass.params, g: { x: transform.e, y: transform.f, h: parseFloat(c.shadow.style.height) }, offset: c.renderer.origin, dpr: devicePixelRatio,
+      labels: [...c.copy.children].map((n) => n.getBoundingClientRect().x), original: c.metrics[0] };
+  });
   assert(pressed.g.h > pressed.original.h);
   assert(pressed.g.y < 0);
   assert(pressed.p.refraction > 8);
-  assert.equal(pressed.p.x, pressed.g.x + 16);
-  assert.equal(pressed.p.y, pressed.g.y + 16);
+  assert(Math.abs(Math.round(pressed.p.x * pressed.dpr) / pressed.dpr - (pressed.g.x - pressed.offset.x)) < .02);
+  assert(Math.abs(Math.round(pressed.p.y * pressed.dpr) / pressed.dpr - (pressed.g.y - pressed.offset.y)) < .02);
   await page.mouse.move(start.x + 130, start.y, { steps: 8 });
   const during = await page.locator('#navigation').evaluate((c) => ({ x: c.x, current: c.current, labels: [...c.copy.children].map((n) => n.getBoundingClientRect().x), origin: c.gesture.origin, captured: c.gesture.link.hasPointerCapture(c.gesture.id) }));
   assert.equal(during.x, during.origin + 130);
@@ -195,6 +199,7 @@ test('native click, keyboard activation, form submit and programmatic selection 
   const page = await open(t);
   await page.locator('#navigation > a').nth(1).click();
   assert.equal(new URL(page.url()).hash, '#months');
+  await page.waitForFunction(() => document.querySelector('#navigation').current === 1);
   assert.equal(await page.locator('#navigation').evaluate((c) => c.current), 1);
   assert.equal(await page.evaluate(() => changes.length), 1);
   await page.keyboard.press('Home');
@@ -208,6 +213,7 @@ test('native click, keyboard activation, form submit and programmatic selection 
   await page.waitForFunction(() => document.querySelector('#navigation').current === 2);
   assert.equal(await page.locator('#navigation').evaluate((c) => c.current), 2);
   await page.locator('#form > button').nth(1).click();
+  await page.waitForFunction(() => document.querySelector('#form').current === 1);
   assert.equal(await page.evaluate(() => submits), 1);
   const count = await page.evaluate(() => changes.length);
   await page.locator('#navigation').evaluate((c) => { c.setCurrent(1); c.setCurrent(1, { emit: true }); });
