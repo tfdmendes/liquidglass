@@ -1,9 +1,15 @@
 # SVG animation FPS
 
-The 12 November 2026 comparison measured **27.0 → 60.0 FPS (+122.2%)** for
-12 reshaping SVG lenses and **15.8 → 38.5 FPS (+143.4%)** for 24. Both exceed
-the requested 30% FPS improvement against our implementation after the
+The 14 November 2026 recheck measured **27.27 → 59.25 FPS (+117.2%)** for
+12 reshaping SVG lenses and **16.18 → 35.40 FPS (+118.7%)** for 24. Published
+commit `d57e933` keeps the requested 30% improvement against the same
+intermediate baseline used for the 12 November canvas readback comparison.
+Both variants were measured again; the baseline already includes the
 [previous update-work optimization](updates.md).
+
+A separate component comparison measured menu opening, navbar drag and
+segmented drag at **60.00 → 60.00 FPS** before and after the shared-renderer
+refactor. Its baseline and replay differ from the engine scenes below.
 
 These are browser animation-cadence measurements in headless Chromium on an
 Apple M2. They do not measure frames physically presented by a display or
@@ -36,29 +42,65 @@ Values are medians of **five alternating paired trials per scene**, with a fresh
 page per build. Each trial uses a 1000 × 560 CSS-pixel scene, DPR 2, map scale 2,
 the city image, one second of warmup and four seconds of measurement. No CPU
 throttling or concurrent browser checks ran during the FPS measurements.
-The browser was installed Brave / Chromium 157.0.8103.50 on macOS 27.2, Apple M2.
+The browser was installed Brave / Chromium 157.0.8103.79 on macOS 27.2, Apple M2.
 
 | Scene | Before FPS | After FPS | Higher FPS | Before p95 frame | After p95 frame |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| SVG, 12 reshaping lenses | 27.00 | 60.00 | **122.2%** | 50.0 ms | 16.7 ms |
-| SVG, 24 reshaping lenses | 15.82 | 38.50 | **143.4%** | 66.7 ms | 33.4 ms |
-| SVG, 24 cached moving lenses | 43.82 | 43.82 | 0.0% | 33.4 ms | 33.4 ms |
+| SVG, 12 reshaping lenses | 27.27 | 59.25 | **117.2%** | 50.0 ms | 16.8 ms |
+| SVG, 24 reshaping lenses | 16.18 | 35.40 | **118.7%** | 66.7 ms | 33.4 ms |
+| SVG, 24 cached moving lenses | 45.94 | 45.81 | −0.3% | 33.4 ms | 33.4 ms |
 | WebGL, 24 reshaping lenses | 60.00 | 60.00 | ≈0.0% | 16.7 ms | 16.7 ms |
-| WebGL, 24 moving lenses | 60.00 | 60.00 | ≈0.0% | 16.7 ms | 16.7 ms |
+| WebGL, 24 moving lenses | 60.00 | 60.00 | ≈0.0% | 16.8 ms | 16.7 ms |
 
-The 12-lens FPS ranges were **25.79–27.27 before** and **60.0015–60.0030 after**.
-The 24-lens ranges were **15.50–15.82 before** and **38.09–38.66 after**. Neither
-pair overlaps. The 12-lens optimized scene reached the approximately 60 Hz
-headless rAF ceiling. Cached movement does not encode new maps, and WebGL does
+The 12-lens FPS ranges were **26.64–28.02 before** and **56.00–60.00 after**.
+The 24-lens ranges were **15.57–16.36 before** and **30.62–36.85 after**. Neither
+pair overlaps, and all five pairs in both reshaping scenes exceeded 30% higher
+FPS. Some 12-lens trials reached the approximately 60 Hz headless ceiling.
+Shared-host variation remains visible in the ranges. Cached movement does not encode new maps, and WebGL does
 not use the SVG encoder, so those controls show no material FPS change.
 
 [fps-cpu-canvas-results.json](fps-cpu-canvas-results.json) retains all 50 trial
 aggregates, medians, ranges, environment and exact source/fixture SHA-256 hashes.
 The formula is `(after FPS / before FPS - 1) × 100`. FPS comes from frame count
 divided by measured elapsed time; it is not inferred from JavaScript update time.
+Percentages use the full medians before rounding for display.
 Per-frame arrays are omitted from the retained summary and can be regenerated.
 
-## Rendering and freshness
+## Component refactor checkpoint
+
+[component-refactor-fps-results.json](component-refactor-fps-results.json) retains
+30 trial aggregates from five alternating pairs per replay. The pre-refactor
+component module is `db71502`; the current module is `d57e933`. Both use the same
+optimized `liquid-glass.js`, so this comparison isolates component rendering.
+
+| Replay | Before FPS | After FPS | Before p95 frame | After p95 frame |
+| --- | ---: | ---: | ---: | ---: |
+| Menu opening, switching and closing | 60.00 | 60.00 | 16.7 ms | 16.7 ms |
+| Navbar hold and drag | 60.00 | 60.00 | 16.8 ms | 16.7 ms |
+| Segmented control hold and drag | 60.00 | 60.00 | 16.7 ms | 16.7 ms |
+
+Each trial uses a fresh 1280 × 800 page at DPR 2, normal motion, 45 idle
+calibration frames, one second of warmup and four seconds of sampling. Menus
+open, switch or close every 180 ms. Drag replays start with a trusted mouse
+press, then dispatch pointer movement through the component's event handler
+along a 1.1-second cosine path across the row. The fixture uses the maintained
+menu example plus a three-option segmented control. The retained record includes
+the fixture hash, source hashes, movement spans and committed selection checks.
+
+These replays show no FPS loss at the displayed precision and remain near the
+headless cadence ceiling. They do not measure CPU cost, physical touch latency
+or every control on the showcase. Their focused runner and per-frame traces
+were temporary; the retained aggregates and protocol describe this checkpoint.
+
+![Component cadence before and after the shared-renderer refactor](current-component-fps.svg)
+
+## Earlier rendering and freshness checks
+
+The following checks ran on 12 November 2026. Their
+[dated retained record](https://github.com/tfdmendes/liquidglass/blob/d57e933f8dbb7abb45d3116d68f6ecc411c0c130/docs/performance/fps-cpu-canvas-results.json)
+keeps the rendering and decode evidence from that run. They were not repeated
+as part of the 14 November FPS recheck. The core and WebGL source hashes are
+unchanged between those engine measurements.
 
 The existing 205 public raw-map/PNG comparisons remain byte-exact. A separate
 640-map seeded comparison of default and readback-oriented canvas serialization
@@ -99,7 +141,7 @@ excludes raw raster generation and does not measure physical presentation.
 Every requested decode completed; all four before/after runs had zero pending
 decodes 250 ms after stopping. These are focused diagnostic samples, not latency
 guarantees. The timing, encoding, rendering and freshness aggregates are retained
-in the same results JSON.
+in the dated 12 November record linked above.
 
 The before snapshot includes the earlier SVG attribute and immutable-bitmap
 optimizations. It is not the older Git `previous` build used by historical
@@ -109,7 +151,7 @@ unchanged.
 ## Reproduce
 
 Run from the repository root. The first block reconstructs the exact prior-pass
-baseline in `/tmp/liquidglass-fps-baseline-20261112` from the fixed commit and
+baseline in `/tmp/liquidglass-fps-baseline-20261114` from the fixed commit and
 the retained [baseline patch](fps-baseline.patch), then verifies its hashes.
 It writes only those three temporary module files; the patch is not applied to
 the working checkout. It uses Python's standard library and the existing Git
@@ -123,7 +165,7 @@ import json
 import subprocess
 
 root = Path.cwd()
-destination = Path('/tmp/liquidglass-fps-baseline-20261112')
+destination = Path('/tmp/liquidglass-fps-baseline-20261114')
 destination.mkdir(exist_ok=True)
 report = json.loads((root / 'docs/performance/fps-cpu-canvas-results.json').read_text())
 for name, expected in report['manifest']['builds']['previous']['sha256'].items():
@@ -142,7 +184,7 @@ closes the browser and loopback server. It installs nothing and deploys nothing.
 Deleting the temporary directory and output JSON removes the generated files.
 
 ```sh
-LG_FPS_BASE_DIR=/tmp/liquidglass-fps-baseline-20261112 \
+LG_FPS_BASE_DIR=/tmp/liquidglass-fps-baseline-20261114 \
 LG_FPS_TRIALS=5 \
 LG_FPS_OUT=/tmp/liquidglass-fps-results.json \
 node review/measure-fps.mjs

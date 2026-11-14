@@ -140,7 +140,7 @@ code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
 .performance-copy .evidence-note { font-size: 14px; color: var(--muted); line-height: 1.65; }
 .performance-copy .text-link { margin-top: 22px; }
 .performance-figures { min-width: 0; }
-.figure-tabs { display: flex; gap: 24px; padding-bottom: 20px; }
+.figure-tabs { display: flex; flex-wrap: wrap; gap: 12px 24px; padding-bottom: 20px; }
 .figure-tabs button { font-size: 14px; padding: 7px 0; background: transparent; color: var(--muted); }
 .figure-tabs button[aria-selected="true"] { color: var(--blue); font-weight: 600; text-decoration: underline; text-underline-offset: 7px; text-decoration-thickness: 2px; }
 .benchmark-shell { position: relative; isolation: isolate; border-radius: 24px; overflow: hidden; background: #f4f8fd; }

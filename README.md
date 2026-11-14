@@ -52,7 +52,9 @@ Place a component over an image and set `data-lg-backdrop="img"` on their contai
 
 Try every component in the [live showcase](https://tfdmendes.github.io/liquidglass/#components), including the movable lens, material picker, menus and notifications.
 
-The segmented control supports click, keyboard and press-and-drag selection. Its lens follows the pointer and snaps to an enabled option on release. Use `radius="capsule"` for a capsule outline.
+The components share glass geometry, label masking and paint timing. Each control keeps its own input and selection rules.
+
+The segmented control supports click and keyboard selection. Start a drag on the visible capsule, then release to snap it to the nearest enabled option. Other options remain clickable; pressing outside the capsule does not grab it. Use `radius="capsule"` for a capsule outline.
 
 The navbar’s indicator moves smoothly between clicked items, enlarges while held and follows a drag across the row. Release to select an item without opening its link. Click or use normal keyboard activation to follow a link; hover and keyboard focus keep the indicator on the selected item. See the [navbar reference](docs/index.html#navbar) to handle selection changes.
 
@@ -98,17 +100,22 @@ Recorded checks cover Chrome, Firefox and native macOS WebKit using desktop and 
 
 SVG PNG canvases favor pixel readback, filter updates write only changed values, and explicit WebGL renders reuse uploaded immutable bitmaps. Optics and map resolution stay unchanged.
 
-Five paired trials on 12 November 2026 measured the canvas readback change against an intermediate optimized snapshot:
+The 14 November 2026 recheck measured the published refactor against the same intermediate baseline used for the canvas readback change. Both builds were measured again, using five alternating paired trials per scene:
 
 | Scene | Before | After | Higher FPS |
 | --- | ---: | ---: | ---: |
-| 12 reshaping SVG lenses | 27.0 FPS | 60.0 FPS | 122.2% |
-| 24 reshaping SVG lenses | 15.8 FPS | 38.5 FPS | 143.4% |
+| 12 reshaping SVG lenses | 27.27 FPS | 59.25 FPS | 117.2% |
+| 24 reshaping SVG lenses | 16.18 FPS | 35.40 FPS | 118.7% |
 
-These are headless Chromium cadence measurements on an Apple M2. Cached movement and WebGL remained near their earlier cadence. They do not establish the same gain for every page, browser or device. The [FPS report](docs/performance/fps-cpu-canvas.md) retains all 50 trial summaries, source hashes, rendering checks and reproduction commands.
+All five pairs in both reshaping scenes exceeded the 30% FPS target. Percentages use the unrounded medians. These are local headless Chromium cadence measurements on an Apple M2; they do not establish the same gain for every page, browser or device. Cached SVG movement measured 45.94 → 45.81 FPS, and both WebGL controls stayed near 60 FPS.
+
+A separate component comparison used the pre-refactor `db71502` and published `d57e933` with identical engines. Menu opening, navbar drag and segmented drag each stayed at **60.00 → 60.00 FPS** across five paired trials. That checks the component renderer, separately from the engine improvement above.
+
+The [FPS report](docs/performance/fps-cpu-canvas.md) explains both baselines, methods and limits. It links all 50 engine and 30 component trial summaries, source hashes and the earlier dated rendering checks.
 
 - [Animation cadence and recorded ranges](docs/performance/current-animation-fps.svg)
 - [Synchronous animation update times](docs/performance/current-update-time.svg)
+- [Component cadence before and after the refactor](docs/performance/current-component-fps.svg)
 - [Performance evidence and limits](docs/performance/README.md)
 - [Run the comparison site on your device](showcase/README.md)
 

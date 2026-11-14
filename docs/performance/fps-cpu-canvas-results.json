@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "date": "2026-11-12T09:25:20.393Z",
+  "date": "2026-11-14T17:59:04.418Z",
   "manifest": {
     "description": "Original and previous are recovered from Git; current is built from lib/",
     "builds": {
@@ -15,7 +15,7 @@
       },
       "previous": {
         "revision": null,
-        "directory": "/tmp/liquidglass-fps-20261112/before",
+        "directory": "/tmp/liquidglass-fps-refactor-20261114/baseline",
         "sha256": {
           "liquid-glass.js": "2c26f1c24daeaf8e66603699ba5b7a0de9e99c5aff8f23e4b5088ad2db1d929b",
           "glass-webgl.js": "59d4fb5fe3e791bbb5e18a39821a45410f2d12e7b9111ec58a168cbbf3e36fc4",
@@ -24,11 +24,11 @@
       },
       "current": {
         "revision": null,
-        "directory": "lib",
+        "directory": "/tmp/liquidglass-fps-refactor-20261114/published",
         "sha256": {
           "liquid-glass.js": "3ed61b63b13c22545656728f84c4d52d11b6104ea95ad31182e453b1e2768220",
           "glass-webgl.js": "59d4fb5fe3e791bbb5e18a39821a45410f2d12e7b9111ec58a168cbbf3e36fc4",
-          "components.js": "b76e103086f5b58d831c0caa06482e0631ea64db42156556bc948886abf8fcad"
+          "components.js": "594781902eb91842dda1bba5db7f46824e9d3f5962bc1aafffdf743ccf58f3ea"
         }
       }
     }
@@ -40,7 +40,7 @@
     "review/measure-fps.mjs": "6096cfc0a0c27c52acc884d7540bad1ad0ed6962714f707c25239eb49a77f291"
   },
   "environment": {
-    "browserProduct": "Installed chromium 157.0.8103.50",
+    "browserProduct": "Installed chromium 157.0.8103.79",
     "headless": true,
     "platform": "darwin",
     "release": "27.2.0",
@@ -62,15 +62,15 @@
       ],
       "trials": [
         {
-          "frames": 109,
-          "elapsedMs": 3999.7999999999997,
-          "fps": 27.251362568128407,
+          "frames": 107,
+          "elapsedMs": 4016.4999999999995,
+          "fps": 26.640109548114033,
           "p95FrameMs": 50,
           "medianFrameMs": 33.30000000000018,
-          "meanUpdateMs": 33.87706422423004,
-          "p95UpdateMs": 38.700000047683716,
-          "missedSlots": 131,
-          "missedSlotPercent": 54.58333333333333,
+          "meanUpdateMs": 34.542990654254346,
+          "p95UpdateMs": 39.29999999888241,
+          "missedSlots": 134,
+          "missedSlotPercent": 55.601659751037346,
           "settings": {
             "count": 12,
             "renderer": "svg",
@@ -89,6 +89,122 @@
           "durationMs": 4000,
           "warmupMs": 1000,
           "trial": 0
+        },
+        {
+          "frames": 224,
+          "elapsedMs": 3999.8999999999996,
+          "fps": 56.00140003500088,
+          "p95FrameMs": 33.30000000000018,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 13.658035714328955,
+          "p95UpdateMs": 21,
+          "missedSlots": 16,
+          "missedSlotPercent": 6.666666666666667,
+          "settings": {
+            "count": 12,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 0
+        },
+        {
+          "frames": 237,
+          "elapsedMs": 4033.1,
+          "fps": 58.7637301331482,
+          "p95FrameMs": 16.800000000000182,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 12.30548523199049,
+          "p95UpdateMs": 16.899999998509884,
+          "missedSlots": 5,
+          "missedSlotPercent": 2.066115702479339,
+          "settings": {
+            "count": 12,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 1
+        },
+        {
+          "frames": 109,
+          "elapsedMs": 4033.1,
+          "fps": 27.026356896679975,
+          "p95FrameMs": 50.09999999999991,
+          "medianFrameMs": 33.30000000000018,
+          "meanUpdateMs": 34.093577981610366,
+          "p95UpdateMs": 38.79999999888241,
+          "missedSlots": 133,
+          "missedSlotPercent": 54.958677685950406,
+          "settings": {
+            "count": 12,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 1
+        },
+        {
+          "frames": 113,
+          "elapsedMs": 4033.2,
+          "fps": 28.01745512248339,
+          "p95FrameMs": 50,
+          "medianFrameMs": 33.30000000000018,
+          "meanUpdateMs": 32.8159292036651,
+          "p95UpdateMs": 35.69999999925494,
+          "missedSlots": 129,
+          "missedSlotPercent": 53.30578512396694,
+          "settings": {
+            "count": 12,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 2
         },
         {
           "frames": 241,
@@ -96,124 +212,8 @@
           "fps": 60.00248972986431,
           "p95FrameMs": 16.700000000000728,
           "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 10.7854771762468,
-          "p95UpdateMs": 11.600000023841858,
-          "missedSlots": 0,
-          "missedSlotPercent": 0,
-          "settings": {
-            "count": 12,
-            "renderer": "svg",
-            "workload": "reshape",
-            "backdrop": "city"
-          },
-          "viewport": {
-            "width": 1000,
-            "height": 560
-          },
-          "mapScale": 2,
-          "build": "current",
-          "engine": "blink",
-          "refreshMs": 16.699999999999932,
-          "visibility": "visible",
-          "durationMs": 4000,
-          "warmupMs": 1000,
-          "trial": 0
-        },
-        {
-          "frames": 240,
-          "elapsedMs": 3999.7999999999997,
-          "fps": 60.0030001500075,
-          "p95FrameMs": 16.700000000000728,
-          "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 11.053749998658896,
-          "p95UpdateMs": 12.099999964237213,
-          "missedSlots": 0,
-          "missedSlotPercent": 0,
-          "settings": {
-            "count": 12,
-            "renderer": "svg",
-            "workload": "reshape",
-            "backdrop": "city"
-          },
-          "viewport": {
-            "width": 1000,
-            "height": 560
-          },
-          "mapScale": 2,
-          "build": "current",
-          "engine": "blink",
-          "refreshMs": 16.699999999999932,
-          "visibility": "visible",
-          "durationMs": 4000,
-          "warmupMs": 1000,
-          "trial": 1
-        },
-        {
-          "frames": 104,
-          "elapsedMs": 4033.2000000000003,
-          "fps": 25.785976395913913,
-          "p95FrameMs": 50.099999999999454,
-          "medianFrameMs": 33.399999999999636,
-          "meanUpdateMs": 35.99134615522165,
-          "p95UpdateMs": 41.40000003576279,
-          "missedSlots": 138,
-          "missedSlotPercent": 57.02479338842975,
-          "settings": {
-            "count": 12,
-            "renderer": "svg",
-            "workload": "reshape",
-            "backdrop": "city"
-          },
-          "viewport": {
-            "width": 1000,
-            "height": 560
-          },
-          "mapScale": 2,
-          "build": "previous",
-          "engine": "blink",
-          "refreshMs": 16.699999999999932,
-          "visibility": "visible",
-          "durationMs": 4000,
-          "warmupMs": 1000,
-          "trial": 1
-        },
-        {
-          "frames": 107,
-          "elapsedMs": 3983.2,
-          "fps": 26.862823860212895,
-          "p95FrameMs": 50,
-          "medianFrameMs": 33.399999999999636,
-          "meanUpdateMs": 34.33271027781139,
-          "p95UpdateMs": 39.299999952316284,
-          "missedSlots": 132,
-          "missedSlotPercent": 55.23012552301255,
-          "settings": {
-            "count": 12,
-            "renderer": "svg",
-            "workload": "reshape",
-            "backdrop": "city"
-          },
-          "viewport": {
-            "width": 1000,
-            "height": 560
-          },
-          "mapScale": 2,
-          "build": "previous",
-          "engine": "blink",
-          "refreshMs": 16.699999999999932,
-          "visibility": "visible",
-          "durationMs": 4000,
-          "warmupMs": 1000,
-          "trial": 2
-        },
-        {
-          "frames": 240,
-          "elapsedMs": 3999.8,
-          "fps": 60.003000150007495,
-          "p95FrameMs": 16.700000000000728,
-          "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 10.682499999304612,
-          "p95UpdateMs": 11.599999964237213,
+          "meanUpdateMs": 11.48381742742299,
+          "p95UpdateMs": 13.400000000372529,
           "missedSlots": 0,
           "missedSlotPercent": 0,
           "settings": {
@@ -236,15 +236,15 @@
           "trial": 2
         },
         {
-          "frames": 240,
+          "frames": 238,
           "elapsedMs": 3999.9,
-          "fps": 60.00150003750094,
-          "p95FrameMs": 16.700000000000728,
+          "fps": 59.50148753718843,
+          "p95FrameMs": 16.799999999999727,
           "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 10.789166665822268,
-          "p95UpdateMs": 11.5,
-          "missedSlots": 0,
-          "missedSlotPercent": 0,
+          "meanUpdateMs": 11.545378151302765,
+          "p95UpdateMs": 13.400000000372529,
+          "missedSlots": 2,
+          "missedSlotPercent": 0.8333333333333334,
           "settings": {
             "count": 12,
             "renderer": "svg",
@@ -265,15 +265,15 @@
           "trial": 3
         },
         {
-          "frames": 108,
-          "elapsedMs": 3999.8,
-          "fps": 27.001350067503374,
+          "frames": 112,
+          "elapsedMs": 4016.5,
+          "fps": 27.88497448026889,
           "p95FrameMs": 50,
           "medianFrameMs": 33.30000000000018,
-          "meanUpdateMs": 34.23333333543054,
-          "p95UpdateMs": 38.40000003576279,
-          "missedSlots": 132,
-          "missedSlotPercent": 55.00000000000001,
+          "meanUpdateMs": 33.03482142847497,
+          "p95UpdateMs": 36.29999999888241,
+          "missedSlots": 129,
+          "missedSlotPercent": 53.52697095435685,
           "settings": {
             "count": 12,
             "renderer": "svg",
@@ -295,12 +295,12 @@
         },
         {
           "frames": 110,
-          "elapsedMs": 4033.1000000000004,
-          "fps": 27.274305125089878,
+          "elapsedMs": 4033.1,
+          "fps": 27.27430512508988,
           "p95FrameMs": 50,
           "medianFrameMs": 33.30000000000018,
-          "meanUpdateMs": 33.93454545573755,
-          "p95UpdateMs": 40.200000047683716,
+          "meanUpdateMs": 33.802727272547784,
+          "p95UpdateMs": 39,
           "missedSlots": 132,
           "missedSlotPercent": 54.54545454545454,
           "settings": {
@@ -323,15 +323,15 @@
           "trial": 4
         },
         {
-          "frames": 240,
+          "frames": 237,
           "elapsedMs": 3999.9,
-          "fps": 60.00150003750094,
-          "p95FrameMs": 16.700000000000728,
+          "fps": 59.25148128703218,
+          "p95FrameMs": 16.799999999999727,
           "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 10.713749999552965,
-          "p95UpdateMs": 11.5,
-          "missedSlots": 0,
-          "missedSlotPercent": 0,
+          "meanUpdateMs": 11.970886076018528,
+          "p95UpdateMs": 15.099999999627471,
+          "missedSlots": 3,
+          "missedSlotPercent": 1.25,
           "settings": {
             "count": 12,
             "renderer": "svg",
@@ -354,49 +354,60 @@
       ],
       "summary": {
         "previous": {
-          "fps": 27.001350067503374,
+          "fps": 27.27430512508988,
           "fpsRange": [
-            25.785976395913913,
-            27.274305125089878
+            26.640109548114033,
+            28.01745512248339
           ],
           "p95FrameMs": 50,
           "p95FrameMsRange": [
             50,
-            50.099999999999454
+            50.09999999999991
           ],
-          "meanUpdateMs": 34.23333333543054,
+          "meanUpdateMs": 33.802727272547784,
           "meanUpdateMsRange": [
-            33.87706422423004,
-            35.99134615522165
+            32.8159292036651,
+            34.542990654254346
           ],
-          "missedSlotPercent": 55.00000000000001,
+          "missedSlotPercent": 54.54545454545454,
           "missedSlotPercentRange": [
-            54.54545454545454,
-            57.02479338842975
+            53.30578512396694,
+            55.601659751037346
           ]
         },
         "current": {
-          "fps": 60.00248972986431,
+          "fps": 59.25148128703218,
           "fpsRange": [
-            60.00150003750094,
-            60.0030001500075
+            56.00140003500088,
+            60.00248972986431
           ],
-          "p95FrameMs": 16.700000000000728,
+          "p95FrameMs": 16.799999999999727,
           "p95FrameMsRange": [
             16.700000000000728,
-            16.700000000000728
+            33.30000000000018
           ],
-          "meanUpdateMs": 10.7854771762468,
+          "meanUpdateMs": 11.970886076018528,
           "meanUpdateMsRange": [
-            10.682499999304612,
-            11.053749998658896
+            11.48381742742299,
+            13.658035714328955
           ],
-          "missedSlotPercent": 0,
+          "missedSlotPercent": 1.25,
           "missedSlotPercentRange": [
             0,
-            0
+            6.666666666666667
           ]
         }
+      },
+      "comparison": {
+        "percentHigherFPS": 117.24286288975408,
+        "pairedPercentHigherFPS": [
+          110.21460115942148,
+          117.43119266055047,
+          114.1610987420254,
+          113.38189704742621,
+          117.24286288975408
+        ],
+        "allPairedTrialsExceed30": true
       }
     },
     {
@@ -413,14 +424,14 @@
       "trials": [
         {
           "frames": 64,
-          "elapsedMs": 4049.8,
-          "fps": 15.803249543187317,
-          "p95FrameMs": 66.70000000000073,
+          "elapsedMs": 4033.2999999999997,
+          "fps": 15.867899734708553,
+          "p95FrameMs": 66.80000000000018,
           "medianFrameMs": 66.60000000000036,
-          "meanUpdateMs": 58.29218750447035,
-          "p95UpdateMs": 65,
-          "missedSlots": 179,
-          "missedSlotPercent": 73.66255144032921,
+          "meanUpdateMs": 57.76874999998836,
+          "p95UpdateMs": 64.30000000074506,
+          "missedSlots": 178,
+          "missedSlotPercent": 73.55371900826447,
           "settings": {
             "count": 24,
             "renderer": "svg",
@@ -441,15 +452,15 @@
           "trial": 0
         },
         {
-          "frames": 153,
-          "elapsedMs": 3983.2,
-          "fps": 38.41132757581844,
+          "frames": 145,
+          "elapsedMs": 3999.8999999999996,
+          "fps": 36.25090627265682,
           "p95FrameMs": 33.400000000000546,
           "medianFrameMs": 33.29999999999973,
-          "meanUpdateMs": 21.08627451167387,
-          "p95UpdateMs": 23.30000001192093,
-          "missedSlots": 86,
-          "missedSlotPercent": 35.98326359832636,
+          "meanUpdateMs": 22.422068965473567,
+          "p95UpdateMs": 25.800000000745058,
+          "missedSlots": 95,
+          "missedSlotPercent": 39.58333333333333,
           "settings": {
             "count": 24,
             "renderer": "svg",
@@ -470,15 +481,15 @@
           "trial": 0
         },
         {
-          "frames": 154,
-          "elapsedMs": 3983.3,
-          "fps": 38.661411392563956,
-          "p95FrameMs": 33.40000000000009,
-          "medianFrameMs": 33.29999999999927,
-          "meanUpdateMs": 21.07792208101842,
-          "p95UpdateMs": 22.69999998807907,
-          "missedSlots": 85,
-          "missedSlotPercent": 35.56485355648535,
+          "frames": 140,
+          "elapsedMs": 3999.7999999999997,
+          "fps": 35.00175008750438,
+          "p95FrameMs": 33.400000000000546,
+          "medianFrameMs": 33.30000000000018,
+          "meanUpdateMs": 23.270714285650424,
+          "p95UpdateMs": 30,
+          "missedSlots": 100,
+          "missedSlotPercent": 41.66666666666667,
           "settings": {
             "count": 24,
             "renderer": "svg",
@@ -499,44 +510,44 @@
           "trial": 1
         },
         {
-          "frames": 63,
-          "elapsedMs": 3983.3000000000006,
-          "fps": 15.816031933321614,
-          "p95FrameMs": 66.70000000000073,
-          "medianFrameMs": 66.60000000000036,
-          "meanUpdateMs": 58.51904762264282,
-          "p95UpdateMs": 63.30000001192093,
-          "missedSlots": 176,
-          "missedSlotPercent": 73.64016736401673,
-          "settings": {
-            "count": 24,
-            "renderer": "svg",
-            "workload": "reshape",
-            "backdrop": "city"
-          },
-          "viewport": {
-            "width": 1000,
-            "height": 560
-          },
-          "mapScale": 2,
-          "build": "previous",
-          "engine": "blink",
-          "refreshMs": 16.699999999999932,
-          "visibility": "visible",
-          "durationMs": 4000,
-          "warmupMs": 1000,
-          "trial": 1
-        },
-        {
-          "frames": 63,
-          "elapsedMs": 3983.1,
-          "fps": 15.816826090231228,
+          "frames": 65,
+          "elapsedMs": 4016.4000000000005,
+          "fps": 16.18364704710686,
           "p95FrameMs": 66.70000000000027,
           "medianFrameMs": 66.60000000000036,
-          "meanUpdateMs": 58.26825396219889,
-          "p95UpdateMs": 62.19999998807907,
+          "meanUpdateMs": 56.752307692370735,
+          "p95UpdateMs": 61.59999999962747,
           "missedSlots": 176,
-          "missedSlotPercent": 73.64016736401673,
+          "missedSlotPercent": 73.02904564315352,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 1
+        },
+        {
+          "frames": 65,
+          "elapsedMs": 3999.7,
+          "fps": 16.251218841413106,
+          "p95FrameMs": 66.70000000000073,
+          "medianFrameMs": 66.60000000000036,
+          "meanUpdateMs": 56.636923076957466,
+          "p95UpdateMs": 60.09999999962747,
+          "missedSlots": 175,
+          "missedSlotPercent": 72.91666666666666,
           "settings": {
             "count": 24,
             "renderer": "svg",
@@ -557,44 +568,15 @@
           "trial": 2
         },
         {
-          "frames": 153,
-          "elapsedMs": 4016.5,
-          "fps": 38.09286692393875,
-          "p95FrameMs": 33.400000000000546,
-          "medianFrameMs": 33.29999999999927,
-          "meanUpdateMs": 21.241830066917768,
-          "p95UpdateMs": 23.899999976158142,
-          "missedSlots": 88,
-          "missedSlotPercent": 36.51452282157676,
-          "settings": {
-            "count": 24,
-            "renderer": "svg",
-            "workload": "reshape",
-            "backdrop": "city"
-          },
-          "viewport": {
-            "width": 1000,
-            "height": 560
-          },
-          "mapScale": 2,
-          "build": "current",
-          "engine": "blink",
-          "refreshMs": 16.699999999999932,
-          "visibility": "visible",
-          "durationMs": 4000,
-          "warmupMs": 1000,
-          "trial": 2
-        },
-        {
-          "frames": 155,
+          "frames": 148,
           "elapsedMs": 4016.4,
-          "fps": 38.591773727716365,
-          "p95FrameMs": 33.40000000000009,
+          "fps": 36.84891943033562,
+          "p95FrameMs": 33.400000000000546,
           "medianFrameMs": 33.29999999999973,
-          "meanUpdateMs": 21.085806453227995,
-          "p95UpdateMs": 23.19999998807907,
-          "missedSlots": 86,
-          "missedSlotPercent": 35.684647302904565,
+          "meanUpdateMs": 21.976351351225496,
+          "p95UpdateMs": 24.699999999254942,
+          "missedSlots": 93,
+          "missedSlotPercent": 38.589211618257266,
           "settings": {
             "count": 24,
             "renderer": "svg",
@@ -612,18 +594,18 @@
           "visibility": "visible",
           "durationMs": 4000,
           "warmupMs": 1000,
-          "trial": 3
+          "trial": 2
         },
         {
-          "frames": 63,
-          "elapsedMs": 3983.3,
-          "fps": 15.816031933321616,
-          "p95FrameMs": 66.70000000000027,
-          "medianFrameMs": 66.69999999999982,
-          "meanUpdateMs": 58.31111111338176,
-          "p95UpdateMs": 63.39999997615814,
-          "missedSlots": 176,
-          "missedSlotPercent": 73.64016736401673,
+          "frames": 123,
+          "elapsedMs": 4016.6000000000004,
+          "fps": 30.622914903151916,
+          "p95FrameMs": 50,
+          "medianFrameMs": 33.30000000000018,
+          "meanUpdateMs": 26.472357723468203,
+          "p95UpdateMs": 39.5,
+          "missedSlots": 118,
+          "missedSlotPercent": 48.96265560165975,
           "settings": {
             "count": 24,
             "renderer": "svg",
@@ -635,7 +617,7 @@
             "height": 560
           },
           "mapScale": 2,
-          "build": "previous",
+          "build": "current",
           "engine": "blink",
           "refreshMs": 16.699999999999932,
           "visibility": "visible",
@@ -645,14 +627,43 @@
         },
         {
           "frames": 62,
-          "elapsedMs": 3999.8,
-          "fps": 15.500775038751938,
-          "p95FrameMs": 66.70000000000027,
-          "medianFrameMs": 66.69999999999982,
-          "meanUpdateMs": 59.28870967511208,
-          "p95UpdateMs": 64.69999998807907,
-          "missedSlots": 178,
-          "missedSlotPercent": 74.16666666666667,
+          "elapsedMs": 3983.2,
+          "fps": 15.565374573207473,
+          "p95FrameMs": 66.80000000000018,
+          "medianFrameMs": 66.60000000000036,
+          "meanUpdateMs": 59.19032258059709,
+          "p95UpdateMs": 65.5,
+          "missedSlots": 177,
+          "missedSlotPercent": 74.05857740585773,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 3
+        },
+        {
+          "frames": 66,
+          "elapsedMs": 4033.2000000000003,
+          "fps": 16.364177328176137,
+          "p95FrameMs": 66.70000000000073,
+          "medianFrameMs": 66.59999999999991,
+          "meanUpdateMs": 55.948484848479204,
+          "p95UpdateMs": 59.69999999925494,
+          "missedSlots": 176,
+          "missedSlotPercent": 72.72727272727273,
           "settings": {
             "count": 24,
             "renderer": "svg",
@@ -673,15 +684,15 @@
           "trial": 4
         },
         {
-          "frames": 154,
-          "elapsedMs": 3999.8999999999996,
-          "fps": 38.500962524063105,
-          "p95FrameMs": 33.40000000000009,
-          "medianFrameMs": 33.29999999999927,
-          "meanUpdateMs": 21.17467532490755,
-          "p95UpdateMs": 23.399999976158142,
-          "missedSlots": 86,
-          "missedSlotPercent": 35.833333333333336,
+          "frames": 141,
+          "elapsedMs": 3983.2999999999997,
+          "fps": 35.397785755529334,
+          "p95FrameMs": 33.400000000000546,
+          "medianFrameMs": 33.29999999999973,
+          "meanUpdateMs": 22.624113475150885,
+          "p95UpdateMs": 26.600000001490116,
+          "missedSlots": 98,
+          "missedSlotPercent": 41.00418410041841,
           "settings": {
             "count": 24,
             "renderer": "svg",
@@ -704,49 +715,60 @@
       ],
       "summary": {
         "previous": {
-          "fps": 15.816031933321614,
+          "fps": 16.18364704710686,
           "fpsRange": [
-            15.500775038751938,
-            15.816826090231228
+            15.565374573207473,
+            16.364177328176137
           ],
-          "p95FrameMs": 66.70000000000027,
+          "p95FrameMs": 66.70000000000073,
           "p95FrameMsRange": [
             66.70000000000027,
-            66.70000000000073
+            66.80000000000018
           ],
-          "meanUpdateMs": 58.31111111338176,
+          "meanUpdateMs": 56.752307692370735,
           "meanUpdateMsRange": [
-            58.26825396219889,
-            59.28870967511208
+            55.948484848479204,
+            59.19032258059709
           ],
-          "missedSlotPercent": 73.64016736401673,
+          "missedSlotPercent": 73.02904564315352,
           "missedSlotPercentRange": [
-            73.64016736401673,
-            74.16666666666667
+            72.72727272727273,
+            74.05857740585773
           ]
         },
         "current": {
-          "fps": 38.500962524063105,
+          "fps": 35.397785755529334,
           "fpsRange": [
-            38.09286692393875,
-            38.661411392563956
+            30.622914903151916,
+            36.84891943033562
           ],
-          "p95FrameMs": 33.40000000000009,
+          "p95FrameMs": 33.400000000000546,
           "p95FrameMsRange": [
-            33.40000000000009,
-            33.400000000000546
+            33.400000000000546,
+            50
           ],
-          "meanUpdateMs": 21.08627451167387,
+          "meanUpdateMs": 22.624113475150885,
           "meanUpdateMsRange": [
-            21.07792208101842,
-            21.241830066917768
+            21.976351351225496,
+            26.472357723468203
           ],
-          "missedSlotPercent": 35.833333333333336,
+          "missedSlotPercent": 41.00418410041841,
           "missedSlotPercentRange": [
-            35.56485355648535,
-            36.51452282157676
+            38.589211618257266,
+            48.96265560165975
           ]
         }
+      },
+      "comparison": {
+        "percentHigherFPS": 118.72564109001237,
+        "pairedPercentHigherFPS": [
+          128.45434417110425,
+          116.27850623300402,
+          126.74557391617442,
+          96.73741071328178,
+          116.31265077151656
+        ],
+        "allPairedTrialsExceed30": true
       }
     },
     {
@@ -762,73 +784,73 @@
       ],
       "trials": [
         {
-          "frames": 176,
-          "elapsedMs": 4016.5,
-          "fps": 43.819245611851116,
-          "p95FrameMs": 33.40000000000009,
-          "medianFrameMs": 16.700000000000273,
-          "meanUpdateMs": 0.1840909096327695,
-          "p95UpdateMs": 0.30000001192092896,
-          "missedSlots": 65,
-          "missedSlotPercent": 26.970954356846473,
-          "settings": {
-            "count": 24,
-            "renderer": "svg",
-            "workload": "move",
-            "backdrop": "city"
-          },
-          "viewport": {
-            "width": 1000,
-            "height": 560
-          },
-          "mapScale": 2,
-          "build": "previous",
-          "engine": "blink",
-          "refreshMs": 16.699999999999932,
-          "visibility": "visible",
-          "durationMs": 4000,
-          "warmupMs": 1000,
-          "trial": 0
-        },
-        {
-          "frames": 175,
-          "elapsedMs": 3999.7999999999997,
-          "fps": 43.75218760938047,
-          "p95FrameMs": 33.40000000000009,
-          "medianFrameMs": 16.700000000000273,
-          "meanUpdateMs": 0.19142857108797345,
-          "p95UpdateMs": 0.30000001192092896,
-          "missedSlots": 65,
-          "missedSlotPercent": 27.083333333333332,
-          "settings": {
-            "count": 24,
-            "renderer": "svg",
-            "workload": "move",
-            "backdrop": "city"
-          },
-          "viewport": {
-            "width": 1000,
-            "height": 560
-          },
-          "mapScale": 2,
-          "build": "current",
-          "engine": "blink",
-          "refreshMs": 16.699999999999932,
-          "visibility": "visible",
-          "durationMs": 4000,
-          "warmupMs": 1000,
-          "trial": 0
-        },
-        {
-          "frames": 177,
-          "elapsedMs": 4016.3999999999996,
-          "fps": 44.06931580519869,
+          "frames": 186,
+          "elapsedMs": 4033.1,
+          "fps": 46.11837048424289,
           "p95FrameMs": 33.40000000000009,
           "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 0.18644067695585348,
-          "p95UpdateMs": 0.30000001192092896,
-          "missedSlots": 64,
-          "missedSlotPercent": 26.556016597510375,
+          "meanUpdateMs": 0.1854838709477135,
+          "p95UpdateMs": 0.30000000074505806,
+          "missedSlots": 56,
+          "missedSlotPercent": 23.140495867768596,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 0
+        },
+        {
+          "frames": 183,
+          "elapsedMs": 4016.4000000000005,
+          "fps": 45.56319091723931,
+          "p95FrameMs": 33.399999999999636,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 0.19726775948955713,
+          "p95UpdateMs": 0.30000000074505806,
+          "missedSlots": 58,
+          "missedSlotPercent": 24.066390041493776,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 0
+        },
+        {
+          "frames": 185,
+          "elapsedMs": 4016.4,
+          "fps": 46.06114928791953,
+          "p95FrameMs": 33.40000000000009,
+          "medianFrameMs": 16.700000000000273,
+          "meanUpdateMs": 0.18216216216820316,
+          "p95UpdateMs": 0.30000000074505806,
+          "missedSlots": 56,
+          "missedSlotPercent": 23.236514522821576,
           "settings": {
             "count": 24,
             "renderer": "svg",
@@ -849,15 +871,15 @@
           "trial": 1
         },
         {
-          "frames": 177,
-          "elapsedMs": 4033.1000000000004,
-          "fps": 43.886836428553714,
-          "p95FrameMs": 33.399999999999864,
-          "medianFrameMs": 16.700000000000273,
-          "meanUpdateMs": 0.17740112980880307,
-          "p95UpdateMs": 0.30000001192092896,
-          "missedSlots": 65,
-          "missedSlotPercent": 26.859504132231404,
+          "frames": 183,
+          "elapsedMs": 3983.1000000000004,
+          "fps": 45.94411388114784,
+          "p95FrameMs": 33.40000000000009,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 0.19890710391877778,
+          "p95UpdateMs": 0.30000000074505806,
+          "missedSlots": 56,
+          "missedSlotPercent": 23.430962343096233,
           "settings": {
             "count": 24,
             "renderer": "svg",
@@ -876,46 +898,46 @@
           "durationMs": 4000,
           "warmupMs": 1000,
           "trial": 1
-        },
-        {
-          "frames": 176,
-          "elapsedMs": 3999.9,
-          "fps": 44.001100027500684,
-          "p95FrameMs": 33.40000000000009,
-          "medianFrameMs": 16.700000000000273,
-          "meanUpdateMs": 0.18522726913744753,
-          "p95UpdateMs": 0.30000001192092896,
-          "missedSlots": 64,
-          "missedSlotPercent": 26.666666666666668,
-          "settings": {
-            "count": 24,
-            "renderer": "svg",
-            "workload": "move",
-            "backdrop": "city"
-          },
-          "viewport": {
-            "width": 1000,
-            "height": 560
-          },
-          "mapScale": 2,
-          "build": "previous",
-          "engine": "blink",
-          "refreshMs": 16.699999999999932,
-          "visibility": "visible",
-          "durationMs": 4000,
-          "warmupMs": 1000,
-          "trial": 2
         },
         {
           "frames": 178,
-          "elapsedMs": 4016.3999999999996,
-          "fps": 44.318294990538796,
+          "elapsedMs": 3999.8,
+          "fps": 44.50222511125556,
           "p95FrameMs": 33.40000000000009,
           "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 0.19606741626610916,
-          "p95UpdateMs": 0.30000001192092896,
-          "missedSlots": 63,
-          "missedSlotPercent": 26.141078838174277,
+          "meanUpdateMs": 0.22191011232815766,
+          "p95UpdateMs": 0.30000000074505806,
+          "missedSlots": 62,
+          "missedSlotPercent": 25.833333333333336,
+          "settings": {
+            "count": 24,
+            "renderer": "svg",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 2
+        },
+        {
+          "frames": 186,
+          "elapsedMs": 4033.0999999999995,
+          "fps": 46.118370484242895,
+          "p95FrameMs": 33.40000000000009,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 0.1865591399011112,
+          "p95UpdateMs": 0.30000000074505806,
+          "missedSlots": 56,
+          "missedSlotPercent": 23.140495867768596,
           "settings": {
             "count": 24,
             "renderer": "svg",
@@ -936,15 +958,15 @@
           "trial": 2
         },
         {
-          "frames": 176,
-          "elapsedMs": 4016.6,
-          "fps": 43.8181546581686,
+          "frames": 181,
+          "elapsedMs": 3999.7999999999997,
+          "fps": 45.25226261313066,
           "p95FrameMs": 33.40000000000009,
-          "medianFrameMs": 16.700000000000045,
-          "meanUpdateMs": 0.18579545684836127,
-          "p95UpdateMs": 0.30000001192092896,
-          "missedSlots": 65,
-          "missedSlotPercent": 26.970954356846473,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 0.1911602210747438,
+          "p95UpdateMs": 0.30000000074505806,
+          "missedSlots": 59,
+          "missedSlotPercent": 24.583333333333332,
           "settings": {
             "count": 24,
             "renderer": "svg",
@@ -965,15 +987,15 @@
           "trial": 3
         },
         {
-          "frames": 175,
-          "elapsedMs": 4016.5000000000005,
-          "fps": 43.57027262542014,
+          "frames": 172,
+          "elapsedMs": 3999.9,
+          "fps": 43.00107502687567,
           "p95FrameMs": 33.40000000000009,
           "medianFrameMs": 16.700000000000273,
-          "meanUpdateMs": 0.17371428421565466,
-          "p95UpdateMs": 0.30000001192092896,
-          "missedSlots": 66,
-          "missedSlotPercent": 27.385892116182575,
+          "meanUpdateMs": 0.23430232566153242,
+          "p95UpdateMs": 0.30000000074505806,
+          "missedSlots": 68,
+          "missedSlotPercent": 28.333333333333332,
           "settings": {
             "count": 24,
             "renderer": "svg",
@@ -994,15 +1016,15 @@
           "trial": 3
         },
         {
-          "frames": 176,
-          "elapsedMs": 4033.1000000000004,
-          "fps": 43.6388882001438,
-          "p95FrameMs": 33.40000000000009,
-          "medianFrameMs": 16.700000000000273,
-          "meanUpdateMs": 0.19659090888771144,
-          "p95UpdateMs": 0.30000001192092896,
-          "missedSlots": 66,
-          "missedSlotPercent": 27.27272727272727,
+          "frames": 184,
+          "elapsedMs": 3999.9,
+          "fps": 46.001150028750715,
+          "p95FrameMs": 33.399999999999636,
+          "medianFrameMs": 16.700000000000045,
+          "meanUpdateMs": 0.1961956521820115,
+          "p95UpdateMs": 0.30000000074505806,
+          "missedSlots": 56,
+          "missedSlotPercent": 23.333333333333332,
           "settings": {
             "count": 24,
             "renderer": "svg",
@@ -1023,15 +1045,15 @@
           "trial": 4
         },
         {
-          "frames": 176,
-          "elapsedMs": 4016.5,
-          "fps": 43.819245611851116,
-          "p95FrameMs": 33.40000000000009,
-          "medianFrameMs": 16.700000000000273,
-          "meanUpdateMs": 0.18636363846334544,
-          "p95UpdateMs": 0.30000001192092896,
-          "missedSlots": 65,
-          "missedSlotPercent": 26.970954356846473,
+          "frames": 184,
+          "elapsedMs": 4016.4999999999995,
+          "fps": 45.8110295032989,
+          "p95FrameMs": 33.399999999999636,
+          "medianFrameMs": 16.700000000000045,
+          "meanUpdateMs": 0.19456521734473822,
+          "p95UpdateMs": 0.30000000074505806,
+          "missedSlots": 57,
+          "missedSlotPercent": 23.651452282157674,
           "settings": {
             "count": 24,
             "renderer": "svg",
@@ -1054,49 +1076,60 @@
       ],
       "summary": {
         "previous": {
-          "fps": 43.819245611851116,
+          "fps": 45.94411388114784,
           "fpsRange": [
-            43.57027262542014,
-            44.001100027500684
+            43.00107502687567,
+            46.11837048424289
           ],
           "p95FrameMs": 33.40000000000009,
           "p95FrameMsRange": [
-            33.399999999999864,
+            33.399999999999636,
             33.40000000000009
           ],
-          "meanUpdateMs": 0.1840909096327695,
+          "meanUpdateMs": 0.19890710391877778,
           "meanUpdateMsRange": [
-            0.17371428421565466,
-            0.19659090888771144
+            0.1854838709477135,
+            0.23430232566153242
           ],
-          "missedSlotPercent": 26.970954356846473,
+          "missedSlotPercent": 23.430962343096233,
           "missedSlotPercentRange": [
-            26.666666666666668,
-            27.385892116182575
+            23.140495867768596,
+            28.333333333333332
           ]
         },
         "current": {
-          "fps": 43.819245611851116,
+          "fps": 45.8110295032989,
           "fpsRange": [
-            43.75218760938047,
-            44.318294990538796
+            45.25226261313066,
+            46.118370484242895
           ],
           "p95FrameMs": 33.40000000000009,
           "p95FrameMsRange": [
-            33.40000000000009,
+            33.399999999999636,
             33.40000000000009
           ],
-          "meanUpdateMs": 0.18644067695585348,
+          "meanUpdateMs": 0.1911602210747438,
           "meanUpdateMsRange": [
-            0.18579545684836127,
-            0.19606741626610916
+            0.18216216216820316,
+            0.19726775948955713
           ],
-          "missedSlotPercent": 26.970954356846473,
+          "missedSlotPercent": 23.651452282157674,
           "missedSlotPercentRange": [
-            26.141078838174277,
-            27.083333333333332
+            23.140495867768596,
+            24.583333333333332
           ]
         }
+      },
+      "comparison": {
+        "percentHigherFPS": -0.2896657843771244,
+        "pairedPercentHigherFPS": [
+          -1.2038143611194263,
+          0.25473427798485826,
+          3.631605765659973,
+          5.235189085035663,
+          -0.4132951574753907
+        ],
+        "allPairedTrialsExceed30": false
       }
     },
     {
@@ -1113,12 +1146,12 @@
       "trials": [
         {
           "frames": 240,
-          "elapsedMs": 3999.8,
-          "fps": 60.003000150007495,
+          "elapsedMs": 3999.9,
+          "fps": 60.00150003750094,
           "p95FrameMs": 16.700000000000728,
           "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 6.592083330949148,
-          "p95UpdateMs": 6.800000011920929,
+          "meanUpdateMs": 7.0641666667380685,
+          "p95UpdateMs": 7.5,
           "missedSlots": 0,
           "missedSlotPercent": 0,
           "settings": {
@@ -1133,35 +1166,6 @@
           },
           "mapScale": 2,
           "build": "previous",
-          "engine": "blink",
-          "refreshMs": 16.699999999999932,
-          "visibility": "visible",
-          "durationMs": 4000,
-          "warmupMs": 1000,
-          "trial": 0
-        },
-        {
-          "frames": 241,
-          "elapsedMs": 4016.3999999999996,
-          "fps": 60.003983666965446,
-          "p95FrameMs": 16.700000000000728,
-          "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 6.666804980934903,
-          "p95UpdateMs": 7,
-          "missedSlots": 0,
-          "missedSlotPercent": 0,
-          "settings": {
-            "count": 24,
-            "renderer": "webgl",
-            "workload": "reshape",
-            "backdrop": "city"
-          },
-          "viewport": {
-            "width": 1000,
-            "height": 560
-          },
-          "mapScale": 2,
-          "build": "current",
           "engine": "blink",
           "refreshMs": 16.699999999999932,
           "visibility": "visible",
@@ -1173,10 +1177,10 @@
           "frames": 240,
           "elapsedMs": 3999.9,
           "fps": 60.00150003750094,
-          "p95FrameMs": 16.700000000000728,
+          "p95FrameMs": 16.799999999999955,
           "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 6.57624999905626,
-          "p95UpdateMs": 6.900000035762787,
+          "meanUpdateMs": 6.930416666607683,
+          "p95UpdateMs": 7.300000000745058,
           "missedSlots": 0,
           "missedSlotPercent": 0,
           "settings": {
@@ -1196,65 +1200,7 @@
           "visibility": "visible",
           "durationMs": 4000,
           "warmupMs": 1000,
-          "trial": 1
-        },
-        {
-          "frames": 241,
-          "elapsedMs": 4016.5,
-          "fps": 60.00248972986431,
-          "p95FrameMs": 16.700000000000728,
-          "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 6.408298757808337,
-          "p95UpdateMs": 6.800000011920929,
-          "missedSlots": 0,
-          "missedSlotPercent": 0,
-          "settings": {
-            "count": 24,
-            "renderer": "webgl",
-            "workload": "reshape",
-            "backdrop": "city"
-          },
-          "viewport": {
-            "width": 1000,
-            "height": 560
-          },
-          "mapScale": 2,
-          "build": "previous",
-          "engine": "blink",
-          "refreshMs": 16.699999999999932,
-          "visibility": "visible",
-          "durationMs": 4000,
-          "warmupMs": 1000,
-          "trial": 1
-        },
-        {
-          "frames": 241,
-          "elapsedMs": 4016.3999999999996,
-          "fps": 60.003983666965446,
-          "p95FrameMs": 16.700000000000728,
-          "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 6.67842323503059,
-          "p95UpdateMs": 7.099999964237213,
-          "missedSlots": 0,
-          "missedSlotPercent": 0,
-          "settings": {
-            "count": 24,
-            "renderer": "webgl",
-            "workload": "reshape",
-            "backdrop": "city"
-          },
-          "viewport": {
-            "width": 1000,
-            "height": 560
-          },
-          "mapScale": 2,
-          "build": "previous",
-          "engine": "blink",
-          "refreshMs": 16.699999999999932,
-          "visibility": "visible",
-          "durationMs": 4000,
-          "warmupMs": 1000,
-          "trial": 2
+          "trial": 0
         },
         {
           "frames": 241,
@@ -1262,8 +1208,95 @@
           "fps": 60.00398366696544,
           "p95FrameMs": 16.700000000000728,
           "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 6.5431535286032805,
-          "p95UpdateMs": 6.899999976158142,
+          "meanUpdateMs": 7.447302904528763,
+          "p95UpdateMs": 11.099999999627471,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 1
+        },
+        {
+          "frames": 240,
+          "elapsedMs": 3999.9000000000005,
+          "fps": 60.00150003750093,
+          "p95FrameMs": 16.700000000000273,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 6.820416666707024,
+          "p95UpdateMs": 7.400000000372529,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 1
+        },
+        {
+          "frames": 240,
+          "elapsedMs": 3999.7999999999997,
+          "fps": 60.0030001500075,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 7.102500000045014,
+          "p95UpdateMs": 7.5,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "reshape",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "previous",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 2
+        },
+        {
+          "frames": 240,
+          "elapsedMs": 3999.7999999999997,
+          "fps": 60.0030001500075,
+          "p95FrameMs": 16.799999999999272,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 6.877083333216918,
+          "p95UpdateMs": 7.200000001117587,
           "missedSlots": 0,
           "missedSlotPercent": 0,
           "settings": {
@@ -1286,13 +1319,13 @@
           "trial": 2
         },
         {
-          "frames": 241,
-          "elapsedMs": 4016.4999999999995,
-          "fps": 60.002489729864315,
+          "frames": 240,
+          "elapsedMs": 3999.8999999999996,
+          "fps": 60.001500037500946,
           "p95FrameMs": 16.700000000000728,
           "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 6.480497925360668,
-          "p95UpdateMs": 6.900000035762787,
+          "meanUpdateMs": 6.977916666655801,
+          "p95UpdateMs": 7.5,
           "missedSlots": 0,
           "missedSlotPercent": 0,
           "settings": {
@@ -1315,15 +1348,15 @@
           "trial": 3
         },
         {
-          "frames": 239,
-          "elapsedMs": 4016.3999999999996,
-          "fps": 59.50602529628524,
+          "frames": 240,
+          "elapsedMs": 3999.8999999999996,
+          "fps": 60.001500037500946,
           "p95FrameMs": 16.799999999999727,
           "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 7.254393305987993,
-          "p95UpdateMs": 14.100000023841858,
-          "missedSlots": 2,
-          "missedSlotPercent": 0.8298755186721992,
+          "meanUpdateMs": 6.953750000024836,
+          "p95UpdateMs": 7.400000000372529,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
           "settings": {
             "count": 24,
             "renderer": "webgl",
@@ -1345,12 +1378,12 @@
         },
         {
           "frames": 240,
-          "elapsedMs": 3999.7999999999997,
-          "fps": 60.0030001500075,
+          "elapsedMs": 3999.9,
+          "fps": 60.00150003750094,
           "p95FrameMs": 16.700000000000728,
           "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 6.50333333214124,
-          "p95UpdateMs": 7,
+          "meanUpdateMs": 6.868750000023283,
+          "p95UpdateMs": 7.200000001117587,
           "missedSlots": 0,
           "missedSlotPercent": 0,
           "settings": {
@@ -1374,12 +1407,12 @@
         },
         {
           "frames": 240,
-          "elapsedMs": 3999.8999999999996,
-          "fps": 60.001500037500946,
-          "p95FrameMs": 16.800000000000182,
+          "elapsedMs": 3999.7000000000003,
+          "fps": 60.00450033752531,
+          "p95FrameMs": 16.700000000000728,
           "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 6.457083334525426,
-          "p95UpdateMs": 6.900000035762787,
+          "meanUpdateMs": 7.065833333344199,
+          "p95UpdateMs": 7.5,
           "missedSlots": 0,
           "missedSlotPercent": 0,
           "settings": {
@@ -1404,42 +1437,42 @@
       ],
       "summary": {
         "previous": {
-          "fps": 60.003000150007495,
+          "fps": 60.00150003750094,
           "fpsRange": [
-            59.50602529628524,
-            60.003983666965446
+            60.00150003750093,
+            60.0030001500075
           ],
           "p95FrameMs": 16.700000000000728,
           "p95FrameMsRange": [
-            16.700000000000728,
+            16.700000000000273,
             16.799999999999727
           ],
-          "meanUpdateMs": 6.592083330949148,
+          "meanUpdateMs": 6.953750000024836,
           "meanUpdateMsRange": [
-            6.408298757808337,
-            7.254393305987993
+            6.820416666707024,
+            7.102500000045014
           ],
           "missedSlotPercent": 0,
           "missedSlotPercentRange": [
             0,
-            0.8298755186721992
+            0
           ]
         },
         "current": {
-          "fps": 60.002489729864315,
+          "fps": 60.0030001500075,
           "fpsRange": [
             60.00150003750094,
-            60.003983666965446
+            60.00450033752531
           ],
           "p95FrameMs": 16.700000000000728,
           "p95FrameMsRange": [
             16.700000000000728,
-            16.800000000000182
+            16.799999999999955
           ],
-          "meanUpdateMs": 6.5431535286032805,
+          "meanUpdateMs": 6.977916666655801,
           "meanUpdateMsRange": [
-            6.457083334525426,
-            6.666804980934903
+            6.877083333216918,
+            7.447302904528763
           ],
           "missedSlotPercent": 0,
           "missedSlotPercentRange": [
@@ -1447,6 +1480,17 @@
             0
           ]
         }
+      },
+      "comparison": {
+        "percentHigherFPS": 0.0025001250062439695,
+        "pairedPercentHigherFPS": [
+          0,
+          0.004139278956283299,
+          0,
+          0,
+          0.005000375028108017
+        ],
+        "allPairedTrialsExceed30": false
       }
     },
     {
@@ -1462,13 +1506,13 @@
       ],
       "trials": [
         {
-          "frames": 240,
-          "elapsedMs": 3999.9,
-          "fps": 60.00150003750094,
-          "p95FrameMs": 16.700000000000728,
+          "frames": 241,
+          "elapsedMs": 4016.5,
+          "fps": 60.00248972986431,
+          "p95FrameMs": 16.799999999999272,
           "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 0.2745833354691664,
-          "p95UpdateMs": 0.5,
+          "meanUpdateMs": 0.2680497924522864,
+          "p95UpdateMs": 0.40000000037252903,
           "missedSlots": 0,
           "missedSlotPercent": 0,
           "settings": {
@@ -1492,12 +1536,12 @@
         },
         {
           "frames": 240,
-          "elapsedMs": 3999.9,
-          "fps": 60.00150003750094,
-          "p95FrameMs": 16.700000000000728,
+          "elapsedMs": 3999.8999999999996,
+          "fps": 60.001500037500946,
+          "p95FrameMs": 16.700000000000273,
           "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 0.2979166639347871,
-          "p95UpdateMs": 0.5,
+          "meanUpdateMs": 0.21833333329608043,
+          "p95UpdateMs": 0.40000000037252903,
           "missedSlots": 0,
           "missedSlotPercent": 0,
           "settings": {
@@ -1518,44 +1562,44 @@
           "durationMs": 4000,
           "warmupMs": 1000,
           "trial": 0
-        },
-        {
-          "frames": 241,
-          "elapsedMs": 4016.3999999999996,
-          "fps": 60.003983666965446,
-          "p95FrameMs": 16.700000000000728,
-          "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 0.2809128625264306,
-          "p95UpdateMs": 0.40000003576278687,
-          "missedSlots": 0,
-          "missedSlotPercent": 0,
-          "settings": {
-            "count": 24,
-            "renderer": "webgl",
-            "workload": "move",
-            "backdrop": "city"
-          },
-          "viewport": {
-            "width": 1000,
-            "height": 560
-          },
-          "mapScale": 2,
-          "build": "current",
-          "engine": "blink",
-          "refreshMs": 16.699999999999932,
-          "visibility": "visible",
-          "durationMs": 4000,
-          "warmupMs": 1000,
-          "trial": 1
         },
         {
           "frames": 240,
           "elapsedMs": 3999.7999999999997,
           "fps": 60.0030001500075,
-          "p95FrameMs": 16.799999999999727,
+          "p95FrameMs": 16.700000000000728,
           "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 0.28124999925494193,
-          "p95UpdateMs": 0.5,
+          "meanUpdateMs": 0.24666666670236737,
+          "p95UpdateMs": 0.40000000037252903,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "settings": {
+            "count": 24,
+            "renderer": "webgl",
+            "workload": "move",
+            "backdrop": "city"
+          },
+          "viewport": {
+            "width": 1000,
+            "height": 560
+          },
+          "mapScale": 2,
+          "build": "current",
+          "engine": "blink",
+          "refreshMs": 16.699999999999932,
+          "visibility": "visible",
+          "durationMs": 4000,
+          "warmupMs": 1000,
+          "trial": 1
+        },
+        {
+          "frames": 241,
+          "elapsedMs": 4016.5,
+          "fps": 60.00248972986431,
+          "p95FrameMs": 16.799999999999272,
+          "medianFrameMs": 16.699999999999818,
+          "meanUpdateMs": 0.24315352689212041,
+          "p95UpdateMs": 0.40000000037252903,
           "missedSlots": 0,
           "missedSlotPercent": 0,
           "settings": {
@@ -1579,11 +1623,11 @@
         },
         {
           "frames": 240,
-          "elapsedMs": 3999.9,
-          "fps": 60.00150003750094,
+          "elapsedMs": 3999.9000000000005,
+          "fps": 60.00150003750093,
           "p95FrameMs": 16.799999999999727,
           "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 0.28333333258827526,
+          "meanUpdateMs": 0.2983333333783473,
           "p95UpdateMs": 0.5,
           "missedSlots": 0,
           "missedSlotPercent": 0,
@@ -1612,8 +1656,8 @@
           "fps": 60.00248972986431,
           "p95FrameMs": 16.700000000000728,
           "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 0.27800829924983106,
-          "p95UpdateMs": 0.40000003576278687,
+          "meanUpdateMs": 0.2850622407071818,
+          "p95UpdateMs": 0.5,
           "missedSlots": 0,
           "missedSlotPercent": 0,
           "settings": {
@@ -1637,12 +1681,12 @@
         },
         {
           "frames": 240,
-          "elapsedMs": 3999.8000000000006,
-          "fps": 60.00300015000749,
+          "elapsedMs": 3999.9,
+          "fps": 60.00150003750094,
           "p95FrameMs": 16.700000000000728,
           "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 0.30541666597127914,
-          "p95UpdateMs": 0.5,
+          "meanUpdateMs": 0.2729166667365159,
+          "p95UpdateMs": 0.40000000037252903,
           "missedSlots": 0,
           "missedSlotPercent": 0,
           "settings": {
@@ -1666,12 +1710,12 @@
         },
         {
           "frames": 241,
-          "elapsedMs": 4016.4999999999995,
-          "fps": 60.002489729864315,
+          "elapsedMs": 4016.4,
+          "fps": 60.00398366696544,
           "p95FrameMs": 16.700000000000728,
           "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 0.2850622403671138,
-          "p95UpdateMs": 0.5,
+          "meanUpdateMs": 0.1435684647364735,
+          "p95UpdateMs": 0.30000000074505806,
           "missedSlots": 0,
           "missedSlotPercent": 0,
           "settings": {
@@ -1694,13 +1738,13 @@
           "trial": 3
         },
         {
-          "frames": 241,
-          "elapsedMs": 4016.4999999999995,
-          "fps": 60.002489729864315,
+          "frames": 240,
+          "elapsedMs": 3999.8999999999996,
+          "fps": 60.001500037500946,
           "p95FrameMs": 16.700000000000728,
           "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 0.2726141100602526,
-          "p95UpdateMs": 0.40000003576278687,
+          "meanUpdateMs": 0.1779166666402792,
+          "p95UpdateMs": 0.40000000037252903,
           "missedSlots": 0,
           "missedSlotPercent": 0,
           "settings": {
@@ -1724,12 +1768,12 @@
         },
         {
           "frames": 241,
-          "elapsedMs": 4016.5,
-          "fps": 60.00248972986431,
-          "p95FrameMs": 16.799999999999272,
+          "elapsedMs": 4016.4,
+          "fps": 60.00398366696544,
+          "p95FrameMs": 16.700000000000728,
           "medianFrameMs": 16.699999999999818,
-          "meanUpdateMs": 0.2647302922371512,
-          "p95UpdateMs": 0.40000003576278687,
+          "meanUpdateMs": 0.16680497928866458,
+          "p95UpdateMs": 0.30000000074505806,
           "missedSlots": 0,
           "missedSlotPercent": 0,
           "settings": {
@@ -1754,20 +1798,20 @@
       ],
       "summary": {
         "previous": {
-          "fps": 60.002489729864315,
+          "fps": 60.00248972986431,
           "fpsRange": [
-            60.00150003750094,
-            60.0030001500075
+            60.00150003750093,
+            60.00398366696544
           ],
-          "p95FrameMs": 16.700000000000728,
+          "p95FrameMs": 16.799999999999272,
           "p95FrameMsRange": [
             16.700000000000728,
             16.799999999999727
           ],
-          "meanUpdateMs": 0.28124999925494193,
+          "meanUpdateMs": 0.24315352689212041,
           "meanUpdateMsRange": [
-            0.2726141100602526,
-            0.2850622403671138
+            0.1435684647364735,
+            0.2983333333783473
           ],
           "missedSlotPercent": 0,
           "missedSlotPercentRange": [
@@ -1779,17 +1823,17 @@
           "fps": 60.00248972986431,
           "fpsRange": [
             60.00150003750094,
-            60.003983666965446
+            60.00398366696544
           ],
           "p95FrameMs": 16.700000000000728,
           "p95FrameMsRange": [
-            16.700000000000728,
-            16.799999999999272
+            16.700000000000273,
+            16.700000000000728
           ],
-          "meanUpdateMs": 0.2809128625264306,
+          "meanUpdateMs": 0.24666666670236737,
           "meanUpdateMsRange": [
-            0.2647302922371512,
-            0.30541666597127914
+            0.16680497928866458,
+            0.2850622407071818
           ],
           "missedSlotPercent": 0,
           "missedSlotPercentRange": [
@@ -1797,507 +1841,39 @@
             0
           ]
         }
+      },
+      "comparison": {
+        "percentHigherFPS": 0,
+        "pairedPercentHigherFPS": [
+          -0.0016494188288196376,
+          0.0008506649398887234,
+          0.0016494460351124118,
+          -0.004139107627065819,
+          0.004139278956261094
+        ],
+        "allPairedTrialsExceed30": false
       }
     }
   ],
   "refreshMs": 16.699999999999932,
-  "retainedData": "All 50 trial aggregates retained; per-frame and idle interval arrays omitted. Full traces can be regenerated with the runner.",
-  "validation": {
-    "encoding": {
-      "maps": 640,
-      "changedMaps": 436,
-      "changedBytes": 7699,
-      "maxDelta": 1,
-      "changedOpaqueBytes": 0,
-      "changedAlphaBytes": 0,
-      "samples": [
-        {
-          "options": {
-            "width": 640,
-            "height": 360,
-            "radius": 32
-          },
-          "scale": 0.75,
-          "changed": 26,
-          "maxDelta": 1,
-          "opaque": 0,
-          "alpha": 0
-        },
-        {
-          "options": {
-            "width": 640,
-            "height": 360,
-            "radius": 32
-          },
-          "scale": 1,
-          "changed": 12,
-          "maxDelta": 1,
-          "opaque": 0,
-          "alpha": 0
-        },
-        {
-          "options": {
-            "width": 640,
-            "height": 360,
-            "radius": 32
-          },
-          "scale": 1.25,
-          "changed": 20,
-          "maxDelta": 1,
-          "opaque": 0,
-          "alpha": 0
-        },
-        {
-          "options": {
-            "width": 640,
-            "height": 360,
-            "radius": 32
-          },
-          "scale": 2,
-          "changed": 7,
-          "maxDelta": 1,
-          "opaque": 0,
-          "alpha": 0
-        },
-        {
-          "options": {
-            "width": 640,
-            "height": 360,
-            "radius": 32
-          },
-          "scale": 2.5,
-          "changed": 11,
-          "maxDelta": 1,
-          "opaque": 0,
-          "alpha": 0
-        },
-        {
-          "options": {
-            "width": 103.4999999,
-            "height": 39.5000001,
-            "radius": null
-          },
-          "scale": 1,
-          "changed": 9,
-          "maxDelta": 1,
-          "opaque": 0,
-          "alpha": 0
-        },
-        {
-          "options": {
-            "width": 103.4999999,
-            "height": 39.5000001,
-            "radius": null
-          },
-          "scale": 1.25,
-          "changed": 22,
-          "maxDelta": 1,
-          "opaque": 0,
-          "alpha": 0
-        },
-        {
-          "options": {
-            "width": 103.4999999,
-            "height": 39.5000001,
-            "radius": null
-          },
-          "scale": 2,
-          "changed": 3,
-          "maxDelta": 1,
-          "opaque": 0,
-          "alpha": 0
-        },
-        {
-          "options": {
-            "width": 103.4999999,
-            "height": 39.5000001,
-            "radius": null
-          },
-          "scale": 2.5,
-          "changed": 15,
-          "maxDelta": 1,
-          "opaque": 0,
-          "alpha": 0
-        },
-        {
-          "options": {
-            "lightAngle": null
-          },
-          "scale": 0.75,
-          "changed": 20,
-          "maxDelta": 1,
-          "opaque": 0,
-          "alpha": 0
-        }
-      ]
-    },
-    "renderedStress": [
-      {
-        "name": "fractional",
-        "state": 0,
-        "difference": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "beforeRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "afterRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        }
-      },
-      {
-        "name": "fractional",
-        "state": 0.5,
-        "difference": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "beforeRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "afterRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        }
-      },
-      {
-        "name": "fractional",
-        "state": 1,
-        "difference": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "beforeRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "afterRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        }
-      },
-      {
-        "name": "high-refraction",
-        "state": 0,
-        "difference": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "beforeRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "afterRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        }
-      },
-      {
-        "name": "high-refraction",
-        "state": 0.5,
-        "difference": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "beforeRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "afterRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        }
-      },
-      {
-        "name": "high-refraction",
-        "state": 1,
-        "difference": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "beforeRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "afterRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        }
-      },
-      {
-        "name": "transparent",
-        "state": 0,
-        "difference": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "beforeRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "afterRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        }
-      },
-      {
-        "name": "transparent",
-        "state": 0.5,
-        "difference": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "beforeRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "afterRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        }
-      },
-      {
-        "name": "transparent",
-        "state": 1,
-        "difference": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "beforeRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "afterRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        }
-      },
-      {
-        "name": "panel",
-        "state": 0,
-        "difference": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "beforeRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "afterRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        }
-      },
-      {
-        "name": "panel",
-        "state": 0.5,
-        "difference": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "beforeRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "afterRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        }
-      },
-      {
-        "name": "panel",
-        "state": 1,
-        "difference": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "beforeRepeat": {
-          "pixels": 5,
-          "maxChannelDelta": 7,
-          "totalPixels": 864000
-        },
-        "afterRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        }
-      },
-      {
-        "name": "unclipped",
-        "state": 0,
-        "difference": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "beforeRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "afterRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        }
-      },
-      {
-        "name": "unclipped",
-        "state": 0.5,
-        "difference": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "beforeRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "afterRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        }
-      },
-      {
-        "name": "unclipped",
-        "state": 1,
-        "difference": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "beforeRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        },
-        "afterRepeat": {
-          "pixels": 0,
-          "maxChannelDelta": 0,
-          "totalPixels": 864000
-        }
-      }
-    ],
-    "freshness": [
-      {
-        "build": "previous",
-        "count": 12,
-        "requested": 1584,
-        "completed": 1584,
-        "maxPending": 19,
-        "pendingAtEnd": 7,
-        "pendingAfter250ms": 0,
-        "publicationCount": 1295,
-        "publicationAgeP50Ms": 39.5,
-        "publicationAgeP95Ms": 50.69999998807907,
-        "publicationAgeMaxMs": 58.19999998807907,
-        "encodeP50Ms": 1.0999999642372131,
-        "decodeP95Ms": 50.299999952316284,
-        "note": "Separate instrumented freshness run; DOM publication age starts before PNG serialization; no physical presentation claim"
-      },
-      {
-        "build": "current",
-        "count": 12,
-        "requested": 3600,
-        "completed": 3600,
-        "maxPending": 20,
-        "pendingAtEnd": 0,
-        "pendingAfter250ms": 0,
-        "publicationCount": 2904,
-        "publicationAgeP50Ms": 8,
-        "publicationAgeP95Ms": 12.699999988079071,
-        "publicationAgeMaxMs": 22.19999998807907,
-        "encodeP50Ms": 0.5,
-        "decodeP95Ms": 12.5,
-        "note": "Separate instrumented freshness run; DOM publication age starts before PNG serialization; no physical presentation claim"
-      },
-      {
-        "build": "previous",
-        "count": 24,
-        "requested": 1896,
-        "completed": 1896,
-        "maxPending": 38,
-        "pendingAtEnd": 12,
-        "pendingAfter250ms": 0,
-        "publicationCount": 1535,
-        "publicationAgeP50Ms": 61.10000002384186,
-        "publicationAgeP95Ms": 84.89999997615814,
-        "publicationAgeMaxMs": 101.29999995231628,
-        "encodeP50Ms": 1,
-        "decodeP95Ms": 83.5,
-        "note": "Separate instrumented freshness run; DOM publication age starts before PNG serialization; no physical presentation claim"
-      },
-      {
-        "build": "current",
-        "count": 24,
-        "requested": 4560,
-        "completed": 4560,
-        "maxPending": 38,
-        "pendingAtEnd": 12,
-        "pendingAfter250ms": 0,
-        "publicationCount": 3719,
-        "publicationAgeP50Ms": 26.600000023841858,
-        "publicationAgeP95Ms": 40,
-        "publicationAgeMaxMs": 45.5,
-        "encodeP50Ms": 0.40000003576278687,
-        "decodeP95Ms": 39.89999997615814,
-        "note": "Separate instrumented freshness run; DOM publication age starts before PNG serialization; no physical presentation claim"
-      }
-    ],
-    "regressions": {
-      "publicExactMaps": 205,
-      "mapCacheChecks": 7,
-      "cachedEncodingMaps": 18,
-      "selectedFilterLifecycleTests": 4,
-      "menuAndSegmentedTests": 26,
-      "webglAssertions": 189,
-      "coreComponentAssertions": 1486
-    },
-    "limits": [
-      "Native WebKit animation callbacks unavailable in the earlier full helper checks",
-      "Firefox and physical iPhone FPS not measured",
-      "Rendering captures do not establish every intermediate frame",
-      "PNG edge RGB may differ by one value while alpha and opaque pixels remain exact"
-    ]
+  "candidateCommit": "d57e933f8dbb7abb45d3116d68f6ecc411c0c130",
+  "scope": {
+    "engineWorkloads": true,
+    "componentRendering": false
+  },
+  "baselineReconstruction": {
+    "revision": "01e3c607ea965b5e0079814e599e605423cb1440",
+    "patch": "docs/performance/fps-baseline.patch",
+    "patchSHA256": "2bd303a34d325dcb58dd46cff9ba2882a3441bdcc74816d62b6d6fb6c8987697",
+    "matchedRecordedBaselineHashes": true
+  },
+  "retainedData": {
+    "description": "All paired trial aggregates, medians, ranges and source identities are retained. Per-frame and idle-calibration arrays are omitted.",
+    "trialCount": 50,
+    "originalArtifactSHA256": "55f0af489f55f7af5b70baf2706c49254ba28abcd1679daf910dae0fc589172a"
+  },
+  "priorValidation": {
+    "date": "2026-11-12",
+    "url": "https://github.com/tfdmendes/liquidglass/blob/d57e933f8dbb7abb45d3116d68f6ecc411c0c130/docs/performance/fps-cpu-canvas-results.json"
   }
 }

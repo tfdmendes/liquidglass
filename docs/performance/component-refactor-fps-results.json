@@ -1,0 +1,713 @@
+{
+  "date": "2026-11-14T18:05:25.197Z",
+  "environment": {
+    "browser": "157.0.8103.79",
+    "headless": true,
+    "cpu": "Apple M2",
+    "platform": "darwin",
+    "release": "27.2.0",
+    "arch": "arm64"
+  },
+  "method": "Five alternating paired trials per workload, with a fresh page at 1280 x 800 CSS pixels and DPR 2. Each trial has 45 idle rAF calibration frames, 1000 ms warmup and 4000 ms sampling. Menus open, switch or close every 180 ms. Navbar and segmented replays begin with a trusted mouse press on the selected capsule, then dispatch pointermove through the component event handler along a 1.1-second cosine path across the row. FPS measures rAF cadence. Synthetic replay does not measure physical touch or display presentation. Both variants use identical optimized engines and differ in the component module.",
+  "fixtureSHA256": "7e958737076603a4bf487c8b7493eee6593fcad0d84076e75b589728dd573ca5",
+  "sources": {
+    "previous": {
+      "revision": "db71502d95f87ffe97c349ff1cebfc08915ed896",
+      "sha256": {
+        "components.js": "5d06a1d1caac78ce575e64e822446501d009f925c0ffb8832981641245ffe029",
+        "liquid-glass.js": "3ed61b63b13c22545656728f84c4d52d11b6104ea95ad31182e453b1e2768220"
+      }
+    },
+    "current": {
+      "revision": "d57e933f8dbb7abb45d3116d68f6ecc411c0c130",
+      "sha256": {
+        "components.js": "594781902eb91842dda1bba5db7f46824e9d3f5962bc1aafffdf743ccf58f3ea",
+        "liquid-glass.js": "3ed61b63b13c22545656728f84c4d52d11b6104ea95ad31182e453b1e2768220"
+      }
+    }
+  },
+  "configurations": [
+    {
+      "workload": "menu-open",
+      "trials": [
+        {
+          "build": "previous",
+          "trial": 0,
+          "frames": 240,
+          "elapsedMs": 3999.8,
+          "fps": 60.003000150007495,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 28,
+          "movementSpan": null,
+          "committedIndex": null,
+          "calibration": {
+            "refreshMs": 16.699999999999932
+          },
+          "errors": []
+        },
+        {
+          "build": "current",
+          "trial": 0,
+          "frames": 240,
+          "elapsedMs": 3999.7999999999997,
+          "fps": 60.0030001500075,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 28,
+          "movementSpan": null,
+          "committedIndex": null,
+          "calibration": {
+            "refreshMs": 16.699999999999818
+          },
+          "errors": []
+        },
+        {
+          "build": "current",
+          "trial": 1,
+          "frames": 241,
+          "elapsedMs": 4016.5,
+          "fps": 60.00248972986431,
+          "p95FrameMs": 16.799999999999272,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 28,
+          "movementSpan": null,
+          "committedIndex": null,
+          "calibration": {
+            "refreshMs": 16.699999999999932
+          },
+          "errors": []
+        },
+        {
+          "build": "previous",
+          "trial": 1,
+          "frames": 241,
+          "elapsedMs": 4016.5,
+          "fps": 60.00248972986431,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 28,
+          "movementSpan": null,
+          "committedIndex": null,
+          "calibration": {
+            "refreshMs": 16.699999999999932
+          },
+          "errors": []
+        },
+        {
+          "build": "previous",
+          "trial": 2,
+          "frames": 241,
+          "elapsedMs": 4016.3999999999996,
+          "fps": 60.003983666965446,
+          "p95FrameMs": 16.800000000000182,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 28,
+          "movementSpan": null,
+          "committedIndex": null,
+          "calibration": {
+            "refreshMs": 16.699999999999932
+          },
+          "errors": []
+        },
+        {
+          "build": "current",
+          "trial": 2,
+          "frames": 241,
+          "elapsedMs": 4016.5,
+          "fps": 60.00248972986431,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 28,
+          "movementSpan": null,
+          "committedIndex": null,
+          "calibration": {
+            "refreshMs": 16.700000000000045
+          },
+          "errors": []
+        },
+        {
+          "build": "current",
+          "trial": 3,
+          "frames": 241,
+          "elapsedMs": 4016.5,
+          "fps": 60.00248972986431,
+          "p95FrameMs": 16.799999999999727,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 28,
+          "movementSpan": null,
+          "committedIndex": null,
+          "calibration": {
+            "refreshMs": 16.699999999999818
+          },
+          "errors": []
+        },
+        {
+          "build": "previous",
+          "trial": 3,
+          "frames": 240,
+          "elapsedMs": 3999.7999999999997,
+          "fps": 60.0030001500075,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 28,
+          "movementSpan": null,
+          "committedIndex": null,
+          "calibration": {
+            "refreshMs": 16.699999999999932
+          },
+          "errors": []
+        },
+        {
+          "build": "previous",
+          "trial": 4,
+          "frames": 240,
+          "elapsedMs": 3999.9,
+          "fps": 60.00150003750094,
+          "p95FrameMs": 16.799999999999272,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 28,
+          "movementSpan": null,
+          "committedIndex": null,
+          "calibration": {
+            "refreshMs": 16.700000000000045
+          },
+          "errors": []
+        },
+        {
+          "build": "current",
+          "trial": 4,
+          "frames": 240,
+          "elapsedMs": 3999.7000000000003,
+          "fps": 60.00450033752531,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 28,
+          "movementSpan": null,
+          "committedIndex": null,
+          "calibration": {
+            "refreshMs": 16.699999999999818
+          },
+          "errors": []
+        }
+      ],
+      "summary": {
+        "previous": {
+          "fps": 60.003000150007495,
+          "fpsRange": [
+            60.00150003750094,
+            60.003983666965446
+          ],
+          "p95FrameMs": 16.700000000000728,
+          "p95FrameMsRange": [
+            16.700000000000728,
+            16.800000000000182
+          ],
+          "missedSlotPercent": 0,
+          "missedSlotPercentRange": [
+            0,
+            0
+          ]
+        },
+        "current": {
+          "fps": 60.00248972986431,
+          "fpsRange": [
+            60.00248972986431,
+            60.00450033752531
+          ],
+          "p95FrameMs": 16.700000000000728,
+          "p95FrameMsRange": [
+            16.700000000000728,
+            16.799999999999727
+          ],
+          "missedSlotPercent": 0,
+          "missedSlotPercentRange": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "workload": "navbar-drag",
+      "trials": [
+        {
+          "build": "previous",
+          "trial": 0,
+          "frames": 241,
+          "elapsedMs": 4016.6,
+          "fps": 60.000995867151325,
+          "p95FrameMs": 16.799999999999727,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 302,
+          "movementSpan": 339.015625,
+          "committedIndex": 0,
+          "calibration": {
+            "refreshMs": 16.700000000000045
+          },
+          "errors": []
+        },
+        {
+          "build": "current",
+          "trial": 0,
+          "frames": 240,
+          "elapsedMs": 4000,
+          "fps": 60,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 302,
+          "movementSpan": 339.015625,
+          "committedIndex": 0,
+          "calibration": {
+            "refreshMs": 16.700000000000045
+          },
+          "errors": []
+        },
+        {
+          "build": "current",
+          "trial": 1,
+          "frames": 240,
+          "elapsedMs": 3999.8999999999996,
+          "fps": 60.001500037500946,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 301,
+          "movementSpan": 339.015625,
+          "committedIndex": 0,
+          "calibration": {
+            "refreshMs": 16.699999999999932
+          },
+          "errors": []
+        },
+        {
+          "build": "previous",
+          "trial": 1,
+          "frames": 241,
+          "elapsedMs": 4016.3999999999996,
+          "fps": 60.003983666965446,
+          "p95FrameMs": 16.799999999999272,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 301,
+          "movementSpan": 339.015625,
+          "committedIndex": 0,
+          "calibration": {
+            "refreshMs": 16.700000000000045
+          },
+          "errors": []
+        },
+        {
+          "build": "previous",
+          "trial": 2,
+          "frames": 240,
+          "elapsedMs": 3999.8,
+          "fps": 60.003000150007495,
+          "p95FrameMs": 16.799999999999727,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 301,
+          "movementSpan": 339.01559734752055,
+          "committedIndex": 0,
+          "calibration": {
+            "refreshMs": 16.700000000000045
+          },
+          "errors": []
+        },
+        {
+          "build": "current",
+          "trial": 2,
+          "frames": 240,
+          "elapsedMs": 3999.7999999999997,
+          "fps": 60.0030001500075,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 302,
+          "movementSpan": 339.015625,
+          "committedIndex": 0,
+          "calibration": {
+            "refreshMs": 16.699999999999932
+          },
+          "errors": []
+        },
+        {
+          "build": "current",
+          "trial": 3,
+          "frames": 240,
+          "elapsedMs": 3999.8,
+          "fps": 60.003000150007495,
+          "p95FrameMs": 16.799999999999272,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 302,
+          "movementSpan": 339.015625,
+          "committedIndex": 0,
+          "calibration": {
+            "refreshMs": 16.699999999999932
+          },
+          "errors": []
+        },
+        {
+          "build": "previous",
+          "trial": 3,
+          "frames": 241,
+          "elapsedMs": 4016.5000000000005,
+          "fps": 60.0024897298643,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 301,
+          "movementSpan": 339.015625,
+          "committedIndex": 0,
+          "calibration": {
+            "refreshMs": 16.699999999999818
+          },
+          "errors": []
+        },
+        {
+          "build": "previous",
+          "trial": 4,
+          "frames": 240,
+          "elapsedMs": 3999.7999999999997,
+          "fps": 60.0030001500075,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 301,
+          "movementSpan": 339.01559734752055,
+          "committedIndex": 0,
+          "calibration": {
+            "refreshMs": 16.700000000000045
+          },
+          "errors": []
+        },
+        {
+          "build": "current",
+          "trial": 4,
+          "frames": 241,
+          "elapsedMs": 4016.5000000000005,
+          "fps": 60.0024897298643,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 302,
+          "movementSpan": 339.015625,
+          "committedIndex": 0,
+          "calibration": {
+            "refreshMs": 16.700000000000045
+          },
+          "errors": []
+        }
+      ],
+      "summary": {
+        "previous": {
+          "fps": 60.003000150007495,
+          "fpsRange": [
+            60.000995867151325,
+            60.003983666965446
+          ],
+          "p95FrameMs": 16.799999999999272,
+          "p95FrameMsRange": [
+            16.700000000000728,
+            16.799999999999727
+          ],
+          "missedSlotPercent": 0,
+          "missedSlotPercentRange": [
+            0,
+            0
+          ]
+        },
+        "current": {
+          "fps": 60.0024897298643,
+          "fpsRange": [
+            60,
+            60.0030001500075
+          ],
+          "p95FrameMs": 16.700000000000728,
+          "p95FrameMsRange": [
+            16.700000000000728,
+            16.799999999999272
+          ],
+          "missedSlotPercent": 0,
+          "missedSlotPercentRange": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "workload": "segmented-drag",
+      "trials": [
+        {
+          "build": "previous",
+          "trial": 0,
+          "frames": 240,
+          "elapsedMs": 3999.7999999999997,
+          "fps": 60.0030001500075,
+          "p95FrameMs": 16.799999999999272,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 301,
+          "movementSpan": 140.20348946519223,
+          "committedIndex": 0,
+          "calibration": {
+            "refreshMs": 16.700000000000045
+          },
+          "errors": []
+        },
+        {
+          "build": "current",
+          "trial": 0,
+          "frames": 241,
+          "elapsedMs": 4016.4999999999995,
+          "fps": 60.002489729864315,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 301,
+          "movementSpan": 140.20349152365054,
+          "committedIndex": 0,
+          "calibration": {
+            "refreshMs": 16.699999999999932
+          },
+          "errors": []
+        },
+        {
+          "build": "current",
+          "trial": 1,
+          "frames": 241,
+          "elapsedMs": 4016.5,
+          "fps": 60.00248972986431,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 301,
+          "movementSpan": 140.20348946519223,
+          "committedIndex": 0,
+          "calibration": {
+            "refreshMs": 16.700000000000045
+          },
+          "errors": []
+        },
+        {
+          "build": "previous",
+          "trial": 1,
+          "frames": 241,
+          "elapsedMs": 4016.5000000000005,
+          "fps": 60.0024897298643,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 301,
+          "movementSpan": 140.20349152365054,
+          "committedIndex": 0,
+          "calibration": {
+            "refreshMs": 16.699999999999818
+          },
+          "errors": []
+        },
+        {
+          "build": "previous",
+          "trial": 2,
+          "frames": 240,
+          "elapsedMs": 3999.8,
+          "fps": 60.003000150007495,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 301,
+          "movementSpan": 140.20348946519223,
+          "committedIndex": 0,
+          "calibration": {
+            "refreshMs": 16.699999999999932
+          },
+          "errors": []
+        },
+        {
+          "build": "current",
+          "trial": 2,
+          "frames": 241,
+          "elapsedMs": 4016.4999999999995,
+          "fps": 60.002489729864315,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 301,
+          "movementSpan": 140.20349152365054,
+          "committedIndex": 0,
+          "calibration": {
+            "refreshMs": 16.699999999999932
+          },
+          "errors": []
+        },
+        {
+          "build": "current",
+          "trial": 3,
+          "frames": 240,
+          "elapsedMs": 3999.7999999999997,
+          "fps": 60.0030001500075,
+          "p95FrameMs": 16.800000000000182,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 302,
+          "movementSpan": 140.20349152365054,
+          "committedIndex": 0,
+          "calibration": {
+            "refreshMs": 16.699999999999818
+          },
+          "errors": []
+        },
+        {
+          "build": "previous",
+          "trial": 3,
+          "frames": 240,
+          "elapsedMs": 3999.8999999999996,
+          "fps": 60.001500037500946,
+          "p95FrameMs": 16.799999999999272,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 301,
+          "movementSpan": 140.20349152365054,
+          "committedIndex": 0,
+          "calibration": {
+            "refreshMs": 16.699999999999932
+          },
+          "errors": []
+        },
+        {
+          "build": "previous",
+          "trial": 4,
+          "frames": 241,
+          "elapsedMs": 4016.5,
+          "fps": 60.00248972986431,
+          "p95FrameMs": 16.700000000000728,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 301,
+          "movementSpan": 140.20349152365054,
+          "committedIndex": 0,
+          "calibration": {
+            "refreshMs": 16.700000000000045
+          },
+          "errors": []
+        },
+        {
+          "build": "current",
+          "trial": 4,
+          "frames": 240,
+          "elapsedMs": 3999.9,
+          "fps": 60.00150003750094,
+          "p95FrameMs": 16.799999999999272,
+          "medianFrameMs": 16.699999999999818,
+          "missedSlots": 0,
+          "missedSlotPercent": 0,
+          "inputs": 301,
+          "movementSpan": 140.20349152365054,
+          "committedIndex": 0,
+          "calibration": {
+            "refreshMs": 16.700000000000045
+          },
+          "errors": []
+        }
+      ],
+      "summary": {
+        "previous": {
+          "fps": 60.00248972986431,
+          "fpsRange": [
+            60.001500037500946,
+            60.0030001500075
+          ],
+          "p95FrameMs": 16.700000000000728,
+          "p95FrameMsRange": [
+            16.700000000000728,
+            16.799999999999272
+          ],
+          "missedSlotPercent": 0,
+          "missedSlotPercentRange": [
+            0,
+            0
+          ]
+        },
+        "current": {
+          "fps": 60.002489729864315,
+          "fpsRange": [
+            60.00150003750094,
+            60.0030001500075
+          ],
+          "p95FrameMs": 16.700000000000728,
+          "p95FrameMsRange": [
+            16.700000000000728,
+            16.800000000000182
+          ],
+          "missedSlotPercent": 0,
+          "missedSlotPercentRange": [
+            0,
+            0
+          ]
+        }
+      }
+    }
+  ],
+  "refreshMs": 16.699999999999932,
+  "retainedData": {
+    "description": "All paired trial aggregates, medians, ranges and source identities are retained. Per-frame and idle-calibration arrays are omitted.",
+    "trialCount": 30,
+    "originalArtifactSHA256": "3525c5fbd1ca83166532560874b8f7a41804f1b398681138991da78a6cadb0ff"
+  },
+  "schema": 1,
+  "configuration": {
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "deviceScaleFactor": 2,
+    "reducedMotion": "no-preference",
+    "warmupMs": 1000,
+    "durationMs": 4000,
+    "calibrationFrames": 45,
+    "cpuThrottlingRate": 1
+  }
+}

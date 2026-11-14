@@ -10,13 +10,14 @@ without those commits cannot build the comparison. No package installation is
 needed.
 
 Before replacing `dist/`, the builder checks the current core and WebGL files
-against the 12 November animation report. Those scenes import the engines
+against the latest recorded animation report. Those scenes import the engines
 directly and do not measure the UI components. It verifies the five workloads
 and paired trial counts, then checks the historical raster report against its
-own Git snapshots. The two reports use different baselines and keep separate
-labels. Stale engine evidence stops publication before the existing output is
-touched. Refresh the measured evidence when changing an engine; rebuilding
-this website does not run a benchmark.
+own Git snapshots. The component replay report checks the current component and
+core hashes against `lib/` and its pre-refactor baseline against Git. Each report
+keeps its own baseline and labels. Stale evidence stops publication before the
+existing output is touched. Refresh the relevant measured evidence when changing
+an engine or component; rebuilding this website does not run a benchmark.
 
 From the repository root, this command replaces the local generated `dist/`
 directory. Source files and hosted services are unaffected. Delete `dist/` to
@@ -67,7 +68,9 @@ main module also versions its benchmark module import, so a deployment cannot
 combine cached PNG references with the new WebP assets. The canonical library
 files are copied without rewriting, preserving their recorded source hashes.
 The main and docs modules also version their component import so the updated
-navbar is loaded after publication.
+navbar is loaded after publication. Benchmark JSON requests and exported-figure
+links carry content hashes, so updated annotations load their matching recorded
+measurements after a deploy.
 
 ## GitHub Pages workflow
 

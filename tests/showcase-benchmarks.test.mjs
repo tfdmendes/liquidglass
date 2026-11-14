@@ -56,7 +56,7 @@ for (const width of [1440, 390]) {
     await maps.getByRole('heading', { name: 'Button map', exact: true }).waitFor();
     assert.equal(await picker.getByRole('radio', { name: 'Button', exact: true }).getAttribute('aria-checked'), 'true');
 
-    for (const [name, id, initial] of [['Animation', 'figure-fps', 1], ['Update time', 'figure-update', 3]]) {
+    for (const [name, id, initial] of [['Animation', 'figure-fps', 1], ['Update time', 'figure-update', 3], ['Components', 'figure-components', 0]]) {
       await page.getByRole('tab', { name, exact: true }).click();
       const figure = page.locator('#' + id);
       const radios = figure.getByRole('radio');

@@ -75,7 +75,9 @@ function renderMetric(mount, rows, { unit, note, initial = 0, higher = false, la
     axis.setAttribute('aria-hidden', 'true');
     axis.append(element('span', '', '0'), element('span', '', ticks.format(maximum / 2)), element('span', '', `${ticks.format(maximum)} ${unit}`));
     const difference = row.current - row.previous;
-    const result = higher
+    const result = higher && Math.abs(difference) < 0.005
+      ? 'Within 0.01 FPS'
+      : higher
       ? `${Math.abs(difference).toFixed(2)} ${unit} ${difference >= 0 ? 'higher' : 'lower'}`
       : `${(Math.abs(difference) / row.previous * 100).toFixed(1)}% ${difference < 0 ? 'less' : 'more'} time`;
     const outcome = element('div', 'benchmark-outcome');
@@ -95,9 +97,10 @@ function renderMetric(mount, rows, { unit, note, initial = 0, higher = false, la
 
 async function initializeBenchmarks() {
   try {
-    const [raster, animation] = await Promise.all([
+    const [raster, animation, components] = await Promise.all([
       readRecord('../docs/performance/raster-spans-results.json'),
       readRecord('../docs/performance/fps-cpu-canvas-results.json'),
+      readRecord('../docs/performance/component-refactor-fps-results.json'),
     ]);
     const mapCases = [
       ['panel map', 'Panel', 'Panel map', '640 × 360 pixels'],
@@ -123,7 +126,13 @@ async function initializeBenchmarks() {
       });
     }
     const fps = scenes('fps', 'fpsRange'), updates = scenes('meanUpdateMs', 'meanUpdateMsRange');
-    for (const row of [...maps, ...fps, ...updates]) {
+    const componentNames = { 'menu-open': ['Menus', 'Menu opening', 'Open, switch and close menus'], 'navbar-drag': ['Navbar', 'Navbar drag', 'Hold and drag the selected indicator'], 'segmented-drag': ['Selector', 'Segmented control drag', 'Hold and drag the selected capsule'] };
+    const componentRows = components.configurations.map(({ workload, summary }) => ({
+      short: componentNames[workload][0], name: componentNames[workload][1], description: componentNames[workload][2],
+      previous: summary.previous.fps, current: summary.current.fps,
+      previousRange: summary.previous.fpsRange, currentRange: summary.current.fpsRange,
+    }));
+    for (const row of [...maps, ...fps, ...updates, ...componentRows]) {
       if (![row.previous, row.current, ...row.previousRange, ...row.currentRange].every(Number.isFinite)) throw new Error('Invalid recorded measurement');
     }
     const trialCounts = animation.configurations.map(({ trials }) => trials.filter(trial => trial.build === 'current').length);
@@ -132,6 +141,8 @@ async function initializeBenchmarks() {
     renderMetric(document.querySelector('#figure-maps'), maps, { unit: 'ms', labels: ['Earlier', 'Later'], note: `Historical comparison from ${raster.date.slice(0, 10)}, independently measured against revision 938df92. ${raster.samplesPerVariant} paired samples per build. Whiskers show the recorded minimum and maximum.` });
     renderMetric(document.querySelector('#figure-fps'), fps, { unit: 'FPS', higher: true, initial: 1, note: `${count} paired trials per build on ${animation.date.slice(0, 10)}. The baseline is the intermediate engine, not the earlier raster comparison or live comparison baseline. Whiskers show min–max. Headless rAF cadence is not physical presentation.` });
     renderMetric(document.querySelector('#figure-update'), updates, { unit: 'ms', initial: 3, note: `${count} paired trials per build on ${animation.date.slice(0, 10)}. Median of mean synchronous update times; min–max whiskers. Async decode and GPU completion are excluded.` });
+    const componentCount = components.configurations[0].trials.filter(trial => trial.build === 'current').length;
+    renderMetric(document.querySelector('#figure-components'), componentRows, { unit: 'FPS', higher: true, labels: ['Before refactor', 'After refactor'], note: `${componentCount} paired trials per build on ${components.date.slice(0, 10)}. Pre-refactor ${components.sources.previous.revision.slice(0, 7)} compared with ${components.sources.current.revision.slice(0, 7)} at 1280 × 800, DPR 2. Whiskers show min–max. Cadence stayed near the 60 Hz headless ceiling in these replays.` });
   } catch {
     for (const mount of document.querySelectorAll('.benchmark-mount')) {
       const message = element('p', 'benchmark-error', 'The recorded chart could not load. ');

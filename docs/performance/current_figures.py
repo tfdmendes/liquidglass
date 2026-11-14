@@ -63,8 +63,10 @@ def load_measurements(root):
     repository = root.parent.parent
     raster_path = root / "raster-spans-results.json"
     animation_path = root / "fps-cpu-canvas-results.json"
+    component_path = root / "component-refactor-fps-results.json"
     raster = json.loads(raster_path.read_text())
     animation = json.loads(animation_path.read_text())
+    components = json.loads(component_path.read_text())
     current = animation["manifest"]["builds"]["current"]["sha256"]
     for filename in ("liquid-glass.js", "glass-webgl.js"):
         recorded_hash = current[filename]
@@ -74,21 +76,31 @@ def load_measurements(root):
         source = subprocess.check_output(["git", "show", f"{revision}:lib/liquid-glass.js"], cwd=repository)
         if hashlib.sha256(source).hexdigest() != raster["sourceSHA256"][variant]:
             raise ValueError(f"Historical raster {variant} does not match {revision}")
+    for variant in ("previous", "current"):
+        source = components["sources"][variant]
+        for filename in ("components.js", "liquid-glass.js"):
+            contents = (repository / "lib" / filename).read_bytes() if variant == "current" else subprocess.check_output(
+                ["git", "show", f"{source['revision']}:lib/{filename}"], cwd=repository)
+            if hashlib.sha256(contents).hexdigest() != source["sha256"][filename]:
+                raise ValueError(f"Recorded component {variant} data is stale: {filename}")
     provenance = {
         "measuredDate": raster["date"],
         "animationMeasuredDate": animation["date"],
+        "componentMeasuredDate": components["date"],
         "sources": {
             "raster-spans-results.json": digest(raster_path),
             "fps-cpu-canvas-results.json": digest(animation_path),
+            "component-refactor-fps-results.json": digest(component_path),
         },
         "rasterRevisions": {"previous": raster["sourceRevisions"]["previous"], "new": "a863784"},
         "animationBaselineSourceSHA256": animation["manifest"]["builds"]["previous"]["sha256"],
         "currentSourceSHA256": current,
+        "componentSources": components["sources"],
         "recordedRunnerSHA256": animation["fixtureSHA256"]["review/measure-fps.mjs"],
         "presentRunnerMatchesRecorded": digest(repository / "review/measure-fps.mjs") == animation["fixtureSHA256"]["review/measure-fps.mjs"],
         "regenerationRerunsBenchmarks": False,
     }
-    return raster, animation, provenance
+    return raster, animation, components, provenance
 
 
 def milliseconds(value):
@@ -118,8 +130,8 @@ def comparison_chart(rows, *, title, fps, sample_note, limit_note, provenance, i
         row.validate()
     ink, muted, grid, previous, current = (PALETTE[key] for key in ("ink", "muted", "grid", "previous", "current"))
     unit = "FPS" if fps else "ms"
-    height = 1160 + max(0, len(rows) - 4) * 210
-    footer = 1000 + max(0, len(rows) - 4) * 210
+    height = 1160 + (len(rows) - 4) * 210
+    footer = 1000 + (len(rows) - 4) * 210
     with matplotlib.rc_context({**STYLE, "svg.hashsalt": f"liquidglass-current-{identifier}"}):
         figure = plt.figure(figsize=(WIDTH / 72, height / 72))
         text_artists = []
@@ -181,7 +193,7 @@ def comparison_chart(rows, *, title, fps, sample_note, limit_note, provenance, i
 
 
 def render_current_figures(root: Path):
-    raster, animation, provenance = load_measurements(root)
+    raster, animation, components, provenance = load_measurements(root)
     names = {"button map": "Button map · 120 × 64", "panel map": "Panel map · 640 × 360", "capsule map": "Capsule map · 240 × 64", "unique lens updates": "Unique lens update"}
     raster_rows = []
     for entry in raster["summary"]:
@@ -205,17 +217,35 @@ def render_current_figures(root: Path):
     if len(trials) != 1:
         raise ValueError("Chart annotations require the same trial count for each scene")
     count = trials.pop()
+    component_rows = []
+    component_counts = set()
+    component_names = {"menu-open": "Menu opening", "navbar-drag": "Navbar drag", "segmented-drag": "Segmented control drag"}
+    for configuration in components["configurations"]:
+        summary = configuration["summary"]
+        counts = [sum(trial["build"] == variant for trial in configuration["trials"]) for variant in ("previous", "current")]
+        if counts[0] != counts[1] or not counts[0]:
+            raise ValueError("Each component workload needs paired trials")
+        component_counts.add(counts[0])
+        component_rows.append(Row(component_names[configuration["workload"]], summary["previous"]["fps"], summary["current"]["fps"], tuple(summary["previous"]["fpsRange"]), tuple(summary["current"]["fpsRange"])))
+    if len(component_counts) != 1:
+        raise ValueError("Component chart annotations require the same trial count")
+    component_count = component_counts.pop()
+    animation_comparison = f"Engine remeasurement on {animation['date'][:10]} against the reconstructed intermediate baseline."
     return {
         "current-map-time.svg": comparison_chart(raster_rows, title="Historical map times", fps=False,
             sample_note=f"{raster['samplesPerVariant']} paired samples/build · map scale 2",
             limit_note=f"{raster['correctness']['maps']} raw maps checked · {raster['correctness']['changedBytes']} changed bytes",
             provenance=provenance, identifier="maps", comparison="Historical raster comparison from revision 938df92 to revision a863784."),
         "current-animation-fps.svg": comparison_chart(fps_rows, title="Animation under load", fps=True,
-            sample_note=f"Headless Chromium 157 · {count} trials/build",
+            sample_note=f"{animation['date'][:10]} · {count} trials/build · Chromium 157",
             limit_note="Intermediate baseline · results vary by scene",
-            provenance=provenance, identifier="fps", comparison="Current engine compared with the intermediate baseline used in the November 12 animation measurement."),
+            provenance=provenance, identifier="fps", comparison=animation_comparison),
         "current-update-time.svg": comparison_chart(update_rows, title="Synchronous update time", fps=False,
             sample_note=f"{count} trials/build · median of trial means",
             limit_note="Async decode and GPU completion excluded",
-            provenance=provenance, identifier="updates", comparison="Current engine compared with the intermediate baseline used in the November 12 animation measurement."),
+            provenance=provenance, identifier="updates", comparison=animation_comparison),
+        "current-component-fps.svg": comparison_chart(component_rows, title="Component refactor cadence", fps=True,
+            sample_note=f"{components['date'][:10]} · {component_count} trials/build · DPR 2",
+            limit_note=f"Before {components['sources']['previous']['revision'][:7]} · after {components['sources']['current']['revision'][:7]} · near 60 Hz",
+            provenance=provenance, identifier="components", comparison="Component replays before and after the shared-renderer refactor, using the same optimized engine."),
     }

@@ -12,6 +12,7 @@ const mediaTypes = ['.svg', '.png', '.jpg', '.jpeg', '.webp', '.avif', '.gif', '
 function verifyBenchmarkEvidence() {
   const raster = JSON.parse(readFileSync(new URL('docs/performance/raster-spans-results.json', root), 'utf8'));
   const animation = JSON.parse(readFileSync(new URL('docs/performance/fps-cpu-canvas-results.json', root), 'utf8'));
+  const components = JSON.parse(readFileSync(new URL('docs/performance/component-refactor-fps-results.json', root), 'utf8'));
   function requireHash(recorded, expected, description) {
     if (!/^[a-f0-9]{64}$/.test(recorded) || recorded !== expected) {
       throw Error(`Stale benchmark evidence: ${description}. Update the recorded evidence before publishing`);
@@ -35,6 +36,22 @@ function verifyBenchmarkEvidence() {
   for (const key of ['svg:reshape:12', 'svg:reshape:24', 'svg:move:24', 'webgl:reshape:24', 'webgl:move:24']) {
     if (!workloads.has(key)) throw Error(`Stale benchmark evidence: missing animation workload ${key}`);
   }
+  for (const variant of ['previous', 'current']) {
+    const source = components.sources?.[variant];
+    for (const file of ['components.js', 'liquid-glass.js']) {
+      const actual = variant === 'current' ? readFileSync(new URL(`lib/${file}`, root))
+        : execFileSync('git', ['show', `${source.revision}:lib/${file}`], { cwd: fileURLToPath(root) });
+      requireHash(source?.sha256?.[file], createHash('sha256').update(actual).digest('hex'), `component ${variant} hash does not match ${file}`);
+    }
+  }
+  if (components.configurations?.length !== 3 || components.configurations.some(({ trials }) =>
+    !Array.isArray(trials) || ['previous', 'current'].some(build => trials.filter(trial => trial.build === build).length !== 5))) {
+    throw Error('Stale benchmark evidence: expected five paired trials in each of three component workloads');
+  }
+  const componentWorkloads = new Set(components.configurations.map(({ workload }) => workload));
+  for (const key of ['menu-open', 'navbar-drag', 'segmented-drag']) {
+    if (!componentWorkloads.has(key)) throw Error(`Stale benchmark evidence: missing component workload ${key}`);
+  }
 }
 
 function copyPublicTree(source, destination, extensions) {
@@ -50,19 +67,28 @@ function copyPublicTree(source, destination, extensions) {
 
 function versionSiteAssets() {
   const asset = (name) => new URL(`assets/${name}`, output);
-  const version = (name) => createHash('sha256').update(readFileSync(asset(name))).digest('hex').slice(0, 12);
+  const version = (path) => createHash('sha256').update(readFileSync(new URL(path, output))).digest('hex').slice(0, 12);
   const componentVersion = createHash('sha256').update(readFileSync(new URL('lib/components.js', output))).digest('hex').slice(0, 12);
   for (const name of ['main.js', 'docs.js']) {
     const module = asset(name);
     writeFileSync(module, readFileSync(module, 'utf8').replace("'../lib/components.js'", `'../lib/components.js?v=${componentVersion}'`));
   }
   const main = asset('main.js');
-  writeFileSync(main, readFileSync(main, 'utf8').replace("'./benchmarks.js'", `'./benchmarks.js?v=${version('benchmarks.js')}'`));
-  const versions = new Map(['site.css', 'docs.css', 'main.js', 'docs.js'].map(name => [name, version(name)]));
+  const benchmarks = asset('benchmarks.js');
+  let benchmarkSource = readFileSync(benchmarks, 'utf8');
+  for (const name of ['raster-spans-results.json', 'fps-cpu-canvas-results.json', 'component-refactor-fps-results.json']) {
+    const hash = version(`docs/performance/${name}`);
+    benchmarkSource = benchmarkSource.replace(`../docs/performance/${name}'`, `../docs/performance/${name}?v=${hash}'`);
+  }
+  writeFileSync(benchmarks, benchmarkSource);
+  writeFileSync(main, readFileSync(main, 'utf8').replace("'./benchmarks.js'", `'./benchmarks.js?v=${version('assets/benchmarks.js')}'`));
+  const paths = ['assets/site.css', 'assets/docs.css', 'assets/main.js', 'assets/docs.js',
+    ...['current-map-time.svg', 'current-animation-fps.svg', 'current-update-time.svg', 'current-component-fps.svg'].map(name => `docs/performance/${name}`)];
+  const versions = new Map(paths.map(path => [path, version(path)]));
   for (const name of ['index.html', 'docs/index.html']) {
     const page = new URL(name, output);
     let html = readFileSync(page, 'utf8');
-    for (const [file, hash] of versions) html = html.replaceAll(`assets/${file}"`, `assets/${file}?v=${hash}"`);
+    for (const [path, hash] of versions) html = html.replaceAll(`${path}"`, `${path}?v=${hash}"`);
     writeFileSync(page, html);
   }
 }

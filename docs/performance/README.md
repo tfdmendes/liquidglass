@@ -2,15 +2,21 @@
 
 ## Current engine
 
-The [12 November FPS comparison](fps-cpu-canvas.md) measured **27.0 → 60.0 FPS (+122.2%)** for 12 reshaping SVG lenses and **15.8 → 38.5 FPS (+143.4%)** for 24. Five paired trials compare against an intermediate snapshot that already includes SVG attribute caching and immutable-bitmap reuse. These engine-only scenes do not measure navbar gestures or the full showcase UI.
+The [14 November FPS recheck](fps-cpu-canvas.md) measured **27.27 → 59.25 FPS (+117.2%)** for 12 reshaping SVG lenses and **16.18 → 35.40 FPS (+118.7%)** for 24. Five alternating paired trials compare published commit `d57e933` with the same intermediate baseline used on 12 November. That baseline already includes SVG attribute caching and immutable-bitmap reuse. These scenes measure the engines directly.
 
 ![Recorded animation cadence for the intermediate and current engines](current-animation-fps.svg)
 
 ![Recorded synchronous update times for the intermediate and current engines](current-update-time.svg)
 
-The [FPS report](fps-cpu-canvas.md) and [50 retained trial summaries](fps-cpu-canvas-results.json) record source hashes, ranges and reproduction commands. Headless browser cadence is not physical display presentation. Cached movement and WebGL were controls and showed no material cadence change. A figure regeneration redraws the saved measurements; it does not run the benchmarks again.
+The [FPS report](fps-cpu-canvas.md) and [50 retained engine trial summaries](fps-cpu-canvas-results.json) record source hashes, ranges and reproduction commands. All five pairs in both SVG reshaping scenes exceeded 30% higher FPS. Cached movement and WebGL remained near their earlier cadence. Headless browser cadence is not physical display presentation. Regenerating figures redraws these saved measurements; it does not run a benchmark.
 
-The interactive three-build comparison retains its historical `previous` build at `938df92`. Its live measurements use that baseline. The recorded FPS figures above use the separately reconstructed intermediate baseline documented in the report.
+## Component refactor
+
+The separate [30 component trials](component-refactor-fps-results.json) compare pre-refactor `db71502` with `d57e933`, using identical optimized engines. Menu opening, navbar drag and segmented drag each measured **60.00 → 60.00 FPS**. Their median p95 frame interval after the refactor was 16.7 ms. These replays stayed near the headless cadence ceiling; they do not establish unchanged CPU cost or physical touch latency.
+
+![Component cadence before and after the shared-renderer refactor](current-component-fps.svg)
+
+The interactive three-build comparison retains its historical `previous` build at `938df92`. Its live measurements use that baseline. The engine figures use the separately reconstructed intermediate baseline; the component figure uses `db71502`. The report identifies each comparison.
 
 ## Historical map timings
 
@@ -83,7 +89,7 @@ the broader caveats below.
 | `scroll` | `surface-scroll-results.json` | Desktop/phone reads and phone repeat controls |
 | `webgl` | `webgl-demand-results.json` | The named idle ImageBitmap sample and its runtime |
 
-All five figures are rendered with Matplotlib 3.11.0. The current-engine charts use a consistent light surface, direct labels and min–max whiskers. Their source and rendering code live in [`current_figures.py`](https://github.com/tfdmendes/liquidglass/blob/main/docs/performance/current_figures.py). The [website](https://tfdmendes.github.io/liquidglass/#performance) reads the same recorded JSON into a responsive glass chart with selectable workloads.
+All six figures are rendered with Matplotlib 3.11.0. The engine and component charts use a consistent light surface, direct labels and min–max whiskers. Their source and rendering code live in [`current_figures.py`](https://github.com/tfdmendes/liquidglass/blob/main/docs/performance/current_figures.py). The [website](https://tfdmendes.github.io/liquidglass/#performance) reads the same recorded JSON into responsive glass charts with selectable workloads and separate baselines.
 
 The historical figures retain blue and orange from [MATLAB's gem palette](https://www.mathworks.com/help/matlab/ref/colororder.html), light grid lines and two vertically stacked CPU panels. MATLAB itself is not required.
 
@@ -94,7 +100,7 @@ Matplotlib and its dependencies there. `-m` runs the named Python module;
 globally or add a runtime dependency to the glass library. Remove
 `/tmp/liquidglass-plots` to remove that environment.
 
-The third command regenerates the five SVGs. The fourth checks their XML,
+The third command regenerates the six SVGs. The fourth checks their XML,
 recomputes CPU medians/ranges from the retained samples, checks them against the
 review summary, validates current library hashes and compares the generated SVGs byte for byte without writing.
 Regeneration redraws existing evidence; it does not rerun the browser benchmarks.
@@ -140,4 +146,4 @@ renders were inspected at 760 px and 390 px in light and dark themes, with no
 horizontal overflow. This checks local SVG rendering; it is not a live GitHub
 or physical-phone test.
 
-The current-engine figures were rendered locally at 800 px and 358 px in both themes. Their text bounds had no clipping or overlap, and a separate visual review covered all three metrics at both sizes. These are presentation checks of the exported SVGs, separate from the recorded benchmark runs.
+The 14 November engine and component figures were rendered locally at 800 px and 358 px in light and dark themes. Generation checked text bounds for clipping and overlap, and a visual check covered the updated values and labels. The interactive website also passed local checks at 1440 px and 390 px, including all four tabs, keyboard navigation and matching report hashes. These presentation checks are separate from the recorded benchmark runs.
