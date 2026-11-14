@@ -1,6 +1,6 @@
 import { summarizeTrials } from './metrics.js';
 
-const names = { original: 'Original fork', previous: 'Previous engine', current: 'Current engine' };
+const names = { original: 'Original fork', previous: 'Previous engine (938df92)', current: 'Current engine' };
 const colors = { original: '#68717e', previous: '#c45c19', current: '#0071e3' };
 const previews = [...document.querySelectorAll('.preview-build iframe')];
 const status = document.querySelector('#status');
@@ -229,11 +229,11 @@ updatePreviews();
 fetch('./recorded-fps.json').then(response => response.ok ? response.json() : null).then(recorded => {
   if (!recorded) return;
   const target = document.querySelector('#recorded-results');
-  const title = document.createElement('h3'); title.textContent = 'Recorded on our test machine';
-  const text = document.createElement('p'); text.textContent = `${recorded.environment.browserProduct}, ${recorded.environment.headless ? 'headless' : 'visible browser'}, ${recorded.date.slice(0, 10)}. These saved results are separate from measurements on your device.`;
+  const title = document.createElement('h3'); title.textContent = 'Historical benchmark on our test machine';
+  const text = document.createElement('p'); text.textContent = `${recorded.environment.browserProduct}, ${recorded.environment.headless ? 'headless' : 'visible browser'}, ${recorded.date.slice(0, 10)}. The earlier and later columns describe the engines tested on that date, not the engines in today’s live comparison. The live comparison uses revision 938df92 for Previous; the newer website animation chart uses a different intermediate baseline. These results do not measure navbar gestures.`;
   const link = document.createElement('a'); link.href = './recorded-fps.json'; link.textContent = 'Read the recorded summary and source hashes';
   const table = document.createElement('table'); table.setAttribute('aria-label', 'Recorded headless benchmark medians');
-  const labels = ['Scene', 'Previous FPS', 'Current FPS', 'Previous update', 'Current update'];
+  const labels = ['Scene', 'Earlier FPS', 'Later FPS', 'Earlier update', 'Later update'];
   const heading = table.createTHead().insertRow();
   for (const label of labels) { const cell = document.createElement('th'); cell.scope = 'col'; cell.textContent = label; heading.appendChild(cell); }
   const body = table.createTBody();
@@ -245,6 +245,7 @@ fetch('./recorded-fps.json').then(response => response.ok ? response.json() : nu
       const cell = row.insertCell(); cell.textContent = value; cell.dataset.label = labels[index];
     }
   }
-  const note = document.createElement('p'); note.textContent = 'Three trials per build. Sample ranges overlap in several cases. Faster map generation does not guarantee higher FPS; the saved summary retains medians and ranges.';
+  const count = recorded.configurations[0]?.trialsPerBuild;
+  const note = document.createElement('p'); note.textContent = `${count} trials per build. The saved historical summary retains medians and ranges. Faster map generation does not guarantee higher FPS.`;
   target.replaceChildren(title, text, table, note, link); target.hidden = false;
 }).catch(() => {});

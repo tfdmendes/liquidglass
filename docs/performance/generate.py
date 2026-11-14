@@ -25,6 +25,8 @@ from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 from matplotlib.ticker import FuncFormatter
 
+from current_figures import render_current_figures
+
 
 ROOT = Path(__file__).resolve().parent
 COLORS = {
@@ -230,8 +232,11 @@ def main():
         verify_source(data, source)
     digest = hashlib.sha256(raw).hexdigest()
     with matplotlib.rc_context(STYLE):
-        for name, chart in (("operation-counts.svg", operation_chart), ("cpu-time.svg", cpu_chart)):
-            rendered = chart(data, digest)
+        figures = {name: chart(data, digest) for name, chart in (
+            ("operation-counts.svg", operation_chart), ("cpu-time.svg", cpu_chart)
+        )}
+        figures.update(render_current_figures(ROOT))
+        for name, rendered in figures.items():
             path = ROOT / name
             if args.check:
                 if not path.exists() or path.read_text() != rendered:

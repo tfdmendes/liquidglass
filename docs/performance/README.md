@@ -1,21 +1,32 @@
 # Performance evidence
 
-The [12 November FPS comparison](fps-cpu-canvas.md) measured
-**27.0 → 60.0 FPS (+122.2%)** for 12 reshaping SVG lenses and
-**15.8 → 38.5 FPS (+143.4%)** for 24. Five paired trials compare against the
-preceding update-work optimization, with exact baseline reconstruction and
-source hashes. Cached movement and WebGL are retained as controls.
+## Current engine
 
-The [animation update measurements](updates.md) compare the checkout at the start
-of the 11 November 2026 task with the optimized library. Moving 24 SVG lenses
-took **0.430 → 0.200 ms** of synchronous update work per frame (**53.5% less**),
-while animation cadence changed from 43.8 to 45.4 FPS. The report retains all
-five workloads, including overlapping and slower results.
+The [12 November FPS comparison](fps-cpu-canvas.md) measured **27.0 → 60.0 FPS (+122.2%)** for 12 reshaping SVG lenses and **15.8 → 38.5 FPS (+143.4%)** for 24. Five paired trials compare against an intermediate snapshot that already includes SVG attribute caching and immutable-bitmap reuse. These engine-only scenes do not measure navbar gestures or the full showcase UI.
 
-The [menu and navigation measurements](menus.md) cover the later component
-animation changes, separately from the engine comparisons below.
+![Recorded animation cadence for the intermediate and current engines](current-animation-fps.svg)
 
-The [second raster pass and FPS measurements](fps.md) compare the first delivered optimization with the current engine and include a runnable comparison website. The [first raster pass](raster.md) compares the earlier integrated fork at `862e553` with the retained `previous` build. Both remain separate from the historical upstream comparisons below.
+![Recorded synchronous update times for the intermediate and current engines](current-update-time.svg)
+
+The [FPS report](fps-cpu-canvas.md) and [50 retained trial summaries](fps-cpu-canvas-results.json) record source hashes, ranges and reproduction commands. Headless browser cadence is not physical display presentation. Cached movement and WebGL were controls and showed no material cadence change. A figure regeneration redraws the saved measurements; it does not run the benchmarks again.
+
+The interactive three-build comparison retains its historical `previous` build at `938df92`. Its live measurements use that baseline. The recorded FPS figures above use the separately reconstructed intermediate baseline documented in the report.
+
+## Historical map timings
+
+The [6 November raster comparison](fps.md) used seven paired samples of `938df92` and the earlier optimized core. Its 640 raw map pairs were byte-exact. These remain historical timings, independent of the later FPS comparison and its baseline.
+
+![Historical map generation and unique-lens update times from 6 November 2026](current-map-time.svg)
+
+Each workload has a separate zero-based scale. Points show medians and whiskers show the recorded minimum and maximum. The [raster report](raster-spans-results.json) and dated [animation report](../../showcase/recorded-fps.json) preserve their original source hashes.
+
+## Earlier component measurements
+
+The [11 November update-work measurements](updates.md) recorded **0.430 → 0.200 ms** for 24 moving SVG lenses, a **53.5% reduction** in synchronous work. The [menu and navigation measurements](menus.md) cover the earlier component animation changes. These reports keep their original workloads and baselines.
+
+## Historical upstream measurements
+
+The [first raster pass](raster.md) compares the earlier integrated fork at `862e553` with the retained `previous` build. It remains separate from the later FPS comparison above and the independent upstream experiments below.
 
 These figures use measurements from the 26 October 2026 review. Each of the four
 changes was measured **independently** against upstream
@@ -72,10 +83,9 @@ the broader caveats below.
 | `scroll` | `surface-scroll-results.json` | Desktop/phone reads and phone repeat controls |
 | `webgl` | `webgl-demand-results.json` | The named idle ImageBitmap sample and its runtime |
 
-The figures are rendered with Matplotlib 3.11.0, using blue and orange from
-[MATLAB's current gem palette](https://www.mathworks.com/help/matlab/ref/colororder.html).
-The layout uses light grid lines and two vertically stacked CPU panels, so each
-engine remains readable on narrow screens. MATLAB itself is not required.
+All five figures are rendered with Matplotlib 3.11.0. The current-engine charts use a consistent light surface, direct labels and min–max whiskers. Their source and rendering code live in [`current_figures.py`](https://github.com/tfdmendes/liquidglass/blob/main/docs/performance/current_figures.py). The [website](https://tfdmendes.github.io/liquidglass/#performance) reads the same recorded JSON into a responsive glass chart with selectable workloads.
+
+The historical figures retain blue and orange from [MATLAB's gem palette](https://www.mathworks.com/help/matlab/ref/colororder.html), light grid lines and two vertically stacked CPU panels. MATLAB itself is not required.
 
 Run from the repository root with Python 3 and the pinned plotting dependency.
 The first two commands create a temporary Python environment and install
@@ -84,9 +94,9 @@ Matplotlib and its dependencies there. `-m` runs the named Python module;
 globally or add a runtime dependency to the glass library. Remove
 `/tmp/liquidglass-plots` to remove that environment.
 
-The third command replaces only the two SVGs. The fourth checks their XML,
+The third command regenerates the five SVGs. The fourth checks their XML,
 recomputes CPU medians/ranges from the retained samples, checks them against the
-review summary and compares the generated SVGs byte for byte without writing.
+review summary, validates current library hashes and compares the generated SVGs byte for byte without writing.
 Regeneration redraws existing evidence; it does not rerun the browser benchmarks.
 
 ```sh
@@ -125,7 +135,9 @@ reduced-motion setting or live backdrop. Captured states do not prove every
 intermediate frame or historical browser version. Real background-tab suspension
 was not established by the synthetic visibility and viewport checks.
 
-The generated figures passed XML and deterministic-output checks. Browser image
+The historical figures passed XML and deterministic-output checks. Browser image
 renders were inspected at 760 px and 390 px in light and dark themes, with no
 horizontal overflow. This checks local SVG rendering; it is not a live GitHub
 or physical-phone test.
+
+The current-engine figures were rendered locally at 800 px and 358 px in both themes. Their text bounds had no clipping or overlap, and a separate visual review covered all three metrics at both sizes. These are presentation checks of the exported SVGs, separate from the recorded benchmark runs.

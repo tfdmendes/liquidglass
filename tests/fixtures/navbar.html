@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Navbar interaction fixture</title>
+<style>
+  body { margin: 0; color: #172331; background: #e1e9f1; font: 15px/1.5 system-ui, sans-serif; }
+  main { padding: 40px 24px 1200px; }
+  lg-navbar { margin-bottom: 48px; --lg-indicator: rgb(255 255 255 / .5); }
+  #navigation > :is(a, button) { justify-content: center; width: 100px; }
+</style>
+<main>
+  <lg-navbar id="navigation" tone="light" refraction="20" indicator-refraction="8" aria-label="Library">
+    <a href="#library" aria-current="page">Library</a>
+    <a href="#months">Months</a>
+    <button type="button" value="photos">All photos</button>
+  </lg-navbar>
+  <div>
+    <lg-navbar id="disabled-items" tone="light" aria-label="Available destinations">
+      <a href="#start" aria-current="page">Start</a>
+      <a href="#blocked" aria-disabled="true">Blocked</a>
+      <button type="button" disabled>Disabled</button>
+      <a href="#finish">Finish</a>
+    </lg-navbar>
+  </div>
+  <div>
+    <lg-navbar id="native" tone="light" aria-label="Native links">
+      <a href="#native" aria-current="page">Here</a>
+      <a href="navbar.html#new-tab" target="_blank">New tab</a>
+      <a href="navbar.html" download>Download</a>
+    </lg-navbar>
+  </div>
+  <form>
+    <lg-navbar id="form" tone="light" aria-label="Form actions">
+      <button type="button" aria-current="page">Keep</button>
+      <button type="submit" value="submit">Submit</button>
+    </lg-navbar>
+  </form>
+  <lg-navbar id="empty" aria-label="Empty"></lg-navbar>
+</main>
+<script>
+  window.changes = [];
+  window.activations = [];
+  window.submits = 0;
+  document.addEventListener('change', (event) => {
+    changes.push({ id: event.target.id, index: event.detail.index, value: event.detail.value, item: event.detail.item?.textContent });
+  });
+  document.querySelectorAll('lg-navbar > a, lg-navbar > button').forEach((item) => item.addEventListener('click', () => activations.push(item.textContent)));
+  document.querySelector('form').addEventListener('submit', (event) => { event.preventDefault(); submits++; });
+</script>
+<script type="module" src="../../lib/components.js"></script>
+</html>

@@ -1,417 +1,136 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Liquid Glass for the Web — real refraction in every browser</title>
-<meta name="description" content="Web components that bend light like Apple's Liquid Glass, rendered live in Chrome, Safari and Firefox. One script tag, zero dependencies.">
-<meta property="og:title" content="Liquid Glass for the Web">
-<meta property="og:description" content="Real refraction in Chrome, Safari and Firefox. Switches, sliders, navbars, menus, toasts and more.">
-<meta property="og:image" content="https://liquidglass.dev/images/beach-1200.jpg">
-<meta property="og:url" content="https://liquidglass.dev/">
-<meta name="theme-color" content="#f8f9fa">
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="assets/site.css">
-<link rel="modulepreload" href="lib/liquid-glass.js">
-<link rel="modulepreload" href="lib/components.js">
-<script type="module" src="assets/site.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Liquid Glass · Glass, in motion</title>
+  <meta name="description" content="A live playground for refractive glass, spring-driven controls and optical depth. Eleven web components. No runtime dependencies.">
+  <meta name="theme-color" content="#f5f7f9">
+  <meta property="og:title" content="Liquid Glass · Glass, in motion">
+  <meta property="og:description" content="Real refraction. Working controls. An open-source JavaScript library you can try right here.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tfdmendes.github.io/liquidglass/">
+  <meta property="og:image" content="https://tfdmendes.github.io/liquidglass/assets/brand/liquid-glass.png">
+  <link rel="canonical" href="https://tfdmendes.github.io/liquidglass/">
+  <link rel="icon" type="image/png" href="./assets/brand/favicon.png">
+  <link rel="preload" href="./assets/fonts/albert-sans.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="./assets/site.css">
+  <script type="module" src="./assets/main.js"></script>
 </head>
 <body>
-
-<div class="topbar" id="topbar">
-  <lg-navbar tone="light" aria-label="Site">
-    <a href="#top" data-i18n="nav.home">Home</a>
-    <a href="#components" data-i18n="nav.components">Components</a>
-    <a href="#playground" data-i18n="nav.playground">Playground</a>
-    <a href="#start" data-i18n="nav.start">Get started</a>
-    <a href="docs/" data-i18n="nav.docs">Docs</a>
-  </lg-navbar>
-</div>
-
-<main id="top">
-  <!-- ============================================================ hero -->
-  <section class="hero container" aria-labelledby="hero-title">
-    <div class="stage hero__stage" id="hero" data-lg-backdrop=".hero__img">
-      <lg-lens class="hero__lens" width="220" height="220" x="74" y="38" refraction="30" chroma="0.18" specular="0.6">
-        <img class="hero__img" src="images/beach-1200.jpg" srcset="images/beach-1200.jpg 1200w, images/beach.jpg 2400w" sizes="(max-width: 1248px) 100vw, 1200px" alt="Turquoise bay between white cliffs">
-      </lg-lens>
-
-      <div class="hero__bar">
-        <lg-panel class="brand-chip" tone="light" radius="22">
-          <a class="brand" href="./" aria-label="liquidglass home"><svg aria-hidden="true"><use href="assets/icons.svg#droplet"/></svg>liquidglass</a>
-        </lg-panel>
-        <lg-navbar tone="light" aria-label="Primary">
-          <a href="#components" data-i18n="nav.components">Components</a>
-          <a href="#playground" data-i18n="nav.playground">Playground</a>
-          <a href="docs/" data-i18n="nav.docs">Docs</a>
-          <a href="https://github.com/gentpan/liquidglass">GitHub</a>
-        </lg-navbar>
-        <lg-segmented class="lang-switch" label="Language" id="lang-switch">
-          <button value="en">EN</button>
-          <button value="zh">中文</button>
-        </lg-segmented>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header container">
+    <a class="brand" href="./" aria-label="Liquid Glass home"><img src="./assets/brand/liquid-glass-mark.png" width="42" height="42" alt=""><span>Liquid Glass</span></a>
+    <nav class="nav-links" aria-label="Main navigation"><a href="#playground">Playground</a><a href="#components">Components</a><a href="#performance">Performance</a><a href="./docs/">Docs</a></nav>
+    <a class="header-action" href="https://github.com/tfdmendes/liquidglass">GitHub <span aria-hidden="true">↗</span></a>
+  </header>
+  <main id="main">
+    <section class="hero container" id="playground" aria-labelledby="hero-title">
+      <div class="hero-heading">
+        <h1 class="lines" id="hero-title"><span class="line"><span>Glass,</span></span><span class="line"><span>in motion.</span></span></h1>
+        <div class="hero-intro"><p>Real refraction. Spring-driven controls. A small JavaScript library for interfaces that feel a little more alive.</p><a class="text-link" href="#start">Build with glass <span aria-hidden="true">↗</span></a></div>
       </div>
-
-      <lg-panel class="hero__copy" tone="light" radius="24" refraction="28">
-        <span class="hero__eyebrow"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#sparkles"/></svg><span data-i18n="hero.eyebrow">Web components · v1.0</span></span>
-        <h1 class="hero__title" id="hero-title" data-i18n="hero.title">Real liquid glass.<br>In every browser.</h1>
-        <p class="hero__lede" data-i18n="hero.lede">Glass that actually bends light, like Apple’s Liquid Glass, rendered live in Chrome, Safari and Firefox. One script tag, zero dependencies.</p>
-        <div class="hero__actions">
-          <a class="btn btn--primary" href="#start"><span data-i18n="hero.cta1">Get started</span><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#arrow-right"/></svg></a>
-          <a class="btn btn--secondary" href="#components" data-i18n="hero.cta2">Explore components</a>
+      <div class="optical-stage" data-ui>
+        <lg-lens id="hero-lens" width="260" height="178" radius="56" x="61" y="53" refraction="14" bezel="0.3" chroma="0.08" specular="0.12" specular-width="0.75" tabindex="0" role="group" aria-label="Interactive glass lens" aria-describedby="lens-instructions">
+          <img class="hero-material" id="hero-material" src="./assets/material-lagoon.webp" width="1800" height="1200" alt="Original blue contour artwork" fetchpriority="high">
+          <span class="stage-word" aria-hidden="true">Look closer.</span>
+          <span class="stage-caption">Light has a way<br>of changing things.</span>
+        </lg-lens>
+        <span class="lens-instructions" id="lens-instructions"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 4 4-3 4 3M12 1v22m-4-3 4 3 4-3M4 8l-3 4 3 4M1 12h22m-3-4 3 4-3 4"/></svg><span>Move the lens. See the difference.</span></span>
+        <span class="stage-engine">Live SVG refraction</span>
+      </div>
+      <div class="material-console" data-ui>
+        <div class="material-picker" role="group" aria-label="Backdrop material">
+          <button type="button" class="material-option" data-material="lagoon" aria-pressed="true"><img src="./assets/material-lagoon-thumb.webp" width="72" height="52" alt=""><span>Lagoon</span></button>
+          <button type="button" class="material-option" data-material="aurora" aria-pressed="false"><img src="./assets/material-aurora-thumb.webp" width="72" height="52" alt="" loading="lazy"><span>Aurora</span></button>
+          <button type="button" class="material-option" data-material="ember" aria-pressed="false"><img src="./assets/material-ember-thumb.webp" width="72" height="52" alt="" loading="lazy"><span>Ember</span></button>
+          <button type="button" class="material-option" data-material="mono" aria-pressed="false"><img src="./assets/material-mono-thumb.webp" width="72" height="52" alt="" loading="lazy"><span>Mono</span></button>
         </div>
-      </lg-panel>
-
-      <lg-panel class="hero__hint" tone="light" radius="18">
-        <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#pointer"/></svg><span data-i18n="hero.hint">Move over the photo to steer the lens</span>
-      </lg-panel>
-    </div>
-  </section>
-
-  <!-- ============================================================ showcase -->
-  <section class="section container" id="components" aria-labelledby="components-title">
-    <header class="section__head">
-      <span class="section__eyebrow" data-i18n="sc.eyebrow">Components</span>
-      <h2 id="components-title" data-i18n="sc.title">Everything here is live. Go ahead, touch it.</h2>
-      <p class="section__lede" data-i18n="sc.lede">Eleven custom elements built on one refraction engine. The real controls stay native underneath, so keyboards, screen readers and forms keep working.</p>
-    </header>
-
-    <div class="showcase">
-      <!-- desktop -->
-      <article class="showcase__item showcase__item--wide">
-        <div class="stage showcase__stage scene-desktop" data-lg-backdrop=".stage__img">
-          <img class="stage__img" src="images/city-1200.jpg" srcset="images/city-1200.jpg 1200w, images/city.jpg 2400w" sizes="(max-width: 1248px) 100vw, 1200px" alt="Shanghai skyline at dusk" loading="lazy">
-          <lg-menubar>
-            <span class="menubar__brand"><svg aria-hidden="true"><use href="assets/icons.svg#droplet"/></svg>Glass</span>
-            <lg-menu label="File">
-              <button data-shortcut="⌘N">New Window</button>
-              <button data-shortcut="⌘O">Open…</button>
-              <button data-shortcut="⇧⌘S">Save As…</button>
-              <hr>
-              <button data-shortcut="⌘W">Close Window</button>
-            </lg-menu>
-            <lg-menu label="Edit">
-              <button data-shortcut="⌘Z">Undo</button>
-              <button data-shortcut="⇧⌘Z">Redo</button>
-              <hr>
-              <button data-shortcut="⌘X">Cut</button>
-              <button data-shortcut="⌘C">Copy</button>
-              <button data-shortcut="⌘V">Paste</button>
-            </lg-menu>
-            <lg-menu label="View">
-              <button data-shortcut="⌥⌘S">Show Sidebar</button>
-              <button data-shortcut="⌃⌘F">Enter Full Screen</button>
-            </lg-menu>
-            <lg-menu label="Window">
-              <button data-shortcut="⌘M">Minimize</button>
-              <button>Zoom</button>
-              <hr>
-              <button>Bring All to Front</button>
-            </lg-menu>
-            <span class="menubar__spacer"></span>
-            <span class="menubar__status">
-              <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#wifi"/></svg>
-              <svg class="icon optional" aria-hidden="true"><use href="assets/icons.svg#battery"/></svg>
-              <span class="optional" data-clock>Fri 9:41</span>
-            </span>
-          </lg-menubar>
-          <lg-dock aria-label="Dock">
-            <button class="app-icon app-icon--mail" aria-label="Mail"><svg><use href="assets/icons.svg#mail"/></svg></button>
-            <button class="app-icon app-icon--messages" aria-label="Messages"><svg><use href="assets/icons.svg#message"/></svg></button>
-            <button class="app-icon app-icon--music" aria-label="Music"><svg><use href="assets/icons.svg#music"/></svg></button>
-            <button class="app-icon app-icon--photos" aria-label="Photos"><svg><use href="assets/icons.svg#image"/></svg></button>
-            <button class="app-icon app-icon--maps" aria-label="Maps"><svg><use href="assets/icons.svg#map"/></svg></button>
-            <button class="app-icon app-icon--calendar" aria-label="Calendar"><svg><use href="assets/icons.svg#calendar"/></svg></button>
-            <button class="app-icon app-icon--notes" aria-label="Notes"><svg><use href="assets/icons.svg#note"/></svg></button>
-            <button class="app-icon app-icon--settings" aria-label="Settings"><svg><use href="assets/icons.svg#settings"/></svg></button>
+        <div class="optics-controls">
+          <div class="range-field"><div><span>Refraction</span><output id="refraction-value">14px</output></div><lg-slider id="refraction" min="0" max="36" value="14" label="Refraction" specular="0.12" specular-width="0.75"></lg-slider></div>
+          <div class="range-field"><div><span>Frost</span><output id="frost-value">0px</output></div><lg-slider id="frost" min="0" max="8" step="0.5" value="0" label="Frost" specular="0.12" specular-width="0.75"></lg-slider></div>
+          <lg-switch id="glass-enabled" checked>Glass</lg-switch>
+        </div>
+      </div>
+      <div class="playground-bottom"><p>Original materials. Real pixels. Try the lens with your pointer, touch, or arrow keys.</p><button type="button" class="text-link" id="copy-preset">Copy lens code <span aria-hidden="true">↗</span></button></div>
+      <noscript><p class="no-script">Enable JavaScript to try the live components. The source and documentation are available below.</p></noscript>
+    </section>
+    <section class="components-section container" id="components" aria-labelledby="components-title">
+      <div class="section-heading"><h2 id="components-title">A familiar feel.</h2><p>Eleven custom elements, with the interaction already built in. Use your HTML. Keep your framework.</p></div>
+      <div class="component-row control-row">
+        <div class="component-copy"><h3>Go ahead.<br>Touch everything.</h3><p>Slide, switch, press and drag. Native inputs do their job while the glass follows with a spring.</p><p class="component-names"><code>lg-switch</code> <code>lg-slider</code><br><code>lg-segmented</code> <code>lg-panel</code></p><a class="text-link" href="./docs/#switch">Explore the controls <span aria-hidden="true">↗</span></a></div>
+        <div class="component-scene controls-scene" data-ui data-lg-backdrop="img">
+          <img src="./assets/material-mono.webp" width="1800" height="1200" alt="Silver contour artwork behind the controls" loading="lazy">
+          <lg-panel class="control-panel" tone="light" radius="24" refraction="10" bezel="0.2" blur="2" specular="0.12" specular-width="0.75">
+            <h4>Your space.</h4><lg-switch id="notifications" checked>Notifications</lg-switch>
+            <div class="panel-range"><div><span>Tint</span><output id="tint-value">64%</output></div><lg-slider id="panel-tint" min="30" max="85" value="64" label="Panel tint" specular="0.12" specular-width="0.75"></lg-slider></div>
+            <lg-segmented id="appearance" label="Control appearance" value="light" specular="0.12" specular-width="0.75"><button value="light">Light</button><button value="dark">Dark</button><button value="auto">Auto</button></lg-segmented>
+            <output class="panel-status" id="control-status">Light appearance · notifications on</output>
+          </lg-panel>
+        </div>
+      </div>
+      <div class="component-row navigation-row">
+        <div class="component-copy"><h3>A little direction.</h3><p>Click to select a view. Hold and drag the glass to another view, then release to select it.</p><p class="component-names"><code>lg-navbar</code> <code>lg-dock</code></p><a class="text-link" href="./docs/#navbar">Explore navigation <span aria-hidden="true">↗</span></a></div>
+        <div class="component-scene navigation-scene" id="navigation-scene" data-ui data-lg-backdrop="img">
+          <img id="navigation-material" src="./assets/material-aurora.webp" width="1800" height="1200" alt="Green contour artwork behind the navigation" loading="lazy">
+          <lg-navbar id="sample-navbar" aria-label="Preview content" radius="22" refraction="20" bezel="0.4" blur="0.6" specular="0.4" specular-width="1" indicator-refraction="5" indicator-bezel="0.35" indicator-specular="0.4" indicator-specular-width="1"><button type="button" value="explore" aria-current="page">Explore</button><button type="button" value="create">Create</button><button type="button" value="collect">Collect</button></lg-navbar>
+          <div class="navigation-content"><p id="navigation-title">Follow your curiosity.</p><span id="navigation-description">Pick a colour. Find your material.</span></div>
+          <lg-dock id="material-dock" radius="20" refraction="10" bezel="0.2" specular="0.12" specular-width="0.75" aria-label="Navigation backdrop">
+            <button type="button" data-backdrop="lagoon" aria-label="Use Lagoon backdrop"><img src="./assets/material-lagoon-thumb.webp" width="44" height="44" alt="" loading="lazy"></button>
+            <button type="button" data-backdrop="aurora" aria-label="Use Aurora backdrop" aria-pressed="true"><img src="./assets/material-aurora-thumb.webp" width="44" height="44" alt="" loading="lazy"></button>
+            <button type="button" data-backdrop="ember" aria-label="Use Ember backdrop"><img src="./assets/material-ember-thumb.webp" width="44" height="44" alt="" loading="lazy"></button>
+            <button type="button" data-backdrop="mono" aria-label="Use Mono backdrop"><img src="./assets/material-mono-thumb.webp" width="44" height="44" alt="" loading="lazy"></button>
           </lg-dock>
         </div>
-        <div class="showcase__caption">
-          <div>
-            <h3><span data-i18n="sc.desktop.title">Menu bar and Dock</span> <code class="inline">&lt;lg-menubar&gt;</code> <code class="inline">&lt;lg-dock&gt;</code></h3>
-            <p data-i18n="sc.desktop.text">Menus drop open as glass panels with a sliding highlight. Hover the Dock: its lens magnifies whatever sits underneath.</p>
-          </div>
-          <a href="docs/#menubar"><span data-i18n="sc.docs">Docs</span><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#arrow-right"/></svg></a>
+      </div>
+      <div class="component-row feedback-row">
+        <div class="component-copy"><h3>A clear response.</h3><p>A menu opens where you expect it. A button gives under your hand. A toast confirms that something happened.</p><p class="component-names"><code>lg-menubar</code> <code>lg-menu</code><br><code>lg-button</code> <code>lg-toast</code></p><a class="text-link" href="./docs/#menu">Explore feedback <span aria-hidden="true">↗</span></a></div>
+        <div class="component-scene feedback-scene" id="feedback-scene" data-feedback-material="ember" data-style="clear" data-ui data-lg-backdrop="img">
+          <img id="feedback-material" src="./assets/material-ember.webp" width="1800" height="1200" alt="Original Ember contour artwork behind the menu" loading="lazy">
+          <lg-menubar tone="light" radius="16" refraction="18" bezel="0.35" specular="0.4" specular-width="1" aria-label="Material settings"><lg-menu id="material-menu" label="Material" tone="light" radius="16"><button value="lagoon">Lagoon</button><button value="aurora">Aurora</button><button value="ember">Ember</button><button value="mono">Mono</button></lg-menu><lg-menu id="style-menu" label="Style" tone="light" radius="16"><button value="clear">Clear</button><button value="soft">Soft</button><button value="frosted">Frosted</button></lg-menu></lg-menubar>
+          <div class="feedback-content"><p id="feedback-title">Clear and present.</p><lg-button id="notify-button" tone="light" radius="14" refraction="18" bezel="0.35" specular="0.4" specular-width="1">Show notification <span aria-hidden="true">↗</span></lg-button><output id="feedback-status">Ember · Clear glass</output></div>
         </div>
-      </article>
-
-      <!-- notifications -->
-      <article class="showcase__item">
-        <div class="stage showcase__stage scene-notify stage--dark" id="notify-stage" data-lg-backdrop=".stage__img">
-          <img class="stage__img" src="images/portrait-1200.jpg" srcset="images/portrait-1200.jpg 1200w, images/portrait.jpg 2400w" sizes="(max-width: 800px) 100vw, 600px" alt="Woman in a blue dress on a beach at sunset" loading="lazy">
-          <lg-button class="notify-trigger" id="notify-trigger"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#bell"/></svg>Send a notification</lg-button>
-          <lg-panel class="player" radius="24">
-            <div class="player__row">
-              <img class="player__art" src="images/anime-1200.jpg" alt="" loading="lazy">
-              <div class="player__meta"><b>Blue Hour</b><span>Liquid Sessions</span></div>
-            </div>
-            <lg-slider value="38" label="Playback position"></lg-slider>
-            <div class="player__controls">
-              <button aria-label="Previous"><svg><use href="assets/icons.svg#skip-back"/></svg></button>
-              <button aria-label="Pause"><svg><use href="assets/icons.svg#pause"/></svg></button>
-              <button aria-label="Next"><svg><use href="assets/icons.svg#skip-forward"/></svg></button>
-            </div>
-          </lg-panel>
+      </div>
+      <p class="component-footnote">The lens above is <code>lg-lens</code>. All eleven elements use the same optical engine. <a href="./docs/#api">Or build your own with the core API ↗</a></p>
+    </section>
+    <section class="performance-section" id="performance" aria-labelledby="performance-title">
+      <div class="container performance-layout">
+        <div class="performance-copy"><h2 id="performance-title">More frames.<br>Same optics.</h2><p>SVG map encoding now favors fast pixel reads. The recorded 24-lens reshape scene rose from 15.8 to 38.5 FPS.</p><div class="measurement"><strong>143<span>%</span></strong><p>higher animation cadence<br>with 24 reshaping SVG lenses</p></div><p class="evidence-note">Five paired trials on an Apple M2. The 12-lens scene rose from 27.0 to 60.0 FPS. Results describe these workloads, not every browser or page.</p><a class="text-link" href="./docs/performance/fps-cpu-canvas.md">Read the measurements <span aria-hidden="true">↗</span></a></div>
+        <div class="performance-figures">
+          <div class="figure-tabs" role="tablist" aria-label="Performance measurements"><button type="button" id="tab-maps" role="tab" aria-selected="true" aria-controls="figure-maps">Map creation</button><button type="button" id="tab-fps" role="tab" aria-selected="false" aria-controls="figure-fps" tabindex="-1">Animation</button><button type="button" id="tab-update" role="tab" aria-selected="false" aria-controls="figure-update" tabindex="-1">Update time</button></div>
+          <div id="figure-maps" role="tabpanel" aria-labelledby="tab-maps" class="benchmark-mount"><p>Loading recorded measurements…</p></div>
+          <div id="figure-fps" role="tabpanel" aria-labelledby="tab-fps" class="benchmark-mount" hidden></div>
+          <div id="figure-update" role="tabpanel" aria-labelledby="tab-update" class="benchmark-mount" hidden></div>
+          <noscript><p>View the <a href="./docs/performance/current-map-time.svg">map timings</a>, <a href="./docs/performance/current-animation-fps.svg">animation results</a> or <a href="./docs/performance/current-update-time.svg">update timings</a>.</p></noscript>
+          <p class="figure-caption">Animation: 12 November 2026 · Maps: 6 November 2026<br>Apple M2 · headless Chromium<br><a href="./showcase/">Compare the builds interactively ↗</a></p>
         </div>
-        <div class="showcase__caption">
-          <div>
-            <h3><span data-i18n="sc.notify.title">Toasts and panels</span> <code class="inline">toast()</code></h3>
-            <p data-i18n="sc.notify.text">Toasts drop in on a spring and stretch as they land. Panels frost and bend the photo behind them.</p>
-          </div>
-          <a href="docs/#toast"><span data-i18n="sc.docs">Docs</span><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#arrow-right"/></svg></a>
+      </div>
+    </section>
+    <section class="start-section" id="start" aria-labelledby="start-title">
+      <div class="container start-layout">
+        <div class="start-copy"><h2 id="start-title">Add a<br> little glass.</h2><p>Copy two files. Import once.<br>The rest is your HTML.</p><a class="button button--primary" href="./docs/#install">Read the installation guide <span aria-hidden="true">↗</span></a><p class="start-detail">No runtime dependencies.<br>No package manager required.</p></div>
+        <div class="start-example">
+          <div class="snippet-heading"><span>Start with a button</span><button type="button" id="copy-install">Copy HTML</button></div>
+          <pre><code id="install-code">&lt;script type="module"
+  src="./lib/components.js"&gt;&lt;/script&gt;
+
+&lt;lg-button radius="14" refraction="18"
+  bezel="0.35" blur="0.5"
+  specular="0.4" specular-width="1"
+  style="--lg-tint: rgb(8 32 58 / .22)"&gt;
+  Hello, glass.
+&lt;/lg-button&gt;</code></pre>
+          <div class="install-preview" data-ui data-lg-backdrop="img"><img src="./assets/material-lagoon.webp" width="1800" height="1200" alt="" loading="lazy"><lg-button id="hello-button" radius="14" refraction="18" bezel="0.35" blur="0.5" specular="0.4" specular-width="1">Hello, glass. <span aria-hidden="true">↗</span></lg-button><output id="hello-output">A real button. Give it a press.</output></div>
+          <p class="download-links">Download <a href="./lib/components.js" download>components.js</a> + <a href="./lib/liquid-glass.js" download>liquid-glass.js</a></p>
         </div>
-      </article>
-
-      <!-- control centre -->
-      <article class="showcase__item">
-        <div class="stage showcase__stage scene-control stage--dark" data-lg-backdrop=".stage__img">
-          <img class="stage__img" src="images/anime-1200.jpg" srcset="images/anime-1200.jpg 1200w, images/anime.jpg 2400w" sizes="(max-width: 800px) 100vw, 600px" alt="Anime village street with a cherry tree" loading="lazy">
-          <lg-panel class="cc" radius="24">
-            <div class="cc__title">Control Centre</div>
-            <div class="cc__rows">
-              <lg-switch checked><svg aria-hidden="true"><use href="assets/icons.svg#wifi"/></svg>Wi-Fi</lg-switch>
-              <lg-switch checked><svg aria-hidden="true"><use href="assets/icons.svg#bluetooth"/></svg>Bluetooth</lg-switch>
-              <lg-switch><svg aria-hidden="true"><use href="assets/icons.svg#moon"/></svg>Focus</lg-switch>
-            </div>
-            <div class="cc__label"><span>Display</span><span data-brightness>70%</span></div>
-            <lg-slider value="70" label="Display brightness" id="brightness"></lg-slider>
-            <lg-segmented label="Appearance" value="auto">
-              <button value="light">Light</button>
-              <button value="dark">Dark</button>
-              <button value="auto">Auto</button>
-            </lg-segmented>
-          </lg-panel>
-        </div>
-        <div class="showcase__caption">
-          <div>
-            <h3><span data-i18n="sc.control.title">Switch, slider, segmented</span></h3>
-            <p data-i18n="sc.control.text">Press and hold: thumbs turn from solid white into glass and squish under your finger, like on iOS.</p>
-          </div>
-          <a href="docs/#switch"><span data-i18n="sc.docs">Docs</span><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#arrow-right"/></svg></a>
-        </div>
-      </article>
-
-      <!-- game -->
-      <article class="showcase__item">
-        <div class="stage showcase__stage scene-game stage--dark" data-lg-backdrop=".stage__img">
-          <img class="stage__img" src="images/game-1200.jpg" srcset="images/game-1200.jpg 1200w, images/game.jpg 2400w" sizes="(max-width: 800px) 100vw, 600px" alt="Fantasy archer in blue light" loading="lazy">
-          <lg-navbar aria-label="Game menu">
-            <button aria-current="page">Play</button>
-            <button>Champions</button>
-            <button>Store</button>
-            <button>Profile</button>
-          </lg-navbar>
-          <div class="hud">
-            <lg-button tone="tinted"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#play"/></svg>Find match</lg-button>
-            <lg-button>Loadout</lg-button>
-          </div>
-          <lg-panel class="hud__mode" radius="16"><b>Ranked Solo</b><span>Queue 0:42</span></lg-panel>
-        </div>
-        <div class="showcase__caption">
-          <div>
-            <h3><span data-i18n="sc.game.title">Navbar and buttons</span> <code class="inline">&lt;lg-navbar&gt;</code></h3>
-            <p data-i18n="sc.game.text">A glass indicator glides to whatever you point at, stretching with its speed. Buttons squish when pressed.</p>
-          </div>
-          <a href="docs/#navbar"><span data-i18n="sc.docs">Docs</span><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#arrow-right"/></svg></a>
-        </div>
-      </article>
-
-      <!-- lens -->
-      <article class="showcase__item">
-        <div class="stage showcase__stage scene-lens">
-          <lg-lens width="240" height="150" radius="75" x="20" y="78" refraction="34" chroma="0.22" specular="0.7">
-            <img src="images/wave-1200.jpg" srcset="images/wave-1200.jpg 1200w, images/wave.jpg 2400w" sizes="(max-width: 800px) 100vw, 600px" alt="Flowing rainbow lines on black" loading="lazy">
-            <p class="lens-type">Bend anything.<span>Text under the lens stays selectable.</span></p>
-          </lg-lens>
-        </div>
-        <div class="showcase__caption">
-          <div>
-            <h3><span data-i18n="sc.lens.title">Lens</span> <code class="inline">&lt;lg-lens&gt;</code></h3>
-            <p data-i18n="sc.lens.text">Wrap any content and a lens follows the pointer. Everything outside it is the original DOM, untouched.</p>
-          </div>
-          <a href="docs/#lens"><span data-i18n="sc.docs">Docs</span><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#arrow-right"/></svg></a>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <!-- ============================================================ playground -->
-  <section class="section container" id="playground" aria-labelledby="playground-title">
-    <header class="section__head">
-      <span class="section__eyebrow" data-i18n="pg.eyebrow">Playground</span>
-      <h2 id="playground-title" data-i18n="pg.title">Shape the glass.</h2>
-      <p class="section__lede" data-i18n="pg.lede">Every lens is drawn from a displacement map generated for its shape. Change the optics and watch the map redraw, then copy the markup.</p>
-    </header>
-    <div class="playground">
-      <div class="stage playground__stage">
-        <lg-lens id="pg-lens" width="240" height="160" radius="80" x="52" y="48">
-          <img src="images/anime-1200.jpg" srcset="images/anime-1200.jpg 1200w, images/anime.jpg 2400w" sizes="(max-width: 900px) 100vw, 820px" alt="Anime village street with a cherry tree" loading="lazy">
-        </lg-lens>
       </div>
-      <div class="playground__side">
-        <canvas class="playground__map" id="pg-map" aria-label="Displacement map preview"></canvas>
-        <div class="playground__maplabel"><span data-i18n="pg.map">Displacement map</span><span data-i18n="pg.channels">R, G bend · B highlight</span></div>
-        <div class="params" id="pg-params"></div>
-      </div>
-    </div>
-    <div class="playground-code" id="pg-code"></div>
-  </section>
-
-  <!-- ============================================================ how it works -->
-  <section class="section container" id="how" aria-labelledby="how-title">
-    <header class="section__head">
-      <span class="section__eyebrow" data-i18n="how.eyebrow">How it works</span>
-      <h2 id="how-title" data-i18n="how.title">Why this works where other demos don’t.</h2>
-      <p class="section__lede" data-i18n="how.lede">Most web liquid-glass demos use backdrop-filter with an SVG filter, which only Chromium renders. This library bends the element’s own pixels instead.</p>
-    </header>
-    <div class="features">
-      <div class="feature">
-        <span class="feature__icon"><svg class="icon-lg" aria-hidden="true"><use href="assets/icons.svg#layers"/></svg></span>
-        <h3 data-i18n="how.f1.title">Refracts pixels, not the backdrop</h3>
-        <p data-i18n="how.f1.text">An SVG <code>feDisplacementMap</code> is applied with a plain CSS <code>filter</code>, the one form every engine renders. Glass over a photo bends an aligned copy of it.</p>
-      </div>
-      <div class="feature">
-        <span class="feature__icon"><svg class="icon-lg" aria-hidden="true"><use href="assets/icons.svg#grid"/></svg></span>
-        <h3 data-i18n="how.f2.title">A lens map for every shape</h3>
-        <p data-i18n="how.f2.text">Red and green store how far each pixel bends, blue stores the rim highlight. Maps are drawn at runtime, cached, and only a quarter is computed.</p>
-      </div>
-      <div class="feature">
-        <span class="feature__icon"><svg class="icon-lg" aria-hidden="true"><use href="assets/icons.svg#globe"/></svg></span>
-        <h3 data-i18n="how.f3.title">Tuned per engine</h3>
-        <p data-i18n="how.f3.text">WebKit only renders bounding-box filter units, and each engine scales displacement differently. The library measures that and compensates.</p>
-      </div>
-      <div class="feature">
-        <span class="feature__icon"><svg class="icon-lg" aria-hidden="true"><use href="assets/icons.svg#zap"/></svg></span>
-        <h3 data-i18n="how.f4.title">Moves without redrawing</h3>
-        <p data-i18n="how.f4.text">Sliding a lens only shifts a filter region. The map is redrawn only when the glass changes shape, so drags hold their frame rate on phones.</p>
-      </div>
-      <div class="feature">
-        <span class="feature__icon"><svg class="icon-lg" aria-hidden="true"><use href="assets/icons.svg#accessibility"/></svg></span>
-        <h3 data-i18n="how.f5.title">Real controls underneath</h3>
-        <p data-i18n="how.f5.text">Switches and sliders are native inputs with a decorative glass copy on top. Focus rings, keyboards, screen readers and reduced motion all work.</p>
-      </div>
-      <div class="feature">
-        <span class="feature__icon"><svg class="icon-lg" aria-hidden="true"><use href="assets/icons.svg#package"/></svg></span>
-        <h3 data-i18n="how.f6.title">Zero dependencies</h3>
-        <p data-i18n="how.f6.text">Two ES modules, about 30 KB gzipped together. Works in plain HTML, React, Vue, Svelte, or anything else that renders DOM.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================ support -->
-  <section class="section container" id="support" aria-labelledby="support-title">
-    <header class="section__head">
-      <span class="section__eyebrow" data-i18n="sup.eyebrow">Browser support</span>
-      <h2 id="support-title" data-i18n="sup.title">Checked in all three engines.</h2>
-      <p class="section__lede" data-i18n="sup.lede">Verified with Chrome 153, Safari 27 and Firefox 156 by rendering the same page in each engine and comparing screenshots at full resolution.</p>
-    </header>
-    <table class="matrix">
-      <thead>
-        <tr><th></th><th>Chrome · Edge</th><th>Safari · iOS</th><th>Firefox</th></tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td data-i18n="sup.row1">Controls, lens, glass over images</td>
-          <td><span class="yes"><svg class="icon"><use href="assets/icons.svg#check"/></svg><span data-i18n="sup.refract">Refraction</span></span></td>
-          <td><span class="yes"><svg class="icon"><use href="assets/icons.svg#check"/></svg><span data-i18n="sup.refract">Refraction</span></span></td>
-          <td><span class="yes"><svg class="icon"><use href="assets/icons.svg#check"/></svg><span data-i18n="sup.refract">Refraction</span></span></td>
-        </tr>
-        <tr>
-          <td data-i18n="sup.row2">Glass over arbitrary page content</td>
-          <td><span class="yes"><svg class="icon"><use href="assets/icons.svg#check"/></svg><span data-i18n="sup.refract">Refraction</span></span></td>
-          <td><span class="partial"><svg class="icon"><use href="assets/icons.svg#minus"/></svg><span data-i18n="sup.blur">Frosted blur</span></span></td>
-          <td><span class="partial"><svg class="icon"><use href="assets/icons.svg#minus"/></svg><span data-i18n="sup.blur">Frosted blur</span></span></td>
-        </tr>
-        <tr>
-          <td data-i18n="sup.row3">backdrop-filter: url() demos</td>
-          <td><span class="yes"><svg class="icon"><use href="assets/icons.svg#check"/></svg><span data-i18n="sup.refract">Refraction</span></span></td>
-          <td><span class="no"><svg class="icon"><use href="assets/icons.svg#x"/></svg><span data-i18n="sup.none">Nothing</span></span></td>
-          <td><span class="no"><svg class="icon"><use href="assets/icons.svg#x"/></svg><span data-i18n="sup.none">Nothing</span></span></td>
-        </tr>
-      </tbody>
-    </table>
-    <p class="matrix-note" data-i18n="sup.note">The sticky navbar on this page floats over arbitrary content, so outside Chromium it falls back to a frosted blur. Everything over a known image refracts everywhere.</p>
-  </section>
-
-  <!-- ============================================================ get started -->
-  <section class="section container" id="start" aria-labelledby="start-title">
-    <header class="section__head">
-      <span class="section__eyebrow" data-i18n="start.eyebrow">Get started</span>
-      <h2 id="start-title" data-i18n="start.title">One script tag.</h2>
-      <p class="section__lede" data-i18n="start.lede">No build step and no framework. Load the module, then write the elements like any other HTML.</p>
-    </header>
-    <div class="steps">
-      <div class="step">
-        <span class="step__num">1</span>
-        <h3 data-i18n="start.s1.title">Load the components</h3>
-        <p data-i18n="start.s1.text">From liquidglass.dev, or copy the two files in <code>lib/</code> into your project.</p>
-        <script type="text/plain" data-code="html">
-<script type="module" src="https://liquidglass.dev/lib/components.js"><\/script>
-        </script>
-      </div>
-      <div class="step">
-        <span class="step__num">2</span>
-        <h3 data-i18n="start.s2.title">Write the elements</h3>
-        <p data-i18n="start.s2.text">Controls work on any surface. Set <code>--lg-surface</code> to the colour behind them.</p>
-        <script type="text/plain" data-code="html">
-<lg-switch checked>Wi-Fi</lg-switch>
-<lg-slider value="40" label="Volume"></lg-slider>
-<lg-segmented value="week">
-  <button value="day">Day</button>
-  <button value="week">Week</button>
-</lg-segmented>
-        </script>
-      </div>
-      <div class="step">
-        <span class="step__num">3</span>
-        <h3 data-i18n="start.s3.title">Put glass on a photo</h3>
-        <p data-i18n="start.s3.text">Mark the image as the backdrop. Glass inside refracts it in every browser.</p>
-        <script type="text/plain" data-code="html">
-<div class="stage" data-lg-backdrop="img">
-  <img src="photo.jpg" alt="">
-  <lg-navbar>
-    <a href="/" aria-current="page">Home</a>
-    <a href="/docs">Docs</a>
-  </lg-navbar>
-  <lg-button tone="tinted">Continue</lg-button>
-</div>
-        </script>
-      </div>
-      <div class="step">
-        <span class="step__num">4</span>
-        <h3 data-i18n="start.s4.title">Show a toast</h3>
-        <p data-i18n="start.s4.text">Toasts are a function. Pass a container to keep them inside a stage.</p>
-        <script type="text/plain" data-code="js">
-import { toast } from 'https://liquidglass.dev/lib/components.js';
-
-toast('Saved to Photos', { icon: 'check' });
-        </script>
-      </div>
-      <div class="step step--wide">
-        <span class="step__num"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#terminal"/></svg></span>
-        <h3 data-i18n="start.s5.title">Building with an AI coding agent?</h3>
-        <p data-i18n="start.s5.text">Install the liquid-glass-web skill for Claude Code or Codex. It teaches the agent the technique, the per-engine fixes, and how to verify glass in all three browsers.</p>
-        <script type="text/plain" data-code="bash">
-# installs into ~/.claude/skills and/or ~/.codex/skills
-curl -fsSL https://liquidglass.dev/install-skill.sh | sh
-        </script>
-      </div>
-    </div>
-  </section>
-</main>
-
-<footer class="footer container">
-  <div class="footer__row">
-    <a class="brand" href="./"><svg aria-hidden="true"><use href="assets/icons.svg#droplet"/></svg>liquidglass</a>
-    <nav class="footer__links" aria-label="Footer">
-      <a href="docs/" data-i18n="nav.docs">Docs</a>
-      <a href="#playground" data-i18n="nav.playground">Playground</a>
-      <a href="https://github.com/gentpan/liquidglass">GitHub</a>
-      <a href="lib/components.js">components.js</a>
-    </nav>
-  </div>
-  <p class="footer__note" data-i18n="footer.note">MIT licensed. The rendering technique was inspired by Aave Labs’ “Building Glass for the Web”; this implementation is independent. Demo wallpapers belong to their respective owners.</p>
-</footer>
-
+    </section>
+  </main>
+  <footer class="site-footer container">
+    <div class="footer-top"><p>Made to be touched.</p><nav aria-label="Footer"><a href="./docs/">Documentation ↗</a><a href="https://github.com/tfdmendes/liquidglass">Source on GitHub ↗</a><a href="./docs/#support">Browser support ↗</a></nav></div>
+    <div class="footer-wordmark" aria-hidden="true">Liquid Glass<span>↗</span></div>
+    <div class="footer-credits"><p>A fork of <a href="https://github.com/gentpan/liquidglass">gentpan/liquidglass</a> · engine and components by gentpan · <a href="./LICENSE">MIT licence</a></p><p>Original optical materials · <a href="./assets/fonts/OFL.txt">Albert Sans / OFL</a></p></div>
+  </footer>
+  <div class="announcement" id="announcement" role="status" aria-live="polite"></div>
 </body>
 </html>

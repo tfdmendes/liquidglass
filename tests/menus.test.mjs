@@ -152,18 +152,19 @@ test('navbar and row springs avoid layout reads on every frame and refresh resiz
   assert.equal(await page.locator('#nav').evaluate(c => c.x), await page.locator('#nav > button').last().evaluate(n => n.offsetLeft));
 });
 
-test('navbar keeps hover and focus previews separate from the clicked section', async t => {
+test('navbar keeps the committed section through hover and focus until activation', async t => {
   const page = await open(t);
   const options = page.locator('#nav > button');
   await options.nth(2).hover();
-  await page.waitForFunction(() => document.querySelector('#nav').target === 2);
+  assert.equal(await page.locator('#nav').evaluate(nav => nav.target), 0);
   assert.equal(await options.first().getAttribute('aria-current'), 'page');
   await page.mouse.move(0, 0);
   await page.waitForFunction(() => document.querySelector('#nav').target === 0);
   await options.nth(1).focus();
-  await page.waitForFunction(() => document.querySelector('#nav').target === 1);
+  assert.equal(await page.locator('#nav').evaluate(nav => nav.target), 0);
   assert.equal(await options.first().getAttribute('aria-current'), 'page');
   await page.keyboard.press('Enter');
+  await page.waitForFunction(() => document.querySelector('#nav').current === 1);
   assert.equal(await options.nth(1).getAttribute('aria-current'), 'page');
 });
 
@@ -232,8 +233,9 @@ test('navbar glass and shadow share each painted frame and stop work when idle o
       if (inset) {
         const [top, right = top, bottom = top, left = right] = inset[1].split(/\s+/).map(parseFloat);
         const rect = nav.copy.getBoundingClientRect();
+        const host = nav.getBoundingClientRect();
         const shadow = new DOMMatrixReadOnly(nav.shadow.style.transform);
-        mismatch = Math.max(mismatch, Math.abs(left - shadow.e), Math.abs(top - shadow.f),
+        mismatch = Math.max(mismatch, Math.abs(rect.left + left - host.left - shadow.e), Math.abs(rect.top + top - host.top - shadow.f),
           Math.abs(rect.width - left - right - parseFloat(nav.shadow.style.width)),
           Math.abs(rect.height - top - bottom - parseFloat(nav.shadow.style.height)));
         checked++;

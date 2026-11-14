@@ -18,13 +18,11 @@ comparison HTML, measurements and performance claims remain historical records.
     require each surface to follow registration and teardown conventions.
   - Hidden link: decorative label copies repeat identical copying
     rules where doing so simplifies the control, without merging distinct gestures.
-- Separate site language, code examples, navigation, demonstrations and playground
-  behavior behind explicit imports.
-  - Needless link: `assets/site.js` contains unrelated page features and owns the
-    language listener array used by both code examples and the playground.
-  - Hidden link: playground defaults, slider ranges and labels use parallel lists.
-  - Surplus: the mobile game navigation CSS selects anchors, while its markup
-    contains buttons; this rule currently has no effect.
+- Replace the earlier bilingual landing page with the English interactive showcase.
+  - `assets/main.js` owns the live material playground and component examples.
+  - `assets/docs.js` owns reference navigation, code copying and documentation examples.
+  - Shared tokens and the header live in `assets/site.css`; reference layout lives in
+    `assets/docs.css`. The old translation and demo-module path has been removed.
 - Share fixture and runtime tooling between comparison builders and regression
   runners, and load historical sources only when a comparison requests them.
   - Hidden link: importing builders from tests runs Git history reads at module
@@ -61,7 +59,8 @@ comparison HTML, measurements and performance claims remain historical records.
 - Canvas and image sources remain live. Static bitmap and paused video may sleep.
 - Three backdrop modes, nested scroll alignment and late image loads remain supported.
 - Segmented controls and navbars retain their distinct semantics, RTL and gestures.
-- The two site translation formats and the independent skill demo remain supported.
+- The independent skill demo remains supported. The new public showcase and reference
+  use English, replacing the earlier site's translation formats.
 - Clipboard feedback, toast duration, clock interval and browser settling waits
   represent user feedback or asynchronous browser work, not arbitrary retries to delete.
 - Upstream credits and destinations are content choices, outside this refactor.

@@ -12,7 +12,7 @@
  *
  * Toast icons are from Lucide (ISC license).
  */
-import { createGlass, createSpring, engine, reducedMotion } from './liquid-glass.js';
+import { createGlass, createSpring, engine, reducedMotion, DEFAULTS } from './liquid-glass.js';
 
 export { createGlass, createSpring, renderLensMap, engine, DEFAULTS } from './liquid-glass.js';
 
@@ -126,17 +126,25 @@ lg-panel[tone="light"] { color: var(--lg-text); }
 lg-panel[tone="light"] .lg-surface__tint { background: var(--lg-tint-strong); }
 
 /* navbar */
-lg-navbar { position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: 4px; padding: 4px; color: var(--lg-on-glass); }
+lg-navbar { position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: 4px; padding: 4px; color: var(--lg-on-glass); touch-action: pan-y pinch-zoom; user-select: none; -webkit-user-select: none; }
 lg-navbar > a, lg-navbar > button, .lg-nav__copy > span { position: relative; z-index: 2; display: inline-flex; align-items: center; gap: 8px; height: 36px; margin: 0; padding: 0 16px;
   border: 0; border-radius: 18px; background: transparent; color: inherit; font: inherit; font-size: 14px; font-weight: 500; line-height: 36px; text-decoration: none; white-space: nowrap; cursor: pointer; }
 lg-navbar > a:hover { text-decoration: none; }
 lg-navbar > :is(a, button):focus-visible { outline: 2px solid var(--lg-focus); outline-offset: 2px; }
-.lg-nav__copy { position: absolute; inset: 0; z-index: 3; display: flex; align-items: center; gap: 4px; padding: 4px; pointer-events: none; background: var(--lg-indicator); }
-.lg-nav__copy > span { color: var(--lg-text); }
+.lg-nav__copy { position: absolute; inset: -16px; z-index: 3; pointer-events: none; background: var(--lg-indicator); }
+.lg-nav__copy > span { position: absolute; left: 0; top: 0; color: var(--lg-text); }
 lg-navbar[tone="light"] { color: var(--lg-text); }
 lg-navbar[tone="light"] .lg-surface__tint { background: var(--lg-tint-strong); }
-lg-navbar .lg-lens-shadow { opacity: 1; box-shadow: var(--lg-shadow-1); z-index: 1; }
+lg-navbar .lg-lens-shadow { opacity: 1; box-shadow: var(--lg-shadow-1), 0 calc(5px * var(--lg-nav-press, 0)) calc(14px * var(--lg-nav-press, 0)) rgb(0 0 0 / calc(0.18 * var(--lg-nav-press, 0))); z-index: 1; }
 lg-navbar > .lg-surface { z-index: 0; }
+lg-navbar[data-lg-dragging], lg-navbar[data-lg-dragging] > :is(a, button) { cursor: grabbing; }
+lg-navbar[disabled] { opacity: 0.5; }
+lg-navbar[disabled] > :is(a, button), lg-navbar > :is(:disabled, [aria-disabled="true"]) { cursor: default; }
+lg-navbar > :is(:disabled, [aria-disabled="true"]), .lg-nav__copy > .lg-nav__disabled { opacity: 0.5; }
+@media (forced-colors: active) {
+  lg-navbar .lg-nav__copy, lg-navbar .lg-lens-shadow { display: none; }
+  lg-navbar > [aria-current="page"] { outline: 2px solid Highlight; outline-offset: -2px; }
+}
 
 /* menubar and menus */
 lg-menubar { position: relative; isolation: isolate; z-index: 10; display: flex; align-items: center; gap: 4px; height: 44px; padding: 0 12px; color: var(--lg-on-glass); font-size: 14px;
@@ -1032,105 +1040,338 @@ class LgPanel extends LgElement {
 /* ------------------------------------------------------------------------------------------------ */
 
 class LgNavbar extends LgElement {
+  static observedAttributes = ['disabled', ...Object.keys(OPTIC_ATTRS), ...Object.keys(OPTIC_ATTRS).map((attr) => `indicator-${attr}`)];
+
   build() {
     this.setAttribute('role', this.getAttribute('role') ?? 'navigation');
     this.links = [...this.querySelectorAll(':scope > a, :scope > button')];
+    this.tabStops = this.links.map((link) => link.getAttribute('tabindex'));
     this.copy = el('span', 'lg-nav__copy', { 'aria-hidden': 'true' });
     this.fillCopy();
-    for (const a of this.links) {
-      a.addEventListener('pointerenter', () => this.moveTo(this.links.indexOf(a)));
-      a.addEventListener('focus', () => this.moveTo(this.links.indexOf(a)));
-      a.addEventListener('click', () => this.setCurrent(this.links.indexOf(a)));
+    for (const link of this.links) {
+      link.addEventListener('click', (e) => {
+        const nativeOnly = link.localName === 'a' && (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || (link.target && link.target !== '_self') || link.hasAttribute('download'));
+        // A later listener can still cancel native activation, including one on document
+        setTimeout(() => {
+          if (!this.isConnected) return;
+          if (!nativeOnly && !e.defaultPrevented && !this.disabled && !this.unavailable(link)) this.setCurrent(this.links.indexOf(link), { emit: true });
+          else if (!this.gesture) this.moveTo(this.current);
+        }, 0);
+      });
     }
     this.shadow = el('span', 'lg-lens-shadow', { 'aria-hidden': 'true' });
     this.append(this.copy, this.shadow);
-    this.addEventListener('pointerleave', () => this.moveTo(this.current));
-    this.addEventListener('focusout', (e) => {
-      if (!this.contains(e.relatedTarget)) this.moveTo(this.current);
+    const guardActivation = (e) => {
+      const link = e.target.closest('a, button');
+      if (this.disabled || (this.links.includes(link) && this.unavailable(link)) || (e.detail > 0 && performance.now() < this.suppressUntil)) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+      }
+    };
+    this.addEventListener('click', guardActivation, true);
+    this.addEventListener('auxclick', guardActivation, true);
+    this.addEventListener('pointerdown', (e) => this.beginDrag(e));
+    this.addEventListener('pointermove', (e) => this.moveDrag(e));
+    this.addEventListener('pointerup', (e) => this.endDrag(e));
+    this.addEventListener('pointercancel', (e) => this.endDrag(e, true));
+    this.addEventListener('lostpointercapture', (e) => this.endDrag(e, true));
+    this.addEventListener('dragstart', (e) => e.preventDefault());
+    this.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && this.gesture) {
+        e.preventDefault();
+        this.endDrag(null, true);
+        return;
+      }
+      if (this.disabled) {
+        if (['Enter', ' '].includes(e.key)) e.preventDefault();
+        return;
+      }
+      const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+      if (!step && e.key !== 'Home' && e.key !== 'End') return;
+      const enabled = this.links.filter((link) => !this.unavailable(link));
+      if (!enabled.length) return;
+      e.preventDefault();
+      const at = enabled.indexOf(document.activeElement);
+      const next = e.key === 'Home' ? enabled[0] : e.key === 'End' ? enabled.at(-1) : enabled[(at + step + enabled.length) % enabled.length];
+      next.focus();
     });
-    this.current = Math.max(0, this.links.findIndex((a) => a.getAttribute('aria-current') === 'page'));
-    this.surface = new Surface(this, { radius: radiusOf(this, Infinity), bleed: 8, optics: optics(this, { refraction: 16, bezel: 0.8, curvature: 3, chroma: 0.1, blur: 1, specular: 0.55, specularWidth: 1.5 }) });
-    this.x = 0;
-    this.v = 0;
+    this.current = Math.max(0, this.links.findIndex((link) => link.getAttribute('aria-current') === 'page'));
+    this.surface = new Surface(this, { radius: radiusOf(this, Infinity), bleed: 8 });
+    this.x = this.v = this.press = this.stretch = 0;
+    this.metrics = [];
     this.paintFrame = 0;
     this.paintQueued = this.paintDirty = false;
     this.paint = this.paint.bind(this);
     this.xs = createSpring(0, (val, vel) => {
       this.x = val;
-      this.v = vel;
+      this.v = this.gesture?.dragging && !this.gesture.pickup ? this.gesture.velocity : vel;
       this.render();
     }, { stiffness: 380, damping: 30 });
+    this.ps = createSpring(0, (val) => { this.press = val; this.render(); }, { stiffness: 600, damping: 38 });
+    this.ss = createSpring(0, (val) => { this.stretch = val; this.render(); }, { stiffness: 600, damping: 38 });
+    this.onCancel = () => this.endDrag(null, true);
+    this.onVisibility = () => { if (document.hidden) this.onMotion(); };
+    this.onMotion = () => {
+      this.endDrag(null, true);
+      this.ps.set(0, { immediate: true });
+      this.ss.set(0, { immediate: true });
+      this.moveTo(this.current, true);
+    };
   }
 
   attach() {
+    this.updateOptics();
     this.surface.attach();
-    this.glass = createGlass(this.copy, { clip: true, refraction: 8, bezel: 0.6, curvature: 3, chroma: 0, specular: 0.7, specularWidth: 1.5 });
+    this.glass = createGlass(this.copy, { clip: true, ...this.optics });
+    this.measure();
     this.observer = new ResizeObserver(() => {
+      const target = this.gesture ? this.current : this.target ?? this.current;
+      this.endDrag(null, true);
       this.measure();
-      this.moveTo(this.target ?? this.current, true);
+      this.moveTo(target, true);
     });
     this.observer.observe(this);
-    this.links.forEach(link => this.observer.observe(link));
-    this.measure();
-    this.moveTo(this.current, true);
+    this.links.forEach((link) => this.observer.observe(link));
+    this.disabledObserver = new MutationObserver((records) => {
+      if (!records.some((record) => this.links.includes(record.target))) return;
+      this.endDrag(null, true);
+      this.syncDisabled();
+    });
+    this.disabledObserver.observe(this, { subtree: true, attributes: true, attributeFilter: ['disabled', 'aria-disabled'] });
+    window.addEventListener('blur', this.onCancel);
+    window.addEventListener('resize', this.onCancel);
+    window.addEventListener('scroll', this.onCancel, { capture: true, passive: true });
+    document.addEventListener('visibilitychange', this.onVisibility);
+    reducedMotion.addEventListener('change', this.onMotion);
+    this.syncDisabled();
+    this.ps.set(0, { immediate: true });
+    this.ss.set(0, { immediate: true });
+    this.setCurrent(this.current, { immediate: true });
+    if (!this.links.length) this.moveTo(0, true);
   }
 
   detach() {
+    this.endDrag(null, true);
     this.xs.stop();
+    this.ps.stop();
+    this.ss.stop();
     if (this.paintFrame) cancelAnimationFrame(this.paintFrame);
     this.paintFrame = 0;
     this.paintQueued = this.paintDirty = false;
+    window.removeEventListener('blur', this.onCancel);
+    window.removeEventListener('resize', this.onCancel);
+    window.removeEventListener('scroll', this.onCancel, true);
+    document.removeEventListener('visibilitychange', this.onVisibility);
+    reducedMotion.removeEventListener('change', this.onMotion);
+    this.disabledObserver?.disconnect();
+    this.observer?.disconnect();
     this.surface.detach();
     this.glass?.destroy();
     this.glass = null;
-    this.observer?.disconnect();
+  }
+
+  get disabled() {
+    return this.hasAttribute('disabled');
+  }
+
+  unavailable(link) {
+    return link.disabled || link.hasAttribute('disabled') || link.getAttribute('aria-disabled') === 'true';
+  }
+
+  attributeChangedCallback(name) {
+    if (!this.links) return;
+    if (name === 'disabled') {
+      if (this.disabled) this.endDrag(null, true);
+      this.syncDisabled();
+    } else this.updateOptics();
+  }
+
+  syncDisabled() {
+    this.setAttribute('aria-disabled', String(this.disabled));
+    this.links.forEach((link, i) => {
+      if (this.disabled || this.unavailable(link)) link.tabIndex = -1;
+      else if (this.tabStops[i] === null) link.removeAttribute('tabindex');
+      else link.setAttribute('tabindex', this.tabStops[i]);
+      this.copy.children[i]?.classList.toggle('lg-nav__disabled', this.unavailable(link));
+    });
+  }
+
+  updateOptics() {
+    const defaults = Object.fromEntries(Object.values(OPTIC_ATTRS).map((key) => [key, DEFAULTS[key]]));
+    this.optics = { ...defaults, refraction: 8, bezel: 0.6, curvature: 3, chroma: 0, specular: 0.7, specularWidth: 1.5 };
+    for (const [attr, key] of Object.entries(OPTIC_ATTRS)) {
+      const value = this.getAttribute(`indicator-${attr}`);
+      if (value !== null && value !== '' && Number.isFinite(Number(value))) this.optics[key] = Number(value);
+    }
+    this.surface.optics = optics(this, { ...defaults, refraction: 16, bezel: 0.8, curvature: 3, chroma: 0.1, blur: 1, specular: 0.55, specularWidth: 1.5 });
+    this.surface.glass?.update({ ...this.surface.optics, ...(this.surface.mode === 'backdrop' ? { chroma: 0 } : {}) });
+    this.glass?.update(this.optics);
+    this.render();
   }
 
   fillCopy() {
     this.copy.replaceChildren(...this.links.map((link) => labelCopy(link)));
   }
 
-  /** Call after changing link text (e.g. a language switch) so the glass copy matches again. */
   refresh() {
+    this.endDrag(null, true);
     this.fillCopy();
+    this.syncDisabled();
     this.measure();
     this.moveTo(this.target ?? this.current, true);
   }
 
   measure() {
-    this.metrics = this.links.map(link => ({ x: link.offsetLeft, y: link.offsetTop, w: link.offsetWidth, h: link.offsetHeight }));
+    this.metrics = this.links.map((link) => ({ x: link.offsetLeft, y: link.offsetTop, w: link.offsetWidth, h: link.offsetHeight }));
+    this.metrics.forEach((m, i) => place(this.copy.children[i], m.x + 16, m.y + 16, m.w, m.h, m.h / 2));
+    this.ordered = [...this.metrics].sort((a, b) => a.x - b.x);
   }
 
-  setCurrent(i) {
-    this.links.forEach((a, j) => (j === i ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current')));
+  beginDrag(e) {
+    if (!this.gesture) this.suppressUntil = 0;
+    const link = e.target.closest('a, button');
+    if (this.disabled || this.gesture || !e.isPrimary || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || !this.links.includes(link) || this.unavailable(link)) return;
+    this.measure();
+    const rect = this.getBoundingClientRect();
+    const scale = rect.width / (parseFloat(getComputedStyle(this).width) || this.offsetWidth) || 1;
+    this.xs.stop();
+    const x = (e.clientX - rect.left) / scale;
+    const y = (e.clientY - rect.top) / scale;
+    const lens = this.geometry();
+    const caught = x >= lens.x && x <= lens.x + lens.w && y >= lens.y && y <= lens.y + lens.h;
+    const origin = caught ? this.x : this.metrics[this.links.indexOf(link)].x;
+    // Clicks travel to the item, while a held drag keeps its offset from that item
+    if (!caught) this.moveTo(this.links.indexOf(link));
+    this.gesture = {
+      id: e.pointerId, link, rect, scale, startX: e.clientX, startY: e.clientY,
+      origin, pointerTarget: origin, pickup: !caught, motion: reducedMotion.matches,
+      samples: [{ x: origin, time: e.timeStamp }], dragging: false, velocity: 0,
+    };
+    // Capturing on the pressed link keeps a normal tap's native activation target
+    link.setPointerCapture(e.pointerId);
+    this.ps.set(1);
+    this.render();
+  }
+
+  moveDrag(e) {
+    const g = this.gesture;
+    if (!g || e.pointerId !== g.id) return;
+    if (g.motion !== reducedMotion.matches) {
+      this.onMotion();
+      return;
+    }
+    const dx = (e.clientX - g.startX) / g.scale;
+    const dy = (e.clientY - g.startY) / g.scale;
+    if (!g.dragging) {
+      if (Math.abs(dy) > 6 && Math.abs(dy) > Math.abs(dx)) {
+        this.endDrag(e, true);
+        return;
+      }
+      if (Math.abs(dx) < 6) return;
+      g.dragging = true;
+      this.setAttribute('data-lg-dragging', '');
+    }
+    const raw = g.origin + dx;
+    const edge = clamp(raw, this.ordered[0].x, this.ordered.at(-1).x);
+    const excess = raw - edge;
+    const x = edge + excess * 0.18 / (1 + Math.abs(excess) / 60);
+    // Let the glass reach a newly pressed item before tracking the pointer directly
+    if (g.pickup && Math.abs(this.x - g.pointerTarget) <= 1 / (window.devicePixelRatio || 1)) g.pickup = false;
+    g.pointerTarget = x;
+    const last = g.samples.at(-1);
+    if (e.timeStamp > last.time) {
+      g.samples.push({ x, time: e.timeStamp });
+      while (g.samples.length > 2 && e.timeStamp - g.samples[0].time > 60) g.samples.shift();
+    }
+    const first = g.samples[0];
+    const dt = e.timeStamp - first.time;
+    g.velocity = dt > 0 ? clamp((x - first.x) * 1000 / dt, -1200, 1200) : 0;
+    this.ss.set(Math.min(14, Math.abs(g.velocity) * 0.016), { immediate: true });
+    this.ss.set(0);
+    this.xs.set(x, { immediate: !g.pickup });
+  }
+
+  endDrag(e, cancelled = false) {
+    const g = this.gesture;
+    if (!g || (e && e.pointerId !== g.id)) return;
+    const stale = e && e.timeStamp - g.samples.at(-1).time >= 80;
+    if (e && !cancelled && g.dragging) this.moveDrag(e);
+    if (this.gesture !== g) return;
+    this.gesture = null;
+    this.removeAttribute('data-lg-dragging');
+    if (g.link.hasPointerCapture(g.id)) g.link.releasePointerCapture(g.id);
+    this.ps.set(0);
+    this.ss.set(0);
+    if (g.dragging || cancelled) this.suppressUntil = performance.now() + 500;
+    const y = e ? (e.clientY - g.rect.top) / g.scale : 0;
+    if (!cancelled && !this.disabled && g.dragging && e && y >= -24 && y <= g.rect.height / g.scale + 24) {
+      // A fast release selects the destination while the glass finishes catching up
+      const dropX = g.pickup ? g.pointerTarget : this.x;
+      const center = dropX + this.widthAt(dropX) / 2;
+      let next = -1;
+      let distance = Infinity;
+      this.metrics.forEach((m, i) => {
+        const d = Math.abs(center - m.x - m.w / 2);
+        if (!this.unavailable(this.links[i]) && d < distance) { distance = d; next = i; }
+      });
+      if (next >= 0) this.setCurrent(next, { emit: true, focus: true, velocity: g.pickup ? undefined : stale ? 0 : this.v });
+      else this.moveTo(this.current);
+    } else if (g.dragging || cancelled || !e || this.disabled || y < -24 || y > g.rect.height / g.scale + 24) this.moveTo(this.current, false, 0);
+  }
+
+  setCurrent(i, { emit = false, focus = false, immediate = false, velocity } = {}) {
+    if (!Number.isInteger(i) || !this.links[i]) return;
+    this.endDrag(null, true);
+    const changed = i !== this.current;
+    this.links.forEach((link, j) => (j === i ? link.setAttribute('aria-current', 'page') : link.removeAttribute('aria-current')));
     this.current = i;
-    this.moveTo(i);
+    if (focus && !this.disabled && !this.unavailable(this.links[i])) this.links[i].focus({ preventScroll: true });
+    this.moveTo(i, immediate, velocity);
+    if (emit && changed) {
+      const item = this.links[i];
+      this.dispatchEvent(new CustomEvent('change', { bubbles: true, detail: { index: i, item, value: item.getAttribute('value') ?? item.getAttribute('href') ?? item.textContent.trim() } }));
+    }
   }
 
-  moveTo(i, immediate = false) {
+  moveTo(i, immediate = false, velocity) {
     if (!immediate) this.measure();
-    const a = this.metrics?.[i];
-    if (!a) return;
+    const m = this.metrics[i];
+    if (!m) {
+      this.glass?.update({ hidden: true });
+      this.shadow.style.opacity = '0';
+      return;
+    }
     this.target = i;
-    this.xs.set(a.x, { immediate });
+    this.xs.set(m.x, { immediate, velocity });
     if (immediate) this.paint();
+    else this.render();
   }
 
   widthAt(pos) {
-    const items = this.metrics;
-    if (items.length < 2) return items[0].w;
+    const ordered = this.ordered;
+    if (ordered.length < 2) return ordered[0]?.w ?? 0;
     let i = 0;
-    while (i < items.length - 2 && pos > items[i + 1].x) i++;
-    const f = clamp((pos - items[i].x) / (items[i + 1].x - items[i].x || 1), 0, 1);
-    return lerp(items[i].w, items[i + 1].w, f);
+    while (i < ordered.length - 2 && pos > ordered[i + 1].x) i++;
+    const f = clamp((pos - ordered[i].x) / (ordered[i + 1].x - ordered[i].x || 1), 0, 1);
+    return lerp(ordered[i].w, ordered[i + 1].w, f);
+  }
+
+  geometry() {
+    const item = this.metrics[this.target] ?? this.metrics[0];
+    const p = reducedMotion.matches ? 0 : clamp(this.press, 0, 1);
+    const stretch = reducedMotion.matches ? 0 : this.gesture?.dragging ? this.stretch : Math.min(14, Math.abs(this.v) * 0.016);
+    const base = this.widthAt(this.x);
+    const w = base * (1 + 0.08 * p) + stretch;
+    const h = item.h * (1 + 0.2 * p) - stretch * 0.15;
+    return { x: this.x - (w - base) / 2, y: item.y + (item.h - h) / 2 - 2 * p, w, h, p };
   }
 
   render() {
-    if (!this.glass || !this.metrics?.length) return;
+    if (!this.glass || !this.metrics.length) return;
     this.paintDirty = true;
     if (this.paintFrame || this.paintQueued) return;
     this.paintQueued = true;
-    // Draw after this input's spring has registered its next frame
+    // Queue the paint after all springs started by this input have registered their next frame
     queueMicrotask(() => {
       this.paintQueued = false;
       if (this.isConnected && this.glass && !this.paintFrame) this.paintFrame = requestAnimationFrame(this.paint);
@@ -1140,17 +1381,17 @@ class LgNavbar extends LgElement {
   paint() {
     if (this.paintFrame) cancelAnimationFrame(this.paintFrame);
     this.paintFrame = 0;
-    if (!this.paintDirty || !this.glass || !this.metrics?.length) return;
+    if (!this.paintDirty || !this.glass || !this.metrics.length) return;
     this.paintDirty = false;
-    const first = this.metrics[0];
-    const stretch = Math.min(14, Math.abs(this.v) * 0.025);
-    const w = snapSize(this.widthAt(this.x) + stretch);
-    const h = snapSize(first.h - stretch * 0.2);
-    const left = this.x - stretch / 2;
-    const top = first.y + (first.h - h) / 2;
-    this.glass.update({ x: left, y: top, width: w, height: h, radius: h / 2 });
+    const g = this.geometry();
+    // Reuse a map while its dimensions still paint to the same device pixels
+    const w = snapSize(g.w);
+    const h = snapSize(g.h);
+    this.glass.update({ hidden: false, x: g.x + 16, y: g.y + 16, width: w, height: h, radius: h / 2, refraction: this.optics.refraction * (1 + 1.8 * g.p) });
     this.glass.flush();
-    place(this.shadow, left, top, w, h, h / 2);
+    this.style.setProperty('--lg-nav-press', String(g.p));
+    this.shadow.style.opacity = '1';
+    place(this.shadow, g.x, g.y, w, h, h / 2);
     this.paintFrame = requestAnimationFrame(this.paint);
   }
 }

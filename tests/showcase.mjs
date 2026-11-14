@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
 import { loadPlaywright, launchOptions } from '../review/browser-runtime.mjs';
 import { serveShowcase } from '../scripts/serve-showcase.mjs';
@@ -22,7 +23,13 @@ try {
   }
   assert.notEqual(manifest.builds.previous.sha256['liquid-glass.js'], manifest.builds.current.sha256['liquid-glass.js']);
   const recorded = JSON.parse(readFileSync('showcase/recorded-fps.json', 'utf8'));
-  for (const [build, hashes] of Object.entries(recorded.sourceSHA256)) assert.deepEqual(hashes, manifest.builds[build].sha256);
+  for (const [build, hashes] of Object.entries(recorded.sourceSHA256)) {
+    const revision = build === 'current' ? 'a863784' : manifest.builds[build].revision;
+    for (const [file, hash] of Object.entries(hashes)) {
+      const source = execFileSync('git', ['show', `${revision}:lib/${file}`]);
+      assert.equal(createHash('sha256').update(source).digest('hex'), hash);
+    }
+  }
   assert(recorded.configurations.every(item => !('trials' in item)));
   assert(readFileSync('showcase/recorded-fps.json').length < 15000);
   for (const path of ['docs/performance/raster-results.json', 'docs/performance/raster-spans-results.json']) {
@@ -30,7 +37,7 @@ try {
     assert(!('samples' in summary));
     assert(summary.sampleCount > 0 && summary.summary.length > 0);
   }
-  results.checks.push('All snapshot hashes match; current source equals lib; previous core differs');
+  results.checks.push('Live snapshots match their manifests; historical recording matches its own Git snapshots');
   results.checks.push('Generated duplicates stay outside source; recorded data contains compact summaries');
   const original = await browser.newPage();
   await original.goto(`${url}/scene.html?build=original`);
